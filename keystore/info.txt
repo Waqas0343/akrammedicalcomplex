@@ -1,0 +1,4 @@
+storePassword=amchealthcare
+keyPassword=amchealthcare123
+keyAlias=amchealthcare
+storeFile=/Users/naeem1/Desktop/projects/Flutter/amc/keystore/keystore.jks

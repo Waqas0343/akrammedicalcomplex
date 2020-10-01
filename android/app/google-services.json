@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "46169427445",
+    "firebase_url": "https://amc-healthcare-services.firebaseio.com",
+    "project_id": "amc-healthcare-services",
+    "storage_bucket": "amc-healthcare-services.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46169427445:android:3eff73ba4bd37a596c24bc",
+        "android_client_info": {
+          "package_name": "com.instacare.amc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "46169427445-e7l9mvoaa3j7d0o1mjqof057p13srvt6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDxAVkr13BgPtoHixCuw53lKV94q1HKKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "46169427445-e7l9mvoaa3j7d0o1mjqof057p13srvt6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

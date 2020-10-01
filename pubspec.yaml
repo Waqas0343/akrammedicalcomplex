@@ -1,0 +1,63 @@
+name: amc
+description: A application for Doctors hospital
+
+version: 2.1.7+3
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.3
+  shared_preferences: ^0.5.10
+  fluttertoast: ^7.0.2
+  http: ^0.12.2
+  flutter_svg: ^0.18.1
+  image_picker: ^0.6.7+6
+  flutter_typeahead: ^1.8.8
+  dio: ^3.0.10
+  auto_size_text: ^2.1.0
+  flare_flutter: ^2.0.6
+  flutter_pdfview: ^1.0.3+3
+  path_provider: ^1.6.14
+  material_design_icons_flutter: ^4.0.5345
+  email_validator: ^1.0.5
+  badges: ^1.1.1
+  webview_flutter: ^0.3.22+1
+  progress_dialog: ^1.2.4
+  loadmore: ^1.0.4
+  firebase_messaging: ^7.0.0
+  flutter_local_notifications: ^1.4.4+4
+  sqflite: ^1.3.1+1
+  file_utils: ^0.1.4
+  percent_indicator: ^2.1.6
+  url_launcher: ^5.5.3
+  flutter_inappwebview: ^4.0.0+4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/animation/
+    - assets/html/policy
+
+  fonts:
+    - family: Regular
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+
+    - family: Light
+      fonts:
+        - asset: assets/fonts/Montserrat-Light.ttf
+
+    - family: SemiBold
+      fonts:
+        - asset: assets/fonts/Montserrat-SemiBold.ttf

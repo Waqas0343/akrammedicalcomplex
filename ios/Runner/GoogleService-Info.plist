@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>46169427445-c6sbd6b02hgmn7787boqemrgulhee90s.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.46169427445-c6sbd6b02hgmn7787boqemrgulhee90s</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAm2jGK87_UE55_aGWUYivJD3RP2p3Kuk0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>46169427445</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.instacare.amc</string>
+	<key>PROJECT_ID</key>
+	<string>amc-healthcare-services</string>
+	<key>STORAGE_BUCKET</key>
+	<string>amc-healthcare-services.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:46169427445:ios:c4cfc7c0f0879c826c24bc</string>
+	<key>DATABASE_URL</key>
+	<string>https://amc-healthcare-services.firebaseio.com</string>
+</dict>
+</plist>

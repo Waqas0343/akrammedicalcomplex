@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<svg class="" enable-background="new 0 0 512 512" height="512px"
+    id="Capa_1" viewBox="0 0 512 512" width="512px" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <g>
+            <circle style="fill:#FFA500" class="" cx="256" cy="256" data-old_color="#54747f" data-original="#54747F"
+                fill="#54747f" r="256" />
+            <path
+                style="fill:#FFA500"
+                class="" d="m511.134 277.043-187.043-187.043-136.172 19.453 19.453 19v105.824s-93.143 177.373-90.959 179.484c.143.152 44.551 44.564 94.219 94.231 14.725 2.633 29.886 4.008 45.368 4.008 134.298 0 244.43-103.417 255.134-234.957z" data-old_color="#455e72" data-original="#455E72"
+                fill="#455e72" />
+            <g>
+                <path
+                    style="fill:#E9F2F2"
+                    class="" d="m341.792 289.913s-28.79 5.642-46.882 5.642c-21.593 0-42.408 10.31-43.185 10.699-.195.195-17.703 8.754-34.627 8.754s-34.432-8.559-34.627-8.754l-7.586-23.149 32.486-48.827v-124.825h-19.453v-19.453h136.172v19.453h-19.453v124.824z" data-original="#E9F2F2" fill="#e9f2f2" />
+                <path
+                    style="fill:#E9F2F2"
+                    class="active-path" d="m304.637 109.453h19.453v-19.453h-65.752v213.382c7.946-3.172 22.004-7.827 36.572-7.827 18.091 0 46.882-5.642 46.882-5.642l-37.155-55.636z" data-old_color="#d5e5e5"
+                    data-original="#D5E5E5" fill="#d5e5e5" />
+                <path
+                    style="fill:#94E5CF"
+                    class="" d="m401.125 406.438c-5.058 9.532-14.979 15.562-25.873 15.562h-238.495c-10.894 0-20.815-6.03-25.873-15.562s-4.28-21.009 1.751-29.763l51.356-77.424h.195l10.699-16.146 7.587 3.696c.195.194 17.702 8.754 34.627 8.754s34.432-8.559 34.627-8.754c.259-.13 2.691-1.336 6.614-2.898 7.976-3.171 22.099-7.801 36.572-7.801 23.078 0 46.882 13.812 46.882 13.812 2.133 3.151-2.244-3.482 18.87 28.402l38.906 58.359c5.835 8.753 6.613 20.23 1.555 29.763z" data-original="#94E5CF" fill="#94e5cf" />
+                <path
+                    style="fill:#94E5CF"
+                    class="" d="m401.125 406.438c-5.058 9.532-14.979 15.562-25.873 15.562h-116.913v-138.098c7.976-3.171 22.099-7.801 36.572-7.801 23.078 0 46.882 13.812 46.882 13.812 2.133 3.151-2.244-3.482 18.87 28.402l38.906 58.359c5.836 8.754 6.614 20.231 1.556 29.764z" data-old_color="#7ccbbf" data-original="#7CCBBF"
+                    fill="#7ccbbf" />
+                <g id="Medical_Lab_1_">
+                    <g>
+                        <path style="fill:#5A9898" class=""
+                            d="m285.184 324.734h19.453v19.453h-19.453z" data-old_color="#5a9898" data-original="#5A9898"
+                            fill="#5a9898" />
+                    </g>
+                    <g>
+                        <path style="fill:#94E5CF" class=""
+                            d="m246.278 363.641h19.453v19.453h-19.453z" data-old_color="#7ccbbf" data-original="#7CCBBF"
+                            fill="#7ccbbf" />
+                    </g>
+                    <g>
+                        <path style="fill:#94E5CF" class=""
+                            d="m207.372 344.188h19.453v19.453h-19.453z" data-old_color="#7ccbbf" data-original="#7CCBBF"
+                            fill="#7ccbbf" />
+                    </g>
+                    <g>
+                        <path style="fill:#94E5CF" class=""
+                            d="m246.278 246.922h19.453v19.453h-19.453z" data-old_color="#7ccbbf" data-original="#7CCBBF"
+                            fill="#7ccbbf" />
+                    </g>
+                </g>
+                <g fill="#5a9898">
+                    <path style="fill:#5A9898" class="" d="m258.339 363.641h7.392v19.453h-7.392z"
+                        data-old_color="#5A9898" data-original="#5A9898" />
+                    <path style="fill:#5A9898" class="" d="m258.339 246.922h7.392v19.453h-7.392z"
+                        data-old_color="#5A9898" data-original="#5A9898" />
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
