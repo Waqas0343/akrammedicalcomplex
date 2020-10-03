@@ -89,7 +89,7 @@ class _FindDoctorState extends State<FindDoctor> {
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: 'Search By Name',
+                    hintText: 'Search by name',
                     prefixIcon: Icon(Icons.search),
                     suffix: GestureDetector(
                         onTap: () {

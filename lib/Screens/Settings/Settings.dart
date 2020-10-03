@@ -34,8 +34,8 @@ class _SettingsState extends State<Settings> {
           color: Colors.black,
         ),
         title: Image.asset(
-          MyImages.logo,
-          height: 40,
+          MyImages.AMCLogo,
+          height: 50,
         ),
       ),
       body: Container(

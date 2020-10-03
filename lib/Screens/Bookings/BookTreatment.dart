@@ -180,7 +180,7 @@ disableButton();
             },
             decoration: InputDecoration(
                 filled: false,
-                hintText: "Search by Service name",
+                hintText: "Search by service name",
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
@@ -243,7 +243,7 @@ disableButton();
         ) : Container(
           margin: EdgeInsets.only(top: 20),
           child: Text(
-            "Service Not found",
+            "No service found",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.grey),
           ),
         ),

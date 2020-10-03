@@ -52,8 +52,8 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Image.asset(
-          MyImages.logo,
-          height: 40,
+          MyImages.AMCLogo,
+          height: 50,
         ),
         actions: [
           !isAlreadyExists
@@ -355,6 +355,8 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
       preferences.setString(Keys.city, city);
       preferences.setString(Keys.area, area);
       preferences.setString(Keys.address, location);
+      if (isAlreadyExists)
+        Utilities.showToast("Update successfully");
       move();
     } else {
       Utilities.showToast("Unable to update location");

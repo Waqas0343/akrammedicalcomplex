@@ -144,10 +144,6 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 end: Alignment.topCenter,
                                 stops: [0.01, 0.01],
                                 colors: [Color(0XFF17145A), Colors.white]),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(4),
-                              topRight: Radius.circular(4),
-                            ),
                           ),
                           child: DropdownButtonHideUnderline(
                             child: ButtonTheme(
@@ -206,6 +202,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           controller: nameController,
                           decoration: InputDecoration(
                             counterText: "",
+                            filled: false,
                             hintText: "Full Name",
                             errorText:
                                 isNameEmpty ? "Name can't be Empty" : null,
@@ -222,7 +219,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     focusNode: usernameFocus,
                     controller: usernameController,
                     decoration: InputDecoration(
-                      filled: true,
+                      filled: false,
                       enabled: false,
                       fillColor: Colors.white,
                       hintText: "Login ID",
@@ -253,7 +250,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     },
                     controller: phoneController,
                     decoration: InputDecoration(
-                      filled: true,
+                      filled: false,
                       fillColor: Colors.white,
                       hintText: "Phone",
                       counterText: "",
@@ -290,7 +287,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     },
                     focusNode: emailFocus,
                     decoration: InputDecoration(
-                      filled: true,
+                      filled: false,
                       fillColor: Colors.white,
                       hintText: "Email",
                       errorText: emailValidate ? emailErrorMessage : null,
@@ -547,6 +544,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         isTitleEmpty = true;
       });
       enableButton();
+      Utilities.showToast("Select title");
       return;
     }
 

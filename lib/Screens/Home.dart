@@ -139,8 +139,8 @@ class _HomeState extends State<Home> {
                   Expanded(
                       flex: 1,
                       child: HomeCard(
-                          title: "Home Services",
-                          description: "Booked Home Services",
+                          title: "My Services",
+                          description: "Your Whole Home Services",
                           icon: MyIcons.icTreatment,
                           onTap: () {
                             Route route = new MaterialPageRoute(
@@ -199,7 +199,7 @@ class _HomeState extends State<Home> {
                       flex: 1,
                       child: HomeCard(
                           title: "My Bookings",
-                          description: "Your whole Bookings",
+                          description: "Your Whole Bookings",
                           icon: MyIcons.icBookings,
                           onTap: () {
                             Route route = new MaterialPageRoute(
@@ -224,7 +224,7 @@ class _HomeState extends State<Home> {
                       flex: 1,
                       child: HomeCard(
                           title: "Health Records",
-                          description: "Upload your Health Records",
+                          description: "Upload Your Health Records",
                           icon: MyIcons.icRecords,
                           onTap: () {
                             Route route = new MaterialPageRoute(
@@ -378,9 +378,9 @@ class _HomeState extends State<Home> {
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
-                  child: Text(
+                  child: AutoSizeText(
                     title,
-                    softWrap: false,
+                    maxLines: 1,
                     style: TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ),

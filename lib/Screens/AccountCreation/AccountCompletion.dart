@@ -21,7 +21,7 @@ class _AccountCompletionState extends State<AccountCompletion> {
         brightness: Brightness.light,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Image.asset(MyImages.logo, height: 40,),
+        title: Image.asset(MyImages.AMCLogo, height: 50,),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),

@@ -378,7 +378,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                         controller: medicController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(8),
-                            hintText: "Search Medicines")),
+                            hintText: "Search medicines")),
                     suggestionsCallback: (name) async {
                       return await otcMedicines(name);
                     },
@@ -387,7 +387,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 8),
                         child: Text(
-                          "No Medicine Found!",
+                          "No medicine found!",
                           style: TextStyle(fontSize: 18, color: Colors.grey),
                         ),
                       );
@@ -564,11 +564,12 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
     Response response;
 
     String values =
-        "&FullName=$name&username=$username&address=$location&Phone=$phone&Email=$email&PaymentMethod=Cash On Delivery&attachment=$prescriptionPath&ReferanceBy=${Keys.locationId}";
+        "&FullName=$name&username=$username&address=$location&Phone=$phone" +
+        "&Email=$email&PaymentMethod=Cash On Delivery&attachment=$prescriptionPath" +
+        "&ReferanceBy=${Keys.locationId}";
     try {
       response = await dio.post(ServerConfig.MEDICINE_ORDER_PLACE + values,
           data: data);
-      print(ServerConfig.MEDICINE_ORDER_PLACE + values);
     } catch (e) {
       print(e);
     }

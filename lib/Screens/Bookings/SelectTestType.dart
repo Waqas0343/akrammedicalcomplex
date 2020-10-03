@@ -16,7 +16,7 @@ class TestType extends StatelessWidget {
       body: Column(children: [
         Card(
           elevation: 6,
-          margin: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
+            margin: EdgeInsets.fromLTRB(4, 8, 4, 4),
           child: ListTile(
             title: Text("Select Test", style: TextStyle(fontFamily: "SemiBold", fontSize: 18),),
             leading: SvgPicture.asset(MyIcons.icCheckList, color: MyColors.primary, height: 28,),
@@ -29,7 +29,7 @@ class TestType extends StatelessWidget {
         ),
         Card(
           elevation: 6,
-          margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+            margin: EdgeInsets.fromLTRB(4, 4, 4, 4),
           child: ListTile(
             title: Text("Upload Prescription", style: TextStyle(fontFamily: "SemiBold", fontSize: 18),),
             leading: SvgPicture.asset(MyIcons.icUploadDocs, color: MyColors.primary, height: 28,),
