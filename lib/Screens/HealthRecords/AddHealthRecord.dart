@@ -399,14 +399,12 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Save";
     });
   }
 

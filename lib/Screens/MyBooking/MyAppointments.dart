@@ -42,12 +42,14 @@ class _MyAppointmentsState extends State<MyAppointments> {
           padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 4.0),
           child: TextField(
             controller: nameController,
+            maxLength: 60,
             onChanged: (text){
               filterSearchResults(text);
             },
             decoration: InputDecoration(
                 filled: false,
                 hintText: "Search by Doctor Name",
+                counterText: "",
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
@@ -88,7 +90,7 @@ class _MyAppointmentsState extends State<MyAppointments> {
                     children: [
                       Text(appointment.doctorName, softWrap: false,),
                       SizedBox(height: 8,),
-                      Text(appointment.status, softWrap: false,style: TextStyle(fontWeight: FontWeight.bold,color: appointment.getStatusColor())),
+                      Text(appointment.status, softWrap: false,style: TextStyle(fontWeight: FontWeight.bold, color: appointment.getStatusColor())),
                     ],
                   ),
                   isThreeLine: true,
@@ -99,7 +101,7 @@ class _MyAppointmentsState extends State<MyAppointments> {
         ) : Container(
           margin: EdgeInsets.only(top: 20),
           child: Text(
-            "Appointment not found",
+            "No Appointment Found",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.grey),
           ),
         ),

@@ -32,7 +32,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   String prescriptionPath, username, buttonText = "Place Order";
   bool isTaped = true;
   List<PrescriptionConverterModel> medicines = [];
-
+  String phoneError = "Phone can't be Empty";
   final _picker = ImagePicker();
 
   final nameController = TextEditingController();
@@ -286,12 +286,14 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             FocusScope.of(context).requestFocus(emailFocus);
           },
           focusNode: phoneFocus,
-          inputFormatters: [Utilities.onlyNumberFormat()],
+          inputFormatters: [Utilities.onlyNumberFormat(),],
           onChanged: (text) {
             if (text.trim().isNotEmpty) {
-              setState(() {
-                isPhoneEmpty = false;
-              });
+              if (Utilities.numberHasValid(text)) {
+                setState(() {
+                  isPhoneEmpty = false;
+                });
+              }
             }
           },
           decoration: InputDecoration(
@@ -299,7 +301,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             fillColor: Colors.white,
             hintText: "Mobile No",
             counterText: "",
-            errorText: isPhoneEmpty ? "Required" : null,
+            errorText: isPhoneEmpty ? phoneError : null,
           ),
         ),
         SizedBox(
@@ -314,17 +316,13 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             FocusScope.of(context).requestFocus(locaFocus);
           },
           onChanged: (text) {
-            if (text.trim().isEmpty) {
-              setState(() {
-                emailValidate = false;
-              });
-              return;
-            }
-            bool validate = EmailValidator.validate(text);
-            if (validate) {
-              setState(() {
-                emailValidate = false;
-              });
+            if (text.trim().isNotEmpty) {
+                bool validate = EmailValidator.validate(text);
+                if (validate) {
+                  setState(() {
+                    emailValidate = false;
+                  });
+                }
             }
           },
           focusNode: emailFocus,
@@ -378,7 +376,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                         controller: medicController,
                         decoration: InputDecoration(
                             contentPadding: EdgeInsets.all(8),
-                            hintText: "Search medicines")),
+                            hintText: "Search Medicines")),
                     suggestionsCallback: (name) async {
                       return await otcMedicines(name);
                     },
@@ -387,7 +385,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 8),
                         child: Text(
-                          "No medicine found!",
+                          "No Medicine Found!",
                           style: TextStyle(fontSize: 18, color: Colors.grey),
                         ),
                       );
@@ -395,7 +393,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                     itemBuilder: (context, ProductDetail suggestion) {
                       return ListTile(
                         dense: true,
-                        subtitle: Text(suggestion.price),
+                        subtitle: Text("PKR/- " + suggestion.price),
                         title: AutoSizeText(
                           suggestion.name,
                           maxLines: 1,
@@ -499,12 +497,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
       return;
     }
 
-    if (email.isEmpty) {
-      enableButton();
-      setState(() {
-        emailValidate = true;
-      });
-    } else if (email.isNotEmpty) {
+    if (email.isNotEmpty) {
       bool validate = EmailValidator.validate(email);
       if (!validate) {
         enableButton();
@@ -519,6 +512,13 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
       enableButton();
       setState(() {
         isPhoneEmpty = true;
+      });
+      return;
+    } else if (!Utilities.numberHasValid(phone)) {
+      enableButton();
+      setState(() {
+        isPhoneEmpty = true;
+        phoneError = "Invalid phone number";
       });
       return;
     }
@@ -565,7 +565,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
 
     String values =
         "&FullName=$name&username=$username&address=$location&Phone=$phone" +
-        "&Email=$email&PaymentMethod=Cash On Delivery&attachment=$prescriptionPath" +
+        "&Email=$email&PaymentMethod=Cash On Delivery&Source=${Keys.source}&attachment=$prescriptionPath" +
         "&ReferanceBy=${Keys.locationId}";
     try {
       response = await dio.post(ServerConfig.MEDICINE_ORDER_PLACE + values,
@@ -637,14 +637,12 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Place Order";
     });
   }
 

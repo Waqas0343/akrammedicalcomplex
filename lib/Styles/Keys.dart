@@ -21,6 +21,7 @@ class Keys {
   static const String name = "Name";
   static const String image = "Image";
   static const String flag = "Flag";
+  static const String prescription = "prescription";
   static const String sessionToken = "SessionToken";
 
   static const String labId = "chughtailab20180507020024";
@@ -32,16 +33,17 @@ class Keys {
   static const String actionType = "actionType";
   static const String homeServices = "Home Services";
   static const String medicines = "medicine";
+  static const String googleMessageId = "googleMessageId";
 
   // static const String locationId = "AC20180602102453";
 
   static const String locationId = "A20200710021733";
 
-  static const String source = "amc";
+  static const String source = "AMC";
 
   static const String projectId = "amc-healthcare-services";
 
-  static const List<String> titleList = ['Mr.', 'Ms.', 'Miss.', 'Mrs.'];
+  static const List<String> titleList = ['Mr', 'Ms', 'Miss', 'Mrs'];
 
   static const String appName = "AMC HealthCare Services";
 

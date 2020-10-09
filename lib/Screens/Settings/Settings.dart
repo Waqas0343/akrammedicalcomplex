@@ -48,42 +48,11 @@ class _SettingsState extends State<Settings> {
                   cities: cities,
                 )
               : Center(
-                  child: CircularProgressIndicator(),
+                  child:isLoading ? CircularProgressIndicator(): Text("Profile Not found"),
                 ),
         ),
       ),
     );
-
-    //   DefaultTabController
-    //     (
-    //   length: 2,
-    //   child: Scaffold(
-    //     body: NestedScrollView(
-    //         body: TabBarView(children: <Widget>[
-    //           isLoading
-    //               ? Column(mainAxisAlignment: MainAxisAlignment.center,children: [CircularProgressIndicator()],)
-    //               : ProfileSettings(cities: cities,profile: profile,),
-    //           AccountSettings()
-    //         ]),
-    //       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-    //           return <Widget>[
-    //             SliverAppBar(
-    //               pinned: true,
-    //               floating: true,
-    //               title: Text("Settings"),
-    //               bottom: TabBar(
-    //                 indicatorColor: Colors.white,
-    //                   isScrollable: false,
-    //                   tabs: <Tab>[
-    //                 new Tab(text: "Profile",),
-    //                 new Tab(text: "Account",),
-    //               ]),
-    //             )
-    //           ];
-    //       },
-    //     ),
-    //   ),
-    // );
   }
 
   @override
@@ -104,21 +73,10 @@ class _SettingsState extends State<Settings> {
       return;
     }
 
-    String citiesResponse = await Utilities.httpGet(ServerConfig.cities);
-
     String response = await Utilities.httpGet(
         ServerConfig.getPatientInfo + "&username=$username");
 
-    if (citiesResponse != "404") {
-      if (!mounted) return;
-      citiesFromJson(citiesResponse).citiesList.cities.forEach((city) {
-        setState(() {
-          cities.add(city.name);
-        });
-      });
-    } else {
-      Utilities.showToast("Unable to get Cities");
-    }
+
 
     if (response != "404") {
       setState(() {

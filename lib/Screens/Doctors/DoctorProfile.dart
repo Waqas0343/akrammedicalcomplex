@@ -458,7 +458,6 @@ class _DoctorProfileState extends State<DoctorProfile> {
     } else {
       Utilities.showToast("Something went wrong");
     }
-    print(response);
     Loading.dismiss();
   }
 

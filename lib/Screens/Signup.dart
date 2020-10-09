@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:amc/Models/LoginModel.dart';
-import 'package:amc/Screens/AccountCreation/LocationGettingScreen.dart';
+import 'package:amc/Screens/AccountCreation/ActivationCode.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -37,7 +37,7 @@ class _SignUpState extends State<SignUp> {
   var isUsernameFind = false;
 
   String userNameError = "Username can't be empty";
-
+  String phoneError = "Phone can't be Empty";
 
   SharedPreferences preferences;
   bool visible = true;
@@ -116,15 +116,17 @@ class _SignUpState extends State<SignUp> {
                           TextField(
                             keyboardType: TextInputType.phone,
                             maxLength: 11,
-                            inputFormatters: [Utilities.onlyNumberFormat()],
+                            inputFormatters: [Utilities.onlyNumberFormat(),],
                             textInputAction: TextInputAction.next,
                             focusNode: phoneFocus,
                             controller: phoneController,
                             onChanged: (text){
                               if (text.isNotEmpty){
-                                setState(() {
-                                  isPhoneEmpty = false;
-                                });
+                                if (Utilities.numberHasValid(text)) {
+                                  setState(() {
+                                    isPhoneEmpty = false;
+                                  });
+                                }
                               }
                             },
                             onSubmitted: (text){
@@ -135,7 +137,7 @@ class _SignUpState extends State<SignUp> {
                               hintText: "Phone",
                               filled: false,
                               counterText: "",
-                              errorText: isPhoneEmpty ? "Can\'t be Empty" : null,
+                              errorText: isPhoneEmpty ? phoneError : null,
                             ),
                           ),
                           SizedBox(
@@ -326,6 +328,13 @@ class _SignUpState extends State<SignUp> {
         isPhoneEmpty = true;
       });
       return;
+    } else if (!Utilities.numberHasValid(phone)) {
+      enableButton();
+      setState(() {
+        isPhoneEmpty = true;
+        phoneError = "Invalid phone number";
+      });
+      return;
     }
 
     if (username.isEmpty || isUsernameEmpty){
@@ -354,18 +363,15 @@ class _SignUpState extends State<SignUp> {
 
     String response = await Utilities.httpPost(ServerConfig.signUp + values);
     Loading.dismiss();
-
     if (response != "404") {
-
       User user = loginFromJson(response).response.user;
-
-      preferences.setString(Keys.username, user.username);
       preferences.setString(Keys.phone, user.phone);
-      preferences.setString(Keys.name, user.name);
       preferences.setString(Keys.password, password);
-      preferences.setBool(Keys.status, true);
+      preferences.setString(Keys.username, user.username);
+      preferences.setString(Keys.name, user.name);
 
-      Route route = new MaterialPageRoute(builder: (context) => LocationGettingScreen(false));
+
+      Route route = new MaterialPageRoute(builder: (context) => AccountActivation(user.phone));
       Navigator.pushAndRemoveUntil(context, route, (route) => false);
 
     } else {
@@ -382,7 +388,6 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       isUsernameFind = false;
     });
-    print(response);
     if (response != "404"){
       if (jsonDecode(response)["Response"]["Response"] == true){
         setState(() {
@@ -412,14 +417,12 @@ class _SignUpState extends State<SignUp> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Create Account";
     });
   }
 }

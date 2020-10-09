@@ -1,6 +1,6 @@
+import 'package:amc/Models/DoctorResponseModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Models/CategoryModel.dart';
-import 'package:amc/Models/DoctorResponseModel.dart';
 import 'package:amc/Screens/BookAppointment/BookAppointment.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -8,7 +8,6 @@ import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:flutter/material.dart';
-import 'package:loadmore/loadmore.dart';
 
 import 'DoctorProfile.dart';
 
@@ -18,14 +17,15 @@ class FindDoctor extends StatefulWidget {
 }
 
 class _FindDoctorState extends State<FindDoctor> {
-  int pageNo = 0;
-  int totalPage = 0;
-  int totalRecord = 0;
+  bool isLoading = false;
+  int totalRecord = 0, pageNo = 0;
 
-  List<DoctorModel> doctors;
+  List<ResponseDetail> doctors;
 
   Category category;
   List<Category> categories;
+
+  final nameFocus = FocusNode();
 
   final nameController = TextEditingController();
   ScrollController controller;
@@ -63,10 +63,13 @@ class _FindDoctorState extends State<FindDoctor> {
                 setState(() {
                   category = cate.name != "All" ? cate : null;
                   pageNo = 0;
-                  totalPage = 0;
                   totalRecord = 0;
                   doctors.clear();
+                  nameController.clear();
                 });
+                nameFocus.unfocus();
+                FocusScope.of(context).requestFocus(FocusNode());
+                getDoctors();
               }),
         ),
       ),
@@ -75,58 +78,81 @@ class _FindDoctorState extends State<FindDoctor> {
           Container(
               margin: const EdgeInsets.only(top: 8, left: 8, right: 8),
               child: TextField(
+                focusNode: nameFocus,
                 controller: nameController,
                 onEditingComplete: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
+                  nameFocus.unfocus();
                   setState(() {
-                    pageNo = 0;
-                    totalPage = 0;
                     totalRecord = 0;
                     doctors.clear();
+                    getDoctors();
                   });
                 },
                 textInputAction: TextInputAction.search,
+                maxLength: 60,
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    hintText: 'Search by name',
+                    hintText: 'Search by Name',
                     prefixIcon: Icon(Icons.search),
+                    counterText: "",
                     suffix: GestureDetector(
                         onTap: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
+                          nameFocus.unfocus();
                           setState(() {
                             nameController.clear();
                             pageNo = 0;
-                            totalPage = 0;
                             totalRecord = 0;
                             doctors.clear();
+                            getDoctors();
                           });
                         },
                         child: Icon(Icons.close))),
               )),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-              child: LoadMore(
-                isFinish: totalPage < pageNo,
-                onLoadMore: getDoctors,
-                textBuilder: DefaultLoadMoreTextBuilder.english,
-                child: ListView.builder(
-                  controller: controller,
-                  itemBuilder: (BuildContext context, int index) =>
-                      doctorListView(context, index),
-                  itemCount: doctors.length,
+          doctors.isNotEmpty
+              ? Expanded(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 4),
+                          controller: controller,
+                          itemBuilder: (BuildContext context, int index) =>
+                              doctorListView(context, index),
+                          itemCount: doctors.length,
+                        ),
+                      ),
+                      Visibility(
+                        visible: isLoading,
+                        child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            child: LinearProgressIndicator()),
+                      )
+                    ],
+                  ),
+                )
+              : Expanded(
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        doctors.isEmpty && !isLoading
+                            ? Text("No Doctor Found")
+                            : CircularProgressIndicator(),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ),
         ],
       ),
     );
   }
 
   Widget doctorListView(BuildContext context, int index) {
-    DoctorModel doctorModel = doctors[index];
+    ResponseDetail doctorModel = doctors[index];
     return Card(
       elevation: 4.0,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -161,7 +187,7 @@ class _FindDoctorState extends State<FindDoctor> {
                                 fit: BoxFit.fill,
                                 placeholder: MyImages.doctorPlace,
                                 image:
-                                    doctorModel.imagePath ?? Keys.imageNotFound,
+                                    doctorModel.imagepath ?? Keys.imageNotFound,
                                 width: 70,
                                 height: 70,
                               ),
@@ -170,29 +196,26 @@ class _FindDoctorState extends State<FindDoctor> {
                         ),
                         Flexible(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8, bottom: 8, right: 16),
+                            padding: const EdgeInsets.only(
+                                top: 8, bottom: 8, right: 16),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
                                   doctorModel.name,
                                   style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      ),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   softWrap: false,
                                 ),
                                 SizedBox(
                                   height: 6,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 4),
-                                  child: Text(
-                                    doctorModel.speciality ?? "",
-                                    style: TextStyle(color: Colors.black),
-                                    overflow: TextOverflow.fade,
-                                    softWrap: false,
-                                  ),
+                                Text(
+                                  doctorModel.speciality ?? "",
+                                  style: TextStyle(color: Colors.black),
+                                  overflow: TextOverflow.fade,
+                                  softWrap: false,
                                 ),
                                 SizedBox(
                                   height: 6,
@@ -222,22 +245,6 @@ class _FindDoctorState extends State<FindDoctor> {
               ),
             ),
           ),
-          // ListTile(
-          //   dense: true,
-          //   leading: ClipRRect(
-          //       borderRadius: BorderRadius.all(Radius.circular(50)),
-          //       child: Image.asset(
-          //         MyImages.logo,
-          //         height: 40,
-          //         width: 40,
-          //       )),
-          //   title: Text(doctorModel.practiceName),
-          //   subtitle: Text(
-          //     doctorModel.location ?? "",
-          //     softWrap: false,
-          //     overflow: TextOverflow.fade,
-          //   ),
-          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             child: Row(
@@ -275,7 +282,7 @@ class _FindDoctorState extends State<FindDoctor> {
                                 drUsername: doctorModel.username,
                                 category: doctorModel.speciality,
                                 fee: doctorModel.fee,
-                                image: doctorModel.imagePath,
+                                image: doctorModel.imagepath,
                               ));
                       Navigator.push(context, route);
                     },
@@ -292,46 +299,48 @@ class _FindDoctorState extends State<FindDoctor> {
 
   @override
   void initState() {
-    super.initState();
+    updateUi();
+    controller = new ScrollController()..addListener(_scrollListener);
     doctors = [];
-    categories = [Category(name: "All")];
-    getCategory();
+    categories = [Category(name: "All", id: 0)];
+    super.initState();
   }
 
-  Future<bool> getDoctors() async {
+  @override
+  void dispose() {
+    controller.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  void getDoctors() async {
     String name = nameController.text.trim();
+    setState(() {
+      isLoading = true;
+    });
 
-    if (await Utilities.isOnline()) {
-      String response = await Utilities.httpGet(ServerConfig.doctors +
-          "&ItemsPerPage=15" +
-          "&PageNumber=$pageNo" +
-          "&speciality=${category == null ? "" : category.id}" +
-          '&city=' +
-          "&SearchParam=$name" +
-          "&Gender=");
-
-      if (response != "404") {
-        ResponseDetail responseDetail =
-            doctorsFromJson(response).response.response;
-
-        totalRecord = responseDetail.pagingDetails.totalRecords;
-        pageNo = responseDetail.pagingDetails.pageNumber;
-        totalPage = responseDetail.pagingDetails.totalPages;
-        if (!mounted) return false;
-        setState(() {
-          doctors.addAll(responseDetail.doctors);
-        });
-        pageNo++;
-        return true;
-      } else {
-        Utilities.showToast("Something went wrong");
-        return false;
-      }
-    } else {
-      Utilities.internetNotAvailable(context);
+    String response;
+    try {
+      response = await Utilities.httpGet(ServerConfig.doctors +
+          "&PageNumber=$pageNo&SearchPramas=$name&PageSize=10&Speciality=${category == null ? "0" : category.id}");
+    } catch (e) {
+      response = "404";
+      print(e);
     }
 
-    return false;
+    if (response != "404") {
+      DoctorModel responseDetail = doctorModelFromJson(response);
+      totalRecord = int.parse(responseDetail.response.response.recordsFiltered);
+      if (!mounted) return;
+      setState(() {
+        doctors.addAll(responseDetail.response.response.data);
+      });
+    } else {
+      Utilities.showToast("Unable to fetch doctors, try again later.");
+    }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void getCategory() async {
@@ -344,6 +353,24 @@ class _FindDoctorState extends State<FindDoctor> {
       });
     } else {
       Utilities.showToast("Unable to load Categories");
+    }
+  }
+
+  void updateUi() async {
+
+    if (!await Utilities.isOnline()) {
+      Utilities.internetNotAvailable(context);
+      return;
+    }
+
+    getDoctors();
+    getCategory();
+  }
+
+  void _scrollListener() {
+    if (doctors.length < totalRecord && !isLoading) {
+      pageNo++;
+      getDoctors();
     }
   }
 }

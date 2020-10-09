@@ -3,41 +3,82 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:flutter/material.dart';
 
-class MedicineOrderDetails extends StatelessWidget {
+class MedicineOrderDetails extends StatefulWidget {
   final Order order;
 
   MedicineOrderDetails(this.order);
 
   @override
+  _MedicineOrderDetailsState createState() => _MedicineOrderDetailsState();
+}
+
+class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
+  bool isExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order # " + order.orderId),
+        title: Text("Order # " + widget.order.orderId),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            order.medicines.isEmpty
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 8, right: 8, left: 8),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxHeight: MediaQuery.of(context).size.height / 2),
-                      child: Container(
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 10)
-                        ]),
-                        child: FadeInImage.assetNetwork(
-                          placeholder: MyImages.instaFile,
-                          image: order.prescriptionPath,
+            orderDetails(),
+            widget.order.medicines.isEmpty ? SizedBox.shrink() : medicineCard(),
+          ],
+        ),
+      ),
+    );
+  }
+  Widget orderDetails() {
+    return Card(
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      elevation: 4,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            widget.order.medicines.isEmpty
+                ? Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 8, right: 8, left: 8, bottom: 8),
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height / 2),
+                        child: Container(
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 10)
+                          ]),
+                          child: FadeInImage(
+                            placeholder: AssetImage(
+                              MyImages.instaFile,
+                            ),
+                            image: NetworkImage(
+                              widget.order.prescriptionPath ?? "Not Found",
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   )
                 : SizedBox.shrink(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+              child: Text(
+                "Order Details",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+            SizedBox(
+              height: 8,
+            ),
             Padding(
               padding:
                   const EdgeInsets.only(top: 8, bottom: 4, right: 8, left: 8),
@@ -49,7 +90,10 @@ class MedicineOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.status),
+                    child: Text(
+                      widget.order.status,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   )
                 ],
               ),
@@ -66,7 +110,7 @@ class MedicineOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.name),
+                    child: Text(widget.order.name),
                   )
                 ],
               ),
@@ -83,7 +127,7 @@ class MedicineOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.phone),
+                    child: Text(widget.order.phone),
                   )
                 ],
               ),
@@ -100,43 +144,65 @@ class MedicineOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.address),
+                    child: Text(widget.order.address ?? ""),
                   )
                 ],
               ),
             ),
-            Divider(),
-            order.medicines.isNotEmpty
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "Medicines",
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  )
-                : SizedBox.shrink(),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: ScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) =>
-                  makeList(context, index),
-              itemCount: order.medicines.length,
-            )
           ],
         ),
       ),
     );
   }
 
+  Widget medicineCard() {
+    return Card(
+      margin: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      elevation: 4,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            title: Text(
+              "Medicine(s)",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+            onTap: () {
+              setState(() {
+                isExpanded = !isExpanded;
+              });
+            },
+            trailing: Icon(isExpanded
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down),
+          ),
+          Visibility(
+            visible: isExpanded,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8, right: 8),
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) =>
+                    makeList(context, index),
+                itemCount: widget.order.medicines.length,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget makeList(BuildContext context, int index) {
-    PrescriptionConverterModel medicine = order.medicines[index];
+    PrescriptionConverterModel medicine = widget.order.medicines[index];
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       title: AutoSizeText(
         medicine.productName ?? "",
         maxLines: 2,
       ),
-      subtitle: Text(medicine.productPrice ?? ""),
+      subtitle: Text("PKR/- " + medicine.productPrice ?? ""),
       leading: Container(
           width: 30,
           child: Align(

@@ -133,12 +133,8 @@ class _MyBookingState extends State<MyBooking> {
   void getMedicineOrders(String username) async {
 
     String response = await Utilities.httpGet(ServerConfig.MEDICINE_ORDERS + "&username=$username");
-    print(ServerConfig.MEDICINE_ORDERS + "&username=$username");
-    print(response);
     if (response != "404") {
-      print(response);
       var list = medicineOrdersFromJson(response).response.orders;
-      print(list );
       if (!mounted) return;
       setState(() {
         medicinesOrders.addAll(list);

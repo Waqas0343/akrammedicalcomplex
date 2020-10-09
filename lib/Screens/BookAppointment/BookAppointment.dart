@@ -147,7 +147,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                           color: MyColors.accent,
                           borderRadius: BorderRadius.circular(8)),
                       child: Text(
-                        "Rs/- ${widget.fee.replaceAll("Rs/- ", "")}",
+                        "PKR/- ${widget.fee.replaceAll("Rs/- ", "")}",
                         style: TextStyle(color: Colors.white),
                       ),
                     )
@@ -377,10 +377,12 @@ class _BookAppointmentState extends State<BookAppointment> {
         "&ScheduledEndTime_Short=" +
         time +
         "&AppointmentSource=Private" +
+        "&Source=${Keys.source}" +
         "&Reason=" +
         "&Type=$checkUp";
 
     isOnline();
+    Navigator.pop(context);
 
     Loading.build(context, false);
     var response = await Utilities.httpPost(
@@ -399,14 +401,12 @@ class _BookAppointmentState extends State<BookAppointment> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Place Order";
     });
   }
 

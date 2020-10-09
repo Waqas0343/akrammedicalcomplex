@@ -99,8 +99,9 @@ class _BookTreatmentState extends State<BookTreatment> {
     String username = preferences.getString(Keys.username);
     String name = preferences.getString(Keys.name);
 
-disableButton();
+    disableButton();
     if (!await Utilities.isOnline()) {
+      enableButton();
       Utilities.internetNotAvailable(context);
       return;
     }
@@ -129,17 +130,18 @@ disableButton();
         "&ScheduledEndTime_Short=" +
         time +
         "&AppointmentSource=Private" +
+        "&Source=${Keys.source}" +
         "&Details=$services" +
         "&Reason=" +
         "&Type=Treatment";
-
+    Navigator.pop(context);
     Loading.build(context, false);
     var response = await Utilities.httpPost(
         ServerConfig.appointmentTreatmentSave + values);
     Loading.dismiss();
 
     if (response != "404") {
-
+      enableButton();
       Route route = new MaterialPageRoute(builder: (_)=>ThankYouScreen());
       Navigator.push(context, route);
     } else {
@@ -156,7 +158,7 @@ disableButton();
           FlatButton(onPressed: (){
             Navigator.pop(context);
             }, child: Text("No", style: TextStyle(fontWeight: FontWeight.bold),)),
-          FlatButton(onPressed: ()=>bookTreatment(), child: Text("Yes",style: TextStyle(fontWeight: FontWeight.bold),)),
+          FlatButton(onPressed: isTaped ? () => bookTreatment() : null, child: Text("Yes",style: TextStyle(fontWeight: FontWeight.bold),)),
         ],
       );
     });
@@ -175,12 +177,14 @@ disableButton();
           padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 4.0),
           child: TextField(
             controller: nameController,
+            maxLength: 60,
             onChanged: (text){
               filterSearchResults(text);
             },
             decoration: InputDecoration(
                 filled: false,
-                hintText: "Search by service name",
+                hintText: "Search by Service Name",
+                counterText: "",
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
@@ -218,7 +222,7 @@ disableButton();
                   },
                   child: ListTile(
                     title: Text(serviceModel.name),
-                    subtitle: Text("Rs/- " + serviceModel.fee),
+                    subtitle: Text("PKR/- " + serviceModel.fee),
 
                     leading: Checkbox(
                         activeColor: MyColors.primary,
@@ -243,7 +247,7 @@ disableButton();
         ) : Container(
           margin: EdgeInsets.only(top: 20),
           child: Text(
-            "No service found",
+            "No Service Found",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.grey),
           ),
         ),
@@ -281,14 +285,12 @@ disableButton();
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Confirm";
     });
   }
 }

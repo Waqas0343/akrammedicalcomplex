@@ -28,7 +28,7 @@ class _AccountCompletionState extends State<AccountCompletion> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Welcome to Instacare",style: TextStyle(height: 1.5,fontWeight: FontWeight.bold, color: MyColors.primary, fontSize: 28.0)),
+            Text("Update to Instacare",style: TextStyle(height: 1.5,fontWeight: FontWeight.bold, color: MyColors.primary, fontSize: 28.0)),
 
             SizedBox(
               height: 16,

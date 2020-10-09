@@ -54,11 +54,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
   File _file;
   var isLoading = false;
-
+  String phoneError = "Phone can't be Empty";
   double uploadingValue = 0.0;
   bool isTaped = true;
-  String saveAndNext = "Save & Next";
-  String saveButton = "Save";
+  String buttonText = "Save & Next";
   String emailErrorMessage = "invalid email format";
 
   _ProfileSettingsState(this.profile);
@@ -137,6 +136,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   Row(
                     children: <Widget>[
                       Expanded(
+                        flex: 0,
                         child: Container(
                           decoration: BoxDecoration(
                             gradient: new LinearGradient(
@@ -149,10 +149,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             child: ButtonTheme(
                               alignedDropdown: true,
                               child: DropdownButton(
-                                isExpanded: true,
                                 autofocus: isTitleEmpty,
                                 value: title,
-                                hint: Text("Title", maxLines: 1,),
+                                hint: Text(
+                                  "Title",
+                                  maxLines: 1,
+                                ),
                                 onChanged: (String value) {
                                   setState(() {
                                     title = value;
@@ -169,7 +171,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                         (String value) {
                                   return DropdownMenuItem<String>(
                                     value: value,
-                                    child: Text(value),
+                                    child: Text(
+                                      value,
+                                      maxLines: 1,
+                                    ),
                                   );
                                 }).toList(),
                               ),
@@ -181,7 +186,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         width: 8,
                       ),
                       Expanded(
-                        flex: 3,
+                        flex: 1,
                         child: TextField(
                           maxLength: 35,
                           textInputAction: TextInputAction.next,
@@ -219,14 +224,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     focusNode: usernameFocus,
                     controller: usernameController,
                     decoration: InputDecoration(
-                      filled: false,
-                      enabled: false,
-                      fillColor: Colors.white,
-                      hintText: "Login ID",
-                      disabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)
-                      )
-                    ),
+                        filled: false,
+                        enabled: false,
+                        fillColor: Colors.white,
+                        hintText: "Login ID",
+                        disabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey))),
                   ),
                   SizedBox(
                     height: 8,
@@ -234,7 +237,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   TextField(
                     textInputAction: TextInputAction.next,
                     focusNode: phoneFocus,
-                    inputFormatters: [Utilities.onlyNumberFormat()],
+                    inputFormatters: [Utilities.onlyNumberFormat(),],
                     keyboardType: TextInputType.phone,
                     maxLength: 11,
                     onSubmitted: (text) {
@@ -243,9 +246,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                     },
                     onChanged: (phone) {
                       if (phone.toString().trim().isNotEmpty) {
-                        setState(() {
-                          isPhoneEmpty = false;
-                        });
+                        if (Utilities.numberHasValid(phone)) {
+                          setState(() {
+                            isPhoneEmpty = false;
+                          });
+                        }
                       }
                     },
                     controller: phoneController,
@@ -254,7 +259,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       fillColor: Colors.white,
                       hintText: "Phone",
                       counterText: "",
-                      errorText: isPhoneEmpty ? "Phone can't be Empty" : null,
+                      errorText: isPhoneEmpty ? phoneError : null,
                     ),
                   ),
                   SizedBox(
@@ -271,18 +276,13 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       FocusScope.of(context).nextFocus();
                     },
                     onChanged: (text) {
-                      if (text.trim().isEmpty) {
-                        setState(() {
+                      if (text.trim().isNotEmpty) {
+                        bool validate = EmailValidator.validate(text);
+                        if (validate) {
                           setState(() {
                             emailValidate = false;
                           });
-                        });
-                      }
-                      bool validate = EmailValidator.validate(text);
-                      if (validate) {
-                        setState(() {
-                          emailValidate = false;
-                        });
+                        }
                       }
                     },
                     focusNode: emailFocus,
@@ -296,44 +296,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   SizedBox(
                     height: 8,
                   ),
-                  Expanded(
-                    flex: 0,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: RaisedButton(
-                              onPressed: isTaped
-                                  ? () => updateInfoTask(true)
-                                  : null,
-                              child: Text(
-                                saveButton,
-                              ),
-                              textColor: Colors.white,
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 4,
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            child: RaisedButton(
-                              onPressed: isTaped
-                                  ? () => updateInfoTask(false)
-                                  : null,
-                              child: Text(
-                                saveAndNext,
-                              ),
-                              textColor: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: RaisedButton(
+                      onPressed: isTaped ? () => updateInfoTask() : null,
+                      child: Text(
+                        buttonText,
+                      ),
+                      textColor: Colors.white,
                     ),
                   ),
                 ],
@@ -348,7 +318,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       String title;
       if (profile.user.title != null) {
         title = profile.user.title.isNotEmpty && profile.user.title != "null"
-            ? profile.user.title : null;
+            ? profile.user.title.replaceAll(".", "")
+            : null;
       }
       imagePath = profile.user.imagePath;
       String name = profile.user.name;
@@ -507,7 +478,6 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     if (response.statusCode == 200) {
       setState(() {
         isLoading = false;
-        print(response.data);
         imagePath = response.data["Response"]["Response"];
       });
     } else {
@@ -515,7 +485,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     }
   }
 
-  void updateInfoTask(bool buttonValue) async {
+  void updateInfoTask() async {
     disableButton();
 
     if (!await Utilities.isOnline()) {
@@ -558,18 +528,17 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
     if (phone.isEmpty) {
       setState(() {
+        phoneError = "Phone can't be Empty";
         isPhoneEmpty = true;
       });
       enableButton();
       return;
-    }
-
-    if (email.isEmpty) {
-      setState(() {
-        emailValidate = true;
-        emailErrorMessage = "Email Required";
-      });
+    } else if (!Utilities.numberHasValid(phone)) {
       enableButton();
+      setState(() {
+        isPhoneEmpty = true;
+        phoneError = "Invalid phone number";
+      });
       return;
     }
 
@@ -608,17 +577,15 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     Loading.dismiss();
 
     if (response != "404") {
-      preferences.setString(Keys.image, imagePath ?? "");
+      preferences.setString(Keys.image, imagePath);
       preferences.setString(Keys.phone, phone);
       preferences.setString(Keys.name, name);
-      preferences.setString(Keys.email, email ?? "");
+      preferences.setString(Keys.email, email);
       preferences.setString(Keys.city, city ?? "");
       preferences.setString(Keys.area, area ?? "");
       preferences.setString(Keys.address, address ?? "");
       preferences.setString(Keys.title, title ?? "");
-      buttonValue
-          ? Navigator.of(context).pushReplacementNamed('/home')
-          : Navigator.push(
+      Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => LocationGettingScreen(true),
@@ -630,6 +597,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     }
     enableButton();
   }
+
 
   void disableButton() {
     setState(() {

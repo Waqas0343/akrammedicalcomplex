@@ -30,7 +30,9 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
           children: <Widget>[
             orderDetails(),
             widget.testModel.testList == null ? SizedBox.shrink() : testCard(),
-           widget.testModel.attachmentsResults ==null ? SizedBox.shrink() : viewReport(),
+            widget.testModel.attachmentsResults == null
+                ? SizedBox.shrink()
+                : viewReport(),
           ],
         ),
       ),
@@ -45,7 +47,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
         test.testName,
         maxLines: 1,
       ),
-      subtitle: Text(test.fee),
+      subtitle: Text(test.fee.replaceAll("Rs/-", "PKR/-")),
       leading: Container(
           width: 30,
           child: Align(
@@ -108,26 +110,32 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
           children: [
             widget.testModel.testList == null
                 ? Align(
-              alignment: Alignment.center,
-                  child: Padding(
-                      padding: const EdgeInsets.only(top: 8, right: 8, left: 8, bottom: 8),
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 8, right: 8, left: 8, bottom: 8),
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
                             maxHeight: MediaQuery.of(context).size.height / 2),
                         child: Container(
-                            decoration: BoxDecoration(boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 1,
-                                  blurRadius: 10)
-                            ]),
-                            child: FadeInImage(
-                                placeholder: AssetImage(MyImages.instaFile),
-                                image: NetworkImage(
-                                    widget.testModel.prescriptionPath ??"Not found"))),
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                spreadRadius: 1,
+                                blurRadius: 10)
+                          ]),
+                          child: FadeInImage(
+                            placeholder: AssetImage(
+                              MyImages.instaFile,
+                            ),
+                            image: NetworkImage(
+                              widget.testModel.prescriptionPath ?? "Not Found",
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                )
+                  )
                 : SizedBox.shrink(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
@@ -204,7 +212,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(widget.testModel.location??""),
+                    child: Text(widget.testModel.location ?? ""),
                   )
                 ],
               ),
@@ -221,9 +229,16 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
       margin: EdgeInsets.only(left: 8, right: 8, bottom: 16, top: 4),
       child: ListTile(
         title: Text("View Report"),
-        trailing: Icon(Icons.arrow_forward_ios,size: 18,),
-        onTap: (){
-          Route route = new MaterialPageRoute(builder: (_)=>ViewReport(path: widget.testModel.attachmentsResults,name: widget.testModel.orderId,));
+        trailing: Icon(
+          Icons.arrow_forward_ios,
+          size: 18,
+        ),
+        onTap: () {
+          Route route = new MaterialPageRoute(
+              builder: (_) => ViewReport(
+                    path: widget.testModel.attachmentsResults,
+                    name: widget.testModel.orderId,
+                  ));
           Navigator.push(context, route);
         },
       ),

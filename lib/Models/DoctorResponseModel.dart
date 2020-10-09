@@ -2,19 +2,24 @@ import 'dart:convert';
 
 import 'CategoryModel.dart';
 
-DoctorResponse doctorsFromJson(String str) => DoctorResponse.fromJson(json.decode(str));
 
-String doctorsToJson(DoctorResponse data) => json.encode(data.toJson());
+// To parse this JSON data, do
+//
+//     final doctorModel = doctorModelFromJson(jsonString);
 
-class DoctorResponse {
-  DoctorsResponse response;
+DoctorModel doctorModelFromJson(String str) => DoctorModel.fromJson(json.decode(str));
 
-  DoctorResponse({
+String doctorModelToJson(DoctorModel data) => json.encode(data.toJson());
+
+class DoctorModel {
+  DoctorModel({
     this.response,
   });
 
-  factory DoctorResponse.fromJson(Map<String, dynamic> json) => DoctorResponse(
-    response: DoctorsResponse.fromJson(json["Response"]),
+  DoctorModelResponse response;
+
+  factory DoctorModel.fromJson(Map<String, dynamic> json) => DoctorModel(
+    response: DoctorModelResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -22,167 +27,97 @@ class DoctorResponse {
   };
 }
 
-class DoctorsResponse {
-  ResponseDetail response;
 
-  DoctorsResponse({
+class DoctorModelResponse {
+  DoctorModelResponse({
     this.response,
   });
 
-  factory DoctorsResponse.fromJson(Map<String, dynamic> json) => DoctorsResponse(
-    response: ResponseDetail.fromJson(json["Response"]),
+  ResponseResponse response;
+
+  factory DoctorModelResponse.fromJson(Map<String, dynamic> json) => DoctorModelResponse(
+    response: ResponseResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
     "Response": response.toJson(),
+  };
+}
+
+class ResponseResponse {
+  ResponseResponse({
+    this.recordsFiltered,
+    this.data,
+  });
+
+  String recordsFiltered;
+  List<ResponseDetail> data;
+
+  factory ResponseResponse.fromJson(Map<String, dynamic> json) => ResponseResponse(
+    recordsFiltered: json["recordsFiltered"],
+    data: json["data"] != null ?
+    List<ResponseDetail>.from(json["data"].map((x) => ResponseDetail.fromJson(x))) : [],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "recordsFiltered": recordsFiltered,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
 class ResponseDetail {
-  PagingDetails pagingDetails;
-  String searchString;
-  List<DoctorModel> doctors;
-
   ResponseDetail({
-    this.pagingDetails,
-    this.searchString,
-    this.doctors,
-  });
-
-  factory ResponseDetail.fromJson(Map<String, dynamic> json) => ResponseDetail(
-    pagingDetails: PagingDetails.fromJson(json["PagingDetails"]),
-    searchString: json["SearchString"],
-    doctors: List<DoctorModel>.from(json["Doctors"].map((x) => DoctorModel.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "PagingDetails": pagingDetails.toJson(),
-    "SearchString": searchString,
-    "Doctors": List<dynamic>.from(doctors.map((x) => x.toJson())),
-  };
-}
-
-class DoctorModel {
-  String username;
-  String name;
-  String phone;
-  String imagePath;
-  String speciality;
-  String gender;
-  String fee;
-  String practiceName;
-  String practiceId;
-  String practiceLogo;
-  String location;
-  String area;
-  String city;
-  bool featured;
-  bool onboard;
-  bool isTeleMedicineProvider;
-  bool isOnline;
-  String qualification;
-  String totalReviews;
-
-  DoctorModel({
     this.username,
     this.name,
-    this.phone,
-    this.imagePath,
+    this.imagepath,
     this.speciality,
-    this.gender,
     this.fee,
     this.practiceName,
     this.practiceId,
     this.practiceLogo,
     this.location,
-    this.area,
-    this.city,
-    this.featured,
-    this.onboard,
-    this.qualification,
-    this.totalReviews,
-    this.isOnline,
     this.isTeleMedicineProvider,
+    this.onlineStatus,
   });
 
-  factory DoctorModel.fromJson(Map<String, dynamic> json) => DoctorModel(
+  String username;
+  String name;
+  String imagepath;
+  String speciality;
+  String fee;
+  String practiceName;
+  String practiceId;
+  String practiceLogo;
+  String location;
+  bool isTeleMedicineProvider;
+  bool onlineStatus;
+
+  factory ResponseDetail.fromJson(Map<String, dynamic> json) => ResponseDetail(
     username: json["username"],
     name: json["name"],
-    phone: json["phone"],
-    imagePath: json["imagepath"],
+    imagepath: json["imagepath"],
     speciality: json["speciality"],
-    gender: json["gender"],
-    fee: json["fee"],
-    practiceName: json["practice_name"] ?? "",
-    practiceId: json["practice_id"] ?? "",
-    practiceLogo: json["practice_logo"] ?? "",
-    location: json["location"] ?? "",
-    area: json["area"] ?? "",
-    city: json["city"] ?? "",
-    featured: json["featured"],
-    onboard: json["onboard"],
+    fee: json["fee"] == null ? null : json["fee"],
+    practiceName: json["practice_name"],
+    practiceId: json["practice_id"],
+    practiceLogo: json["practice_logo"],
+    location: json["location"],
     isTeleMedicineProvider: json["IsTeleMedicineProvider"],
-    isOnline: json["OnlineStatus"],
-    qualification: json["qualification"] ?? "",
-    totalReviews: json["total_reviews"],
+    onlineStatus: json["OnlineStatus"],
   );
 
   Map<String, dynamic> toJson() => {
     "username": username,
     "name": name,
-    "phone": phone,
-    "imagepath": imagePath,
+    "imagepath": imagepath,
     "speciality": speciality,
-    "gender": gender,
-    "fee": fee,
+    "fee": fee == null ? null : fee,
     "practice_name": practiceName,
     "practice_id": practiceId,
     "practice_logo": practiceLogo,
     "location": location,
-    "area": area,
-    "city": city,
-    "featured": featured,
-    "onboard": onboard,
-    "qualification": qualification ?? "",
-    "total_reviews": totalReviews,
-    "OnlineStatus": isOnline,
     "IsTeleMedicineProvider": isTeleMedicineProvider,
-  };
-}
-
-class PagingDetails {
-  int totalRecords;
-  int recordsPerPage;
-  int pageNumber;
-  int offset;
-  int fetch;
-  int totalPages;
-
-  PagingDetails({
-    this.totalRecords,
-    this.recordsPerPage,
-    this.pageNumber,
-    this.offset,
-    this.fetch,
-    this.totalPages,
-  });
-
-  factory PagingDetails.fromJson(Map<String, dynamic> json) => PagingDetails(
-    totalRecords: json["TotalRecords"],
-    recordsPerPage: json["RecordsPerPage"],
-    pageNumber: json["PageNumber"],
-    offset: json["Offset"],
-    fetch: json["Fetch"],
-    totalPages: json["TotalPages"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "TotalRecords": totalRecords,
-    "RecordsPerPage": recordsPerPage,
-    "PageNumber": pageNumber,
-    "Offset": offset,
-    "Fetch": fetch,
-    "TotalPages": totalPages,
+    "OnlineStatus": onlineStatus,
   };
 }
 

@@ -139,12 +139,14 @@ class _PrescriptionState extends State<MyPrescriptions> {
           padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0, bottom: 4.0),
           child: TextField(
             controller: textController,
+            maxLength: 60,
             onChanged: (text) {
               filter(text);
             },
             decoration: InputDecoration(
               filled: false,
-              hintText: "Search by Dr Name, Date",
+              hintText: "Search by Dr Name",
+              counterText: "",
               prefixIcon: Icon(Icons.search),
               suffixIcon: GestureDetector(
                 onTap: () {
@@ -173,7 +175,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
             : Container(
                 margin: EdgeInsets.only(top: 20),
                 child: Text(
-                  "Prescription not found",
+                  "No Prescription Found",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

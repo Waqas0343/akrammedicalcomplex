@@ -4,14 +4,14 @@ class ServerConfig{
   static const String baseUrl = "https://instacare.pk/";
   static const baseTestUrl = 'https://iprouk-testing.azurewebsites.net/';
   static const baseTestUrl2 = 'https://instacareuk-staging.azurewebsites.net/';
-  static const login = baseUrl +
+  static const login = baseTestUrl2 +
       "api/Accounts/LoginPhone_Username?SystemKey=" + systemKey;
 
   static const remindAccount = baseTestUrl +
       "api/User/PatientForgotPassword?SystemKey=" + systemKey; //resetphone
 
-  static const signUp = baseUrl +
-      "api/Accounts/PatientRegister?SystemKey=" + systemKey;
+  static const signUp = baseTestUrl2 +
+      "api/Accounts/PatientRegister?SystemKey=$systemKey&SourceUrl=${Keys.source}";
 
   static const check_username = baseTestUrl +
       "api/Accounts/CheckUserName?SystemKey=" + systemKey;
@@ -37,7 +37,7 @@ class ServerConfig{
   static const MEDICINE_ORDERS = baseTestUrl2 +
       "api/Payment/MedicineOrderList?SystemKey=" + systemKey; //username
 
-  static const OTC_MEDICINES = baseUrl +
+  static const OTC_MEDICINES = baseTestUrl2 +
       "api/otc/get?SystemKey=" + systemKey; //name=
 
   static const MEDICINE_ORDER_PLACE = baseTestUrl2 +
@@ -56,8 +56,14 @@ class ServerConfig{
       "/api/Profile?SystemKey=" + systemKey;
 
   static const doctors = baseTestUrl2 +
-      "api/Search/GetDoctors?SystemKey=$systemKey&LocationId=${Keys.locationId}";
+      "api/Doctors/DoctorListShort?SystemKey=$systemKey&Medusername=${Keys.locationId}";
 
+  static const VERIFY_CODE = baseTestUrl2 +
+      "api/Accounts/Activate?SystemKey=$systemKey";
+
+  static const RESENT_CODE = baseTestUrl +
+      "api/accounts/getactivationcode?SystemKey=$systemKey";
+  
   static const PRESCRIPTION = baseUrl +
       "api/Prescriptions/MyPrescriptionsList?SystemKey=" + systemKey; //username
 
@@ -96,5 +102,7 @@ class ServerConfig{
       "api/Treatment/GetBookedTreatmentList?SystemKey=" + systemKey; //&username=&token=
 
 
+  static const String sourceUrl = "AMC";
   static const String systemKey = "6b2e7679-34dd-41f9-b0cd-ac0ea0f8bf8b";
+
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:amc/Models/LoginModel.dart';
+import 'package:amc/Screens/AccountCreation/ActivationCode.dart';
 import 'package:amc/Screens/Home.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -165,7 +166,7 @@ class _LoginState extends State<Login> {
                       child: RaisedButton(
                         onPressed:isTaped? () =>login():null,
                         child: Text(
-                          buttonText,
+                          "Login",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
@@ -256,7 +257,7 @@ class _LoginState extends State<Login> {
                     Navigator.pop(context);
                   }
                 } else {
-                  Utilities.showToast("Please Enter Your Phone");
+                  Utilities.showToast("Please Enter Your Phone / Login ID");
                 }
               },
               child: Text("Send")),
@@ -320,16 +321,20 @@ class _LoginState extends State<Login> {
       preferences.setString(Keys.phone, user.phone);
       preferences.setString(Keys.image, user.imagePath);
       preferences.setString(Keys.name, user.name);
-      preferences.setBool(Keys.status, true);
       preferences.setString(Keys.email, user.email);
       preferences.setString(Keys.sessionToken, user.sessionToken);
       preferences.setString(Keys.address, user.huAddress.location);
       preferences.setString(Keys.city, user.huAddress.city);
       preferences.setString(Keys.area, user.huAddress.area);
-
-
-      Route route = new MaterialPageRoute(builder: (context) => Home());
-      Navigator.pushAndRemoveUntil(context, route, (route) => false);
+      if(!user.activationStatus) {
+        Route route = new MaterialPageRoute(builder: (context) => AccountActivation(user.phone));
+        Navigator.pushAndRemoveUntil(context, route, (route) => false);
+        await Utilities.httpGet(ServerConfig.RESENT_CODE + '&user=$username');
+      } else {
+        preferences.setBool(Keys.status, true);
+        Route route = new MaterialPageRoute(builder: (context) => Home());
+        Navigator.pushAndRemoveUntil(context, route, (route) => false);
+      }
     } else {
       Utilities.showToast("Authentication Denied");
     }
@@ -367,14 +372,12 @@ class _LoginState extends State<Login> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Login";
     });
   }
 

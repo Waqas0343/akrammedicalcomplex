@@ -189,14 +189,12 @@ class _AccountSettingsState extends State<AccountSettings> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Update";
     });
   }
 }

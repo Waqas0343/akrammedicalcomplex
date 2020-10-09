@@ -12,6 +12,7 @@ import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:dio/dio.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,11 +52,13 @@ class _BookLabTestState extends State<BookLabTest> {
   FocusNode phoneFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
   FocusNode locaFocus = FocusNode();
-
+  String phoneError = "Phone can't be Empty";
   bool isNameEmpty = false;
   bool isPhoneEmpty = false;
   bool isLocationEmpty = false;
   bool isLoading = true;
+  bool isTaped = true;
+  bool emailValidate = false;
 
 
   @override
@@ -81,7 +84,7 @@ class _BookLabTestState extends State<BookLabTest> {
                 width: MediaQuery.of(context).size.width,
                 child: RaisedButton(
                   elevation: 4,
-                  onPressed: (){placeOrder();},
+                  onPressed: isTaped ? () => placeOrder() : null,
                   child: Text("Place Order"),
                   textColor: Colors.white,
                 ),
@@ -265,6 +268,7 @@ class _BookLabTestState extends State<BookLabTest> {
         TextField(
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.phone,
+          inputFormatters: [Utilities.onlyNumberFormat(),],
           controller: phoneController,
           maxLength: 11,
           onSubmitted: (text){
@@ -274,9 +278,11 @@ class _BookLabTestState extends State<BookLabTest> {
           focusNode: phoneFocus,
           onChanged: (text){
             if (text.trim().isNotEmpty){
-              setState(() {
-                isPhoneEmpty = false;
-              });
+              if (Utilities.numberHasValid(text)) {
+                setState(() {
+                  isPhoneEmpty = false;
+                });
+              }
             }
           },
           decoration: InputDecoration(
@@ -284,7 +290,7 @@ class _BookLabTestState extends State<BookLabTest> {
             fillColor: Colors.white,
             hintText: "Mobile No",
             counterText: "",
-            errorText: isPhoneEmpty ? "Required" : null,
+            errorText: isPhoneEmpty ? phoneError : null,
           ),
         ),
         SizedBox(height: 8,),
@@ -295,6 +301,16 @@ class _BookLabTestState extends State<BookLabTest> {
           onSubmitted: (text){
             emailFocus.unfocus();
             FocusScope.of(context).requestFocus(locaFocus);
+          },
+          onChanged: (String text) {
+            if (text.trim().isNotEmpty) {
+              bool validate = EmailValidator.validate(text);
+              if (validate) {
+                setState(() {
+                  emailValidate = false;
+                });
+              }
+            }
           },
           focusNode: emailFocus,
           decoration: InputDecoration(
@@ -352,7 +368,7 @@ class _BookLabTestState extends State<BookLabTest> {
               noItemsFoundBuilder: (context){
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Text("Test Not Found.", style: TextStyle(fontSize: 18, color: Colors.grey),),
+                  child: Text("No Test Found.", style: TextStyle(fontSize: 18, color: Colors.grey),),
                 );
               },
               itemBuilder: (context, Test suggestion){
@@ -411,7 +427,6 @@ class _BookLabTestState extends State<BookLabTest> {
     String response = await Utilities.httpGet(ServerConfig.searchTest + "&q=$name&pageLimit=15&page=0&labid=${lab.username}");
     List<Test> list = [];
     if (response != "404"){
-      print(response);
       list = searchLabTestModelFromJson(response).response.response.testsList;
     }
     return list;
@@ -531,7 +546,7 @@ class _BookLabTestState extends State<BookLabTest> {
 
   void placeOrder() async {
 
-
+    disableButton();
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
 
@@ -543,18 +558,30 @@ class _BookLabTestState extends State<BookLabTest> {
     String testString;
 
     if (name.isEmpty){
+      enableButton();
       setState(() {
         isNameEmpty = true;
       });
       return;
     }
     if (phone.isEmpty){
+      enableButton();
       setState(() {
         isPhoneEmpty = true;
       });
       return;
+    } else if (!Utilities.numberHasValid(phone)) {
+      enableButton();
+      setState(() {
+        isPhoneEmpty = true;
+        phoneError = "Invalid phone number";
+      });
+      return;
     }
+
+
     if (location.isEmpty){
+      enableButton();
       setState(() {
         isLocationEmpty = true;
       });
@@ -562,16 +589,19 @@ class _BookLabTestState extends State<BookLabTest> {
     }
     if (widget.isPrescription){
       if (file == null){
+        enableButton();
         Utilities.showToast("Please Upload Prescription");
         return;
       } else {
         if (isLoading){
+          enableButton();
           Utilities.showToast("Image Uploading...");
           return;
         }
       }
     } else {
       if (chooseTest.isEmpty){
+        enableButton();
         Utilities.showToast("Please search and select Test(s) from provided list");
         return;
       }
@@ -585,6 +615,7 @@ class _BookLabTestState extends State<BookLabTest> {
 
     Loading.build(context, false);
     if (!await Utilities.isOnline()){
+      enableButton();
       Navigator.pop(context);
       Utilities.internetNotAvailable(context);
       return;
@@ -599,7 +630,6 @@ class _BookLabTestState extends State<BookLabTest> {
         "&SessionToken=&RefferedBy=&fetchtype=mobile&attachment=$prescriptionPath&Amount=";
 
     print(formData.fields);
-    print(ServerConfig.BOOK_LAB_TEST + values);
 
 
     Dio dio = new Dio();
@@ -613,17 +643,32 @@ class _BookLabTestState extends State<BookLabTest> {
 
     Loading.dismiss();
     if (response == null){
+      enableButton();
       Utilities.showToast("Something went wrong");
       return;
     }
 
     if (response.statusCode == 200){
+      enableButton();
       Route route = MaterialPageRoute(builder: (_)=> ThankYouScreen());
       await Navigator.of(context).push(route);
     } else {
+      enableButton();
       Utilities.showToast("Something went wrong");
     }
+    enableButton();
+  }
 
+  void disableButton() {
+    setState(() {
+      isTaped = false;
+    });
+  }
+
+  void enableButton() {
+    setState(() {
+      isTaped = true;
+    });
   }
 
 }

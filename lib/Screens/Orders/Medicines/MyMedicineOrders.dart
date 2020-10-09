@@ -62,12 +62,14 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
               left: 8.0, right: 8.0, top: 8.0, bottom: 4.0),
           child: TextField(
             controller: nameController,
+            maxLength: 60,
             onChanged: (text) {
               filterSearchResults(text);
             },
             decoration: InputDecoration(
               filled: false,
               hintText: "Search by Medicine Name",
+              counterText: "",
               prefixIcon: Icon(Icons.search),
               suffixIcon: GestureDetector(
                 onTap: () {
@@ -110,7 +112,7 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
         child: ListTile(
           isThreeLine: true,
           title: Text(
-            "Order #: " + order.orderId,
+            "Order ID # " + order.orderId,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
@@ -146,10 +148,6 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
               fit: BoxFit.cover,
             ),
           ),
-          // trailing: Icon(
-          //   Icons.arrow_forward_ios,
-          //   size: 18,
-          // ),
         ),
       ),
     );

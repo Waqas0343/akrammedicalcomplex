@@ -9,6 +9,7 @@ import 'package:amc/Screens/HealthRecords/MyHealthRecords.dart';
 import 'package:amc/Screens/LabReports/LabReports.dart';
 import 'package:amc/Screens/MyBooking/MyBooking.dart';
 import 'package:amc/Screens/MyBooking/MyTreatments.dart';
+import 'package:amc/Screens/Prescription/MyPrescriptions.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -34,7 +35,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   DateTime currentBackPressTime;
   SharedPreferences preferences;
-  String name, email, imagePath;
+  String name, email, imagePath, oldId;
   var rng = new Random();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
@@ -161,7 +162,7 @@ class _HomeState extends State<Home> {
                       flex: 1,
                       child: HomeCard(
                           title: "Diagnostics",
-                          description: "Book Lab Test",
+                          description: "Book Lab\n Test",
                           icon: MyIcons.icDiagnostics,
                           onTap: () {
                             Route route = new MaterialPageRoute(
@@ -242,8 +243,8 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
-    notificationSetup();
     getUpdate();
+    notificationSetup();
     super.initState();
   }
 
@@ -254,6 +255,7 @@ class _HomeState extends State<Home> {
       name = preferences.getString(Keys.name);
       email = preferences.getString(Keys.email);
       imagePath = preferences.getString(Keys.image);
+
     });
   }
 
@@ -287,17 +289,26 @@ class _HomeState extends State<Home> {
       onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("OnLaunch::: $message");
+        print("Old Message Id::: ${preferences.getString(Keys.googleMessageId)}");
         var data = message["data"] ?? message;
+        if (!checkMessageId(data['google.message_id'])) {
+          return;
+        }
         String type = data[Keys.actionType];
         navigate(type);
       },
       onResume: (Map<String, dynamic> message) async {
         print("OnResume::: $message");
+
         var data = message["data"] ?? message;
+        if (!checkMessageId(data['google.message_id'])) {
+          return;
+        }
         String type = data[Keys.actionType];
         navigate(type);
       },
     );
+
 
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(
@@ -322,7 +333,7 @@ class _HomeState extends State<Home> {
         '&deviceType=Flutter&username=$username&token=$token&ProjectId=${Keys.projectId}');
 
     if (response != '404') {
-      print(response);
+      print("Token was saved Successfully");
     } else {
       print("Unable to save firebase token");
     }
@@ -363,6 +374,9 @@ class _HomeState extends State<Home> {
       Navigator.push(context, route);
     } else if (type == Keys.treatments || type == Keys.homeServices) {
       Route route = new MaterialPageRoute(builder: (_) => MyTreatments());
+      Navigator.push(context, route);
+    } else if (type == Keys.prescription) {
+      Route route = new MaterialPageRoute(builder: (_) => MyPrescriptions());
       Navigator.push(context, route);
     }
   }
@@ -417,5 +431,15 @@ class _HomeState extends State<Home> {
       return Future.value(false);
     }
     return Future.value(true);
+  }
+
+  bool checkMessageId(String messageId) {
+    String oldId = preferences.getString(Keys.googleMessageId) ?? "";
+    if (oldId == messageId) {
+      return false;
+    } else {
+      preferences.setString(Keys.googleMessageId, messageId);
+      return true;
+    }
   }
 }

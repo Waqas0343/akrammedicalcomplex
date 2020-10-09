@@ -88,26 +88,12 @@ class TreatmentData {
   };
 
   Color getStatusColor(){
-    Color color;
-    if (status != null){
-      if (status.trim().isNotEmpty){
-        if (status.toLowerCase() == "accepted"){
-          color = Colors.blue;
-        } else if (status.toLowerCase() == "pending"){
-          color = Colors.orange;
-        } else if (status.toLowerCase() == "cancelled"){
-          color = Colors.red;
-        } else if (status.toLowerCase() == "completed"){
-          color = Colors.green;
-        } else {
-          color = Colors.orange;
-        }
-      } else {
-        color = Colors.orange;
-      }
+    if (status.toLowerCase() == "pending"){
+      return Colors.blue;
+    } else if (status.toLowerCase() == "cancelled"){
+      return Colors.red;
     } else {
-      color = Colors.orange;
+      return Colors.green;
     }
-    return color;
   }
 }

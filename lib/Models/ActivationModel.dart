@@ -1,19 +1,62 @@
+// To parse this JSON data, do
+//
+//     final Update = UpdateFromJson(jsonString);
+
 import 'dart:convert';
 
+Update updateFromJson(String str) => Update.fromJson(json.decode(str));
 
-Login loginFromJson(String str) => Login.fromJson(json.decode(str));
+String updateToJson(Update data) => json.encode(data.toJson());
 
-String loginToJson(Login data) => json.encode(data.toJson());
-
-class Login {
-  LoginResponse response;
-
-  Login({
+class Update {
+  Update({
+    this.meta,
     this.response,
   });
 
-  factory Login.fromJson(Map<String, dynamic> json) => Login(
-    response: LoginResponse.fromJson(json["Response"]),
+  Meta meta;
+  UpdateResponse response;
+
+  factory Update.fromJson(Map<String, dynamic> json) => Update(
+    meta: Meta.fromJson(json["Meta"]),
+    response: UpdateResponse.fromJson(json["Response"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "Meta": meta.toJson(),
+    "Response": response.toJson(),
+  };
+}
+
+class Meta {
+  Meta({
+    this.status,
+    this.message,
+  });
+
+  String status;
+  String message;
+
+  factory Meta.fromJson(Map<String, dynamic> json) => Meta(
+    status: json["Status"],
+    message: json["Message"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "Status": status,
+    "Message": message,
+  };
+}
+
+class UpdateResponse {
+  UpdateResponse({
+    this.response,
+  });
+
+  ResponseResponse response;
+
+  factory UpdateResponse.fromJson(Map<String, dynamic> json) => UpdateResponse(
+    response: ResponseResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -21,40 +64,8 @@ class Login {
   };
 }
 
-class LoginResponse {
-  User user;
-
-  LoginResponse({
-    this.user,
-  });
-
-  factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
-    user: User.fromJson(json["Response"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "Response": user.toJson(),
-  };
-}
-
-class User {
-  String username;
-  String type;
-  String timeStamp;
-  String name;
-  String phone;
-  String imagePath;
-  String email;
-  bool status;
-  bool activationStatus;
-  String sessionToken;
-  String authToken;
-  dynamic ipAddress;
-  String facebookId;
-  HumanDetails huDetails;
-  HumanAddress huAddress;
-
-  User({
+class ResponseResponse {
+  ResponseResponse({
     this.username,
     this.type,
     this.timeStamp,
@@ -63,16 +74,32 @@ class User {
     this.imagePath,
     this.email,
     this.status,
-    this.activationStatus,
     this.sessionToken,
     this.authToken,
     this.ipAddress,
     this.facebookId,
+    this.googleId,
     this.huDetails,
     this.huAddress,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  String username;
+  String type;
+  String timeStamp;
+  String name;
+  String phone;
+  String imagePath;
+  String email;
+  bool status;
+  String sessionToken;
+  String authToken;
+  dynamic ipAddress;
+  String facebookId;
+  dynamic googleId;
+  HuDetails huDetails;
+  HuAddress huAddress;
+
+  factory ResponseResponse.fromJson(Map<String, dynamic> json) => ResponseResponse(
     username: json["Username"],
     type: json["Type"],
     timeStamp: json["TimeStamp"],
@@ -81,13 +108,13 @@ class User {
     imagePath: json["ImagePath"],
     email: json["Email"],
     status: json["Status"],
-    activationStatus: json["ActivationStatus"],
     sessionToken: json["SessionToken"],
     authToken: json["AuthToken"],
     ipAddress: json["IPAddress"],
     facebookId: json["facebook_id"],
-    huDetails: HumanDetails.fromJson(json["hu_details"]),
-    huAddress: HumanAddress.fromJson(json["hu_address"]),
+    googleId: json["google_id"],
+    huDetails: HuDetails.fromJson(json["hu_details"]),
+    huAddress: HuAddress.fromJson(json["hu_address"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -98,28 +125,19 @@ class User {
     "Phone": phone,
     "ImagePath": imagePath,
     "Email": email,
-    "ActivationStatus": activationStatus,
+    "Status": status,
     "SessionToken": sessionToken,
     "AuthToken": authToken,
     "IPAddress": ipAddress,
     "facebook_id": facebookId,
+    "google_id": googleId,
     "hu_details": huDetails.toJson(),
     "hu_address": huAddress.toJson(),
   };
 }
 
-class HumanAddress {
-  int id;
-  String username;
-  String country;
-  String stateProvince;
-  String city;
-  String location;
-  String area;
-  dynamic latitude;
-  dynamic longitude;
-
-  HumanAddress({
+class HuAddress {
+  HuAddress({
     this.id,
     this.username,
     this.country,
@@ -131,7 +149,17 @@ class HumanAddress {
     this.longitude,
   });
 
-  factory HumanAddress.fromJson(Map<String, dynamic> json) => HumanAddress(
+  int id;
+  String username;
+  String country;
+  String stateProvince;
+  String city;
+  String location;
+  String area;
+  String latitude;
+  String longitude;
+
+  factory HuAddress.fromJson(Map<String, dynamic> json) => HuAddress(
     id: json["ID"],
     username: json["Username"],
     country: json["Country"],
@@ -156,24 +184,8 @@ class HumanAddress {
   };
 }
 
-class HumanDetails {
-  String username;
-  dynamic gender;
-  String dateOfBirth;
-  String cnic;
-  String bloodGroup;
-  String height;
-  String weight;
-  String bmi;
-  dynamic bsa;
-  int age;
-  String maritalStatus;
-  String religion;
-  String profession;
-  String nationality;
-  String salutation;
-
-  HumanDetails({
+class HuDetails {
+  HuDetails({
     this.username,
     this.gender,
     this.dateOfBirth,
@@ -191,7 +203,23 @@ class HumanDetails {
     this.salutation,
   });
 
-  factory HumanDetails.fromJson(Map<String, dynamic> json) => HumanDetails(
+  String username;
+  String gender;
+  String dateOfBirth;
+  String cnic;
+  String bloodGroup;
+  String height;
+  String weight;
+  String bmi;
+  String bsa;
+  int age;
+  String maritalStatus;
+  String religion;
+  String profession;
+  String nationality;
+  String salutation;
+
+  factory HuDetails.fromJson(Map<String, dynamic> json) => HuDetails(
     username: json["Username"],
     gender: json["Gender"],
     dateOfBirth: json["DateOfBirth"],

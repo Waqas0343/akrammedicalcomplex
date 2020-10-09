@@ -76,27 +76,38 @@ class Utilities{
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(
-              "Sorry!",
-              style: TextStyle(
-                fontFamily: "SemiBold",
-              ),
+            backgroundColor: Colors.white,
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.wifi_off,size: 60,),
+                SizedBox(height: 16,),
+                Text('No Internet Connection', style: TextStyle(fontWeight: FontWeight.bold),),
+                SizedBox(height: 8,),
+                Text('Internet access is required \nto use this feature.', textAlign: TextAlign.center,),
+                SizedBox(height: 16,),
+                Container(
+                  width: 120,
+                  child: OutlinedButton(onPressed: (){
+                    Navigator.pop(context);
+
+                  }, child: Text("Cancel")),
+                )
+              ],
             ),
-            content: Text('Internet Access is required to use this Feature.'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
           );
         });
   }
 
   static TextInputFormatter onlyNumberFormat(){
     return FilteringTextInputFormatter.allow(RegExp("[0-9]"));
+  }
+
+  static bool numberHasValid(String value) {
+    String  pattern = r"^[0][3][0-5]\d{8}$";
+    RegExp regExp = new RegExp(pattern);
+    return regExp.hasMatch(value);
   }
 
   static TextInputFormatter onlyTextFormat(){

@@ -92,12 +92,14 @@ class _LabOrdersState extends State<LabOrders> {
               left: 8.0, right: 8.0, top: 8.0, bottom: 4.0),
           child: TextField(
             controller: nameController,
+            maxLength: 60,
             onChanged: (text) {
               filterSearchResults(text);
             },
             decoration: InputDecoration(
                 filled: false,
-                hintText: "Search by test Name",
+                hintText: "Search by Test Name",
+                counterText: "",
                 prefixIcon: Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
@@ -168,7 +170,7 @@ class _LabOrdersState extends State<LabOrders> {
             : Container(
                 margin: EdgeInsets.only(top: 20),
                 child: Text(
-                  "Test not found",
+                  "No Test Found",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

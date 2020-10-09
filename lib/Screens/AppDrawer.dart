@@ -240,7 +240,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   isBottomBorder: true,
                   isDropdown: false,
                   onTap: () {
-                    preferences.clear();
+                    preferences.setBool(Keys.status, false);
                     Route newRoute =
                         new MaterialPageRoute(builder: (_) => Login());
                     Navigator.pushAndRemoveUntil(

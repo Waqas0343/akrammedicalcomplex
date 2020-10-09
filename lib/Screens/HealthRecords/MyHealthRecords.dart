@@ -192,13 +192,15 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
           padding: const EdgeInsets.only(top: 8, right: 8, left: 8),
           child: TextField(
             textInputAction: TextInputAction.search,
+            maxLength: 60,
             onChanged: (text){
               filter(text);
             },
             decoration: InputDecoration(
                 fillColor: Colors.white,
                 filled: true,
-                hintText: "Search by File Name, File Type"
+                hintText: "Search by File Name, File Type",
+              counterText: "",
             ),
           ),
         ),
@@ -215,7 +217,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
         ) : Container(
           margin: EdgeInsets.only(top: 20),
           child: Text(
-            "Health record not found",
+            "No Health Record Found",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.grey),
           ),
         ),

@@ -56,15 +56,13 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
           height: 50,
         ),
         actions: [
-          !isAlreadyExists
-              ? FlatButton(
-                  onPressed: () => move(),
-                  child: Text(
-                    "Skip",
-                    style: TextStyle(color: Colors.grey.shade700),
-                  ),
-                )
-              : SizedBox.shrink(),
+          FlatButton(
+            onPressed: () => move(),
+            child: Text(
+              "Skip",
+              style: TextStyle(color: Colors.grey.shade700),
+            ),
+          ),
         ],
       ),
       body: Padding(
@@ -263,6 +261,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
     preferences = await SharedPreferences.getInstance();
     String response = await Utilities.httpGet(ServerConfig.cities);
     if (response != "404") {
+      if (!mounted) return;
       citiesFromJson(response).citiesList.cities.forEach((city) {
         setState(() {
           cities.add(city.name);
@@ -315,10 +314,12 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
       });
       return;
     }
-    if (!cities.contains(city)) {
-      enableButton();
-      Utilities.showToast("Select City from given list");
-      return;
+    if (cities.isNotEmpty) {
+      if (!cities.contains(city)) {
+        enableButton();
+        Utilities.showToast("Select City from given list");
+        return;
+      }
     }
     if (location.isEmpty) {
       enableButton();
@@ -330,7 +331,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
 
     String values = "&Username=" +
         username +
-           "&Title=${title ?? ""}" +
+        "&Title=${title ?? ""}" +
         "&Name=$name" +
 //            "&CNIC=" +
         "&Phone=$phone" +
@@ -345,7 +346,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
 //            "&Weight=" +
 //            "&Height="  +
 //            "&dateofbirth=" +
-    "&ImagePath=${image ?? ""}";
+        "&ImagePath=${image ?? ""}";
     Loading.build(context, false);
 
     String response =
@@ -355,8 +356,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
       preferences.setString(Keys.city, city);
       preferences.setString(Keys.area, area);
       preferences.setString(Keys.address, location);
-      if (isAlreadyExists)
-        Utilities.showToast("Update successfully");
+      if (isAlreadyExists) Utilities.showToast("Update successfully");
       move();
     } else {
       Utilities.showToast("Unable to update location");
@@ -372,14 +372,12 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Save";
     });
   }
 }

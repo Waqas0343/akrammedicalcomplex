@@ -54,7 +54,7 @@ class _BookTestState extends State<BookTest> {
   bool isLocationEmpty = false;
   bool isLoading = false;
   bool emailValidate = false;
-
+  String phoneError = "Phone can't be Empty";
   double uploadingValue = 0.0;
   bool isTaped = true;
   String buttonText = "Place Order";
@@ -290,9 +290,11 @@ class _BookTestState extends State<BookTest> {
           focusNode: phoneFocus,
           onChanged: (text) {
             if (text.trim().isNotEmpty) {
-              setState(() {
-                isPhoneEmpty = false;
-              });
+              if (Utilities.numberHasValid(text)) {
+                setState(() {
+                  isPhoneEmpty = false;
+                });
+              }
             }
           },
           decoration: InputDecoration(
@@ -300,7 +302,7 @@ class _BookTestState extends State<BookTest> {
             fillColor: Colors.white,
             hintText: "Mobile No",
             counterText: "",
-            errorText: isPhoneEmpty ? "Required" : null,
+            errorText: isPhoneEmpty ? phoneError : null,
           ),
         ),
         SizedBox(
@@ -315,17 +317,13 @@ class _BookTestState extends State<BookTest> {
             FocusScope.of(context).requestFocus(locaFocus);
           },
           onChanged: (text) {
-            if (text.trim().isEmpty) {
-              setState(() {
-                emailValidate = false;
-              });
-              return;
-            }
-            bool validate = EmailValidator.validate(text);
-            if (validate) {
-              setState(() {
-                emailValidate = false;
-              });
+            if (text.trim().isNotEmpty) {
+              bool validate = EmailValidator.validate(text);
+              if (validate) {
+                setState(() {
+                  emailValidate = false;
+                });
+              }
             }
           },
           focusNode: emailFocus,
@@ -383,7 +381,7 @@ class _BookTestState extends State<BookTest> {
                     noItemsFoundBuilder: (context) {
                       return Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: Text("No Results Found"),
+                        child: Text("No Test Found"),
                       );
                     },
                     errorBuilder: (context, error) {
@@ -395,7 +393,7 @@ class _BookTestState extends State<BookTest> {
                     itemBuilder: (context, Test test) {
                       return ListTile(
                         dense: true,
-                        subtitle: Text(test.fee),
+                        subtitle: Text(test.fee.replaceAll("Rs/-", "PKR/-")),
                         title: AutoSizeText(
                           test.testName,
                           maxLines: 1,
@@ -431,7 +429,7 @@ class _BookTestState extends State<BookTest> {
                     chooseTestList[index].testName,
                     maxLines: 1,
                   ),
-                  subtitle: Text(chooseTestList[index].fee),
+                  subtitle: Text(chooseTestList[index].fee.replaceAll("Rs/-", "PKR/-")),
                   trailing: IconButton(
                       icon: Icon(Icons.cancel),
                       onPressed: () {
@@ -460,7 +458,6 @@ class _BookTestState extends State<BookTest> {
         "&q=$name&pageLimit=15&page=0&labid=${Keys.labId}");
     List<Test> list = [];
     if (response != "404") {
-      print(response);
       list.addAll(
           searchLabTestModelFromJson(response).response.response.testsList);
     }
@@ -563,7 +560,16 @@ class _BookTestState extends State<BookTest> {
         isPhoneEmpty = true;
       });
       return;
+    } else if (!Utilities.numberHasValid(phone)) {
+      enableButton();
+      setState(() {
+        isPhoneEmpty = true;
+        phoneError = "Invalid phone number";
+      });
+      return;
     }
+
+
     if (email.isNotEmpty) {
       bool validate = EmailValidator.validate(email);
       if (!validate) {
@@ -649,14 +655,12 @@ class _BookTestState extends State<BookTest> {
   void disableButton() {
     setState(() {
       isTaped = false;
-      buttonText = "Please Wait...";
     });
   }
 
   void enableButton() {
     setState(() {
       isTaped = true;
-      buttonText = "Place Order";
     });
   }
 }

@@ -73,55 +73,54 @@ class Appointment {
     this.providedByInstacare,
   });
 
-  factory Appointment.fromJson(Map<String, dynamic> json) => Appointment(
-    id: json["Id"],
-    patientUsername: json["PatientUsername"],
-    doctorName: json["DoctorName"],
-    date: json["Date"],
-    dateFormatted: json["DateFormatted"],
-    time: json["Time"],
-    location: json["Location"],
-    doctorImage: json["DoctorImage"],
-    reason: json["Reason"] == null ? null : json["Reason"],
-    status: json["Status"] == null || json["Status"].toString().trim().isEmpty ? "Unknown" : json["Status"],
-    notes: json["Notes"] == null ? null : json["Notes"],
-    providedByInstacare: json["provided_by_instacare"],
-  );
+  factory Appointment.fromJson(Map<String, dynamic> json) =>
+      Appointment(
+        id: json["Id"],
+        patientUsername: json["PatientUsername"],
+        doctorName: json["DoctorName"],
+        date: json["Date"],
+        dateFormatted: json["DateFormatted"],
+        time: json["Time"],
+        location: json["Location"],
+        doctorImage: json["DoctorImage"],
+        reason: json["Reason"] == null ? null : json["Reason"],
+        status: json["Status"] == null || json["Status"]
+            .toString()
+            .trim()
+            .isEmpty ? "Unknown" : json["Status"],
+        notes: json["Notes"] == null ? null : json["Notes"],
+        providedByInstacare: json["provided_by_instacare"],
+      );
 
-  Map<String, dynamic> toJson() => {
-    "Id": id,
-    "PatientUsername": patientUsername,
-    "DoctorName": doctorName,
-    "Date": date,
-    "DateFormatted": dateFormatted,
-    "Time": time,
-    "Location": location,
-    "Reason": reason == null ? null : reason,
-    "DoctorImage": doctorImage == null ? null : doctorImage,
-    "Status": status == null ? null : status,
-    "Notes": notes == null ? null : notes,
-    "provided_by_instacare": providedByInstacare,
-  };
+  Map<String, dynamic> toJson() =>
+      {
+        "Id": id,
+        "PatientUsername": patientUsername,
+        "DoctorName": doctorName,
+        "Date": date,
+        "DateFormatted": dateFormatted,
+        "Time": time,
+        "Location": location,
+        "Reason": reason == null ? null : reason,
+        "DoctorImage": doctorImage == null ? null : doctorImage,
+        "Status": status == null ? null : status,
+        "Notes": notes == null ? null : notes,
+        "provided_by_instacare": providedByInstacare,
+      };
 
-  Color getStatusColor(){
-    Color color;
-    if (status != null){
-      if (status.trim().isNotEmpty){
-        if (status.toLowerCase() == "accepted"){
-          color = Colors.blue;
-        } else if (status.toLowerCase() == "cancelled"){
-          color = Colors.red;
-        } else if (status.toLowerCase() == "completed"){
-          color = Colors.green;
+  Color getStatusColor() {
+    if (status != null) {
+      if (status
+          .trim()
+          .isNotEmpty) {
+        if (status.toLowerCase() == "pending") {
+          return Colors.blue;
+        } else if (status.toLowerCase() == "cancelled") {
+          return Colors.red;
         } else {
-          color = Colors.orange;
+          return Colors.green;
         }
-      } else {
-        color = Colors.orange;
       }
-    } else {
-      color = Colors.orange;
     }
-    return color;
   }
 }
