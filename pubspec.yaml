@@ -1,7 +1,7 @@
 name: amc
-description: A application for Doctors hospital
+description: A application for AMC
 
-version: 2.2.0+3
+version: 1.0.2+3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
