@@ -55,8 +55,8 @@ class _LoginState extends State<Login> {
                 child: Container(
                   child: ClipOval(
                     child: Image.asset(
-                      MyImages.AMCLogo,
-                      height: 130.0,
+                      MyImages.logo,
+                      height: 160.0,
                     ),
                   ),
                 ),

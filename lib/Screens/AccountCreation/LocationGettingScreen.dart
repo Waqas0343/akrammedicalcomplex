@@ -52,7 +52,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Image.asset(
-          MyImages.AMCLogo,
+          MyImages.logo,
           height: 50,
         ),
         actions: [

@@ -60,8 +60,8 @@ class _SignUpState extends State<SignUp> {
               Container(
                 child: ClipOval(
                   child: Image.asset(
-                    MyImages.AMCLogo,
-                    height: 130.0,
+                    MyImages.logo,
+                    height: 160.0,
                   ),
                 ),
               ),

@@ -58,7 +58,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         Expanded(
                           child: ClipOval(
                             child: Image.asset(
-                              MyImages.AMCLogo,
+                              MyImages.logo,
                             ),
                           ),
                         ),
@@ -223,17 +223,17 @@ class _AppDrawerState extends State<AppDrawer> {
                     Navigator.push(context, route);
                   },
                 ),
-                DrawerList(
-                  title: "About Us",
-                  icon: MyIcons.icInfo,
-                  isBottomBorder: true,
-                  isDropdown: false,
-                  onTap: () {
-                    Route route =
-                        new MaterialPageRoute(builder: (_) => PrivacyPolicy());
-                    Navigator.push(context, route);
-                  },
-                ),
+                // DrawerList(
+                //   title: "About Us",
+                //   icon: MyIcons.icInfo,
+                //   isBottomBorder: true,
+                //   isDropdown: false,
+                //   onTap: () {
+                //     Route route =
+                //         new MaterialPageRoute(builder: (_) => PrivacyPolicy());
+                //     Navigator.push(context, route);
+                //   },
+                // ),
                 DrawerList(
                   title: "Logout",
                   icon: MyIcons.icLogout,
@@ -271,138 +271,138 @@ class _AppDrawerState extends State<AppDrawer> {
                         )
                       ],
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      height: 40,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FloatingActionButton(
-                            heroTag: "facebooktag",
-                            backgroundColor: Colors.grey,
-                            elevation: 2,
-                            child: Icon(
-                              MdiIcons.facebook,
-                              color: Colors.white,
-                              size: 22,
-                            ),
-                            onPressed: () async {
-                              try {
-                                bool launched = await launch(
-                                    "fb://page/340935203163369",
-                                    forceSafariVC: false);
-                                if (!launched) {
-                                  await launch(
-                                      "https://www.facebook.com/AMClhrofficial/",
-                                      forceSafariVC: false);
-                                }
-                              } catch (e) {
-                                await launch(
-                                    "https://www.facebook.com/AMClhrofficial/",
-                                    forceSafariVC: false);
-                              }
-                            },
-                          ),
-                          // FloatingActionButton(
-                          //   heroTag: 'whatsappTag',
-                          //   backgroundColor: Colors.grey,
-                          //   elevation: 2,
-                          //   child: Icon(
-                          //     MdiIcons.whatsapp,
-                          //     color: Colors.white,
-                          //     size: 22,
-                          //   ),
-                          //   onPressed: () async {
-                          //     try{
-                          //       await launch("whatsapp://send?phone=+923024124705" , forceSafariVC: false);
-                          //     }catch(e){
-                          //       Utilities.showToast('WhatsApp not installed');
-                          //     }
-                          //   },
-                          // ),
-                          FloatingActionButton(
-                            heroTag: 'linkeninTag',
-                            backgroundColor: Colors.grey,
-                            elevation: 2,
-                            child: Icon(
-                              MdiIcons.linkedin,
-                              color: Colors.white,
-                              size: 22,
-                            ),
-                            onPressed: () async {
-                              try {
-                                bool launched = await launch(
-                                    "linkedin://amclhrofficial",
-                                    forceSafariVC: false);
-                                if (!launched) {
-                                  await launch(
-                                      "https://www.linkedin.com/in/amclhrofficial",
-                                      forceSafariVC: false);
-                                }
-                              } catch (e) {
-                                await launch(
-                                    "https://www.linkedin.com/in/amclhrofficial",
-                                    forceSafariVC: false);
-                              }
-                            },
-                          ),
-                          FloatingActionButton(
-                            heroTag: 'twitterTag',
-                            backgroundColor: Colors.grey,
-                            elevation: 2,
-                            child: Icon(
-                              MdiIcons.twitter,
-                              color: Colors.white,
-                              size: 22,
-                            ),
-                            onPressed: () async {
-                              try {
-                                bool launched = await launch(
-                                    "https://twitter.com/amclhrofficial",
-                                    forceSafariVC: false);
-                                if (!launched) {
-                                  await launch(
-                                      "https://twitter.com/amclhrofficial",
-                                      forceSafariVC: false);
-                                }
-                              } catch (e) {
-                                await launch(
-                                    "https://twitter.com/amclhrofficial",
-                                    forceSafariVC: false);
-                              }
-                            },
-                          ),
-                          FloatingActionButton(
-                            heroTag: 'instagramTag',
-                            backgroundColor: Colors.grey,
-                            elevation: 2,
-                            child: Icon(
-                              MdiIcons.instagram,
-                              color: Colors.white,
-                              size: 22,
-                            ),
-                            onPressed: () async {
-                              try {
-                                bool launched = await launch(
-                                    "https://www.instagram.com/jakramaimc",
-                                    forceSafariVC: false);
-                                if (!launched) {
-                                  await launch(
-                                      "https://www.instagram.com/jakramaimc",
-                                      forceSafariVC: false);
-                                }
-                              } catch (e) {
-                                await launch(
-                                    "https://www.instagram.com/jakramaimc",
-                                    forceSafariVC: false);
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    )
+                    // SizedBox(
+                    //   height: 8,
+                    // ),
+                    // Container(
+                    //   height: 40,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       FloatingActionButton(
+                    //         heroTag: "facebooktag",
+                    //         backgroundColor: Colors.grey,
+                    //         elevation: 2,
+                    //         child: Icon(
+                    //           MdiIcons.facebook,
+                    //           color: Colors.white,
+                    //           size: 22,
+                    //         ),
+                    //         onPressed: () async {
+                    //           try {
+                    //             bool launched = await launch(
+                    //                 "fb://page/340935203163369",
+                    //                 forceSafariVC: false);
+                    //             if (!launched) {
+                    //               await launch(
+                    //                   "https://www.facebook.com/AMClhrofficial/",
+                    //                   forceSafariVC: false);
+                    //             }
+                    //           } catch (e) {
+                    //             await launch(
+                    //                 "https://www.facebook.com/AMClhrofficial/",
+                    //                 forceSafariVC: false);
+                    //           }
+                    //         },
+                    //       ),
+                    //       // FloatingActionButton(
+                    //       //   heroTag: 'whatsappTag',
+                    //       //   backgroundColor: Colors.grey,
+                    //       //   elevation: 2,
+                    //       //   child: Icon(
+                    //       //     MdiIcons.whatsapp,
+                    //       //     color: Colors.white,
+                    //       //     size: 22,
+                    //       //   ),
+                    //       //   onPressed: () async {
+                    //       //     try{
+                    //       //       await launch("whatsapp://send?phone=+923024124705" , forceSafariVC: false);
+                    //       //     }catch(e){
+                    //       //       Utilities.showToast('WhatsApp not installed');
+                    //       //     }
+                    //       //   },
+                    //       // ),
+                    //       FloatingActionButton(
+                    //         heroTag: 'linkeninTag',
+                    //         backgroundColor: Colors.grey,
+                    //         elevation: 2,
+                    //         child: Icon(
+                    //           MdiIcons.linkedin,
+                    //           color: Colors.white,
+                    //           size: 22,
+                    //         ),
+                    //         onPressed: () async {
+                    //           try {
+                    //             bool launched = await launch(
+                    //                 "linkedin://amclhrofficial",
+                    //                 forceSafariVC: false);
+                    //             if (!launched) {
+                    //               await launch(
+                    //                   "https://www.linkedin.com/in/amclhrofficial",
+                    //                   forceSafariVC: false);
+                    //             }
+                    //           } catch (e) {
+                    //             await launch(
+                    //                 "https://www.linkedin.com/in/amclhrofficial",
+                    //                 forceSafariVC: false);
+                    //           }
+                    //         },
+                    //       ),
+                    //       FloatingActionButton(
+                    //         heroTag: 'twitterTag',
+                    //         backgroundColor: Colors.grey,
+                    //         elevation: 2,
+                    //         child: Icon(
+                    //           MdiIcons.twitter,
+                    //           color: Colors.white,
+                    //           size: 22,
+                    //         ),
+                    //         onPressed: () async {
+                    //           try {
+                    //             bool launched = await launch(
+                    //                 "https://twitter.com/amclhrofficial",
+                    //                 forceSafariVC: false);
+                    //             if (!launched) {
+                    //               await launch(
+                    //                   "https://twitter.com/amclhrofficial",
+                    //                   forceSafariVC: false);
+                    //             }
+                    //           } catch (e) {
+                    //             await launch(
+                    //                 "https://twitter.com/amclhrofficial",
+                    //                 forceSafariVC: false);
+                    //           }
+                    //         },
+                    //       ),
+                    //       FloatingActionButton(
+                    //         heroTag: 'instagramTag',
+                    //         backgroundColor: Colors.grey,
+                    //         elevation: 2,
+                    //         child: Icon(
+                    //           MdiIcons.instagram,
+                    //           color: Colors.white,
+                    //           size: 22,
+                    //         ),
+                    //         onPressed: () async {
+                    //           try {
+                    //             bool launched = await launch(
+                    //                 "https://www.instagram.com/jakramaimc",
+                    //                 forceSafariVC: false);
+                    //             if (!launched) {
+                    //               await launch(
+                    //                   "https://www.instagram.com/jakramaimc",
+                    //                   forceSafariVC: false);
+                    //             }
+                    //           } catch (e) {
+                    //             await launch(
+                    //                 "https://www.instagram.com/jakramaimc",
+                    //                 forceSafariVC: false);
+                    //           }
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ))

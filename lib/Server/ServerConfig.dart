@@ -49,7 +49,7 @@ class ServerConfig{
   static const uploadImages = baseUrl +
       "api/documents/savetocloud?"; //userid, attachment(File)
 
-  static const categories = baseUrl +
+  static const categories = baseTestUrl2 +
       "api/Speciality/GetSpecialities?SystemKey=$systemKey&LocationId=${Keys.locationId}";
 
   static const doctorProfile = baseUrl +
