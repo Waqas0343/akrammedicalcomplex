@@ -9,5 +9,6 @@ class MyImages{
   static const String hospitalPlace = "${base}hospital.png";
   static const String imageNotFound = "${base}image_not_found.jpg";
   static const String user = "${base}user.png";
+  static const String banner = "${base}banner.jpg";
   // static const String AMCLogo = "${base}AMC Logo.png";
 }

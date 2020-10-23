@@ -1,5 +1,6 @@
 import 'package:amc/Screens/Home.dart';
 import 'package:amc/Screens/Signup.dart';
+import 'package:amc/Screens/home_new.dart';
 import 'package:amc/Splash.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:flutter/cupertino.dart';
@@ -69,7 +70,6 @@ class MyApp extends StatelessWidget {
         dividerColor: MyColors.divider,
         buttonTheme: ButtonThemeData(
           buttonColor: MyColors.primary,
-
           padding: const EdgeInsets.all(12.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.0))),
@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new Login(),
-        '/home': (BuildContext context) => new Home(),
+        '/home': (BuildContext context) => new HomeNew(),
         '/signup': (BuildContext context) => new SignUp(),
       },
       home: Splash(),
