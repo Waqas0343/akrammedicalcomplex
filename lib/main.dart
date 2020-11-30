@@ -1,6 +1,4 @@
-import 'package:amc/Screens/Home.dart';
 import 'package:amc/Screens/Signup.dart';
-import 'package:amc/Screens/home_new.dart';
 import 'package:amc/Splash.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'Screens/Login.dart';
+import 'Screens/home.dart';
 import 'Utilities/Utilities.dart';
 
 
@@ -84,7 +83,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new Login(),
-        '/home': (BuildContext context) => new HomeNew(),
+        '/home': (BuildContext context) => new Home(),
         '/signup': (BuildContext context) => new SignUp(),
       },
       home: Splash(),

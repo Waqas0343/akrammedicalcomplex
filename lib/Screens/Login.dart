@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:amc/Models/LoginModel.dart';
 import 'package:amc/Screens/AccountCreation/ActivationCode.dart';
-import 'package:amc/Screens/Home.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -14,6 +13,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'home.dart';
 
 class Login extends StatefulWidget {
   @override

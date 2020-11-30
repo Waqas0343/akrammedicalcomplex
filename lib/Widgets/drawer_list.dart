@@ -34,7 +34,6 @@ class DrawerList extends StatelessWidget {
                         icon,
                         width: 24,
                         height: 24,
-                        color: Colors.grey.shade600,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),

@@ -1,7 +1,6 @@
 import 'package:amc/Models/ProfileModel.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Models/CitiesModel.dart';
-import 'package:amc/Screens/Home.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -11,6 +10,8 @@ import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../home.dart';
 
 class LocationGettingScreen extends StatefulWidget {
   final bool isAlreadyExists;

@@ -1,10 +1,10 @@
-import 'package:amc/Screens/Home.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../Privacy/PrivacyPolicy.dart';
+import '../home.dart';
 
 class AccountCompletion extends StatefulWidget {
   @override

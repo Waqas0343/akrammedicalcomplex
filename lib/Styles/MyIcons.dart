@@ -29,5 +29,14 @@ class MyIcons{
   static const String icReports = "${basePath}report.svg";
   static const String icBookLabTest = "${basePath}test_tube.svg";
   static const String icOrders = "${basePath}orders.svg";
+  static const String icHomeService = "${basePath}home_service_color.svg";
+  static const String icDoctorColored = "${basePath}doctor.svg";
+  static const String icLabColored = "${basePath}lab_color.svg";
+  static const String icMedicineColored = "${basePath}drug.svg";
+  static const String icPharmacyColored = "${basePath}pharmacy_colored.svg";
+  static const String icPrescriptionColored = "${basePath}prescription_colored.svg";
+  static const String icHealthRecordColored = "${basePath}health_record_colored.svg";
+  static const String icSettingsColored = "${basePath}settings_colored.svg";
+  static const String icLabReportColored = "${basePath}report_colored.svg";
 
 }
