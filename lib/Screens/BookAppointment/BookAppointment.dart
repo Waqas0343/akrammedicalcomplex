@@ -147,7 +147,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                           color: MyColors.accent,
                           borderRadius: BorderRadius.circular(8)),
                       child: Text(
-                        "PKR/- ${widget.fee.replaceAll("Rs/- ", "")}",
+                        "${widget.fee}",
                         style: TextStyle(color: Colors.white),
                       ),
                     )

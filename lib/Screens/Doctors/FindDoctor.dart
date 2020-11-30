@@ -17,7 +17,7 @@ class FindDoctor extends StatefulWidget {
 }
 
 class _FindDoctorState extends State<FindDoctor> {
-  bool isLoading = false;
+  bool isLoading = false, hasMore = true;
   int totalRecord = 0, pageNo = 0;
 
   List<ResponseDetail> doctors;
@@ -330,8 +330,12 @@ class _FindDoctorState extends State<FindDoctor> {
 
     if (response != "404") {
       DoctorModel responseDetail = doctorModelFromJson(response);
-      totalRecord = int.parse(responseDetail.response.response.recordsFiltered);
       if (!mounted) return;
+      if (responseDetail.response.response.data.length < 10) {
+        hasMore = false;
+      } else {
+        hasMore = true;
+      }
       setState(() {
         doctors.addAll(responseDetail.response.response.data);
       });
@@ -370,8 +374,12 @@ class _FindDoctorState extends State<FindDoctor> {
   void _scrollListener() {
     if (controller.position.pixels == controller.position.maxScrollExtent) {
       if (doctors.length < totalRecord && !isLoading) {
-        pageNo++;
-        getDoctors();
+        if (controller.position.pixels == controller.position.maxScrollExtent) {
+          if (hasMore && !isLoading) {
+            pageNo++;
+            getDoctors();
+          }
+        }
       }
     }
   }

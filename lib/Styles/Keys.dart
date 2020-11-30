@@ -45,7 +45,7 @@ class Keys {
 
   static const List<String> titleList = ['Mr', 'Ms', 'Miss', 'Mrs'];
 
-  static const String appName = "AMC HealthCare Services";
+  static const String appName = "AMC Patient App";
 
   static const String imageNotFound = "https://instacare.pk/assets/img/Image-not-found.jpg";
 

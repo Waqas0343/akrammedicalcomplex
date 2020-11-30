@@ -23,7 +23,7 @@ class _SplashState extends State<Splash> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(flex: 1, child: SizedBox.shrink()),
-            Expanded(flex: 1, child: Image.asset(MyImages.AMCLogo,)),
+            Expanded(flex: 1, child: Image.asset(MyImages.logo,)),
             Expanded(flex: 1, child: Container(
               margin: const EdgeInsets.only(bottom: 36.0),
               child: Column(

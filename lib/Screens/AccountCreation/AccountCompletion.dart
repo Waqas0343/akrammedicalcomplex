@@ -1,10 +1,10 @@
-import 'package:amc/Screens/Home.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../Privacy/PrivacyPolicy.dart';
+import '../home.dart';
 
 class AccountCompletion extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _AccountCompletionState extends State<AccountCompletion> {
         brightness: Brightness.light,
         backgroundColor: Colors.white,
         elevation: 0,
-        title: Image.asset(MyImages.AMCLogo, height: 50,),
+        title: Image.asset(MyImages.logo, height: 50,),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),

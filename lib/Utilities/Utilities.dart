@@ -52,7 +52,6 @@ class Utilities{
   }
 
   static Future<String> httpGet(String url) async {
-    print(url);
     Response response = await get(url);
     int statusCode = response.statusCode;
     if (statusCode == 200){

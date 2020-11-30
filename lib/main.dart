@@ -1,4 +1,3 @@
-import 'package:amc/Screens/Home.dart';
 import 'package:amc/Screens/Signup.dart';
 import 'package:amc/Splash.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'Screens/Login.dart';
+import 'Screens/home.dart';
 import 'Utilities/Utilities.dart';
 
 
@@ -69,7 +69,6 @@ class MyApp extends StatelessWidget {
         dividerColor: MyColors.divider,
         buttonTheme: ButtonThemeData(
           buttonColor: MyColors.primary,
-
           padding: const EdgeInsets.all(12.0),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.0))),

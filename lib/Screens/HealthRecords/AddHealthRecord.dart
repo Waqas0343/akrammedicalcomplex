@@ -101,6 +101,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                     padding:
                     const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                     child: DropdownButtonHideUnderline(
+
                       child: DropdownButton(
                           hint: Text("Document Type"),
                           isExpanded: true,
@@ -111,11 +112,13 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                               value: e,
                             );
                           }).toList(),
+
                           onChanged: (type) {
                             setState(() {
                               this.type = type;
                             });
                           }),
+
                     ),
                   ),
                 ),

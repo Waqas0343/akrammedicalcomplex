@@ -1,7 +1,7 @@
 name: amc
-description: A application for Doctors hospital
+description: A application for AMC
 
-version: 2.2.0+3
+version: 1.0.3+4
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -21,6 +21,7 @@ dependencies:
   auto_size_text: ^2.1.0
   flare_flutter: ^2.0.6
   flutter_pdfview: ^1.0.3+3
+  flutter_greetings: ^1.0.1
   path_provider: ^1.6.14
   material_design_icons_flutter: ^4.0.5345
   email_validator: ^1.0.5

@@ -46,21 +46,18 @@ class DoctorModelResponse {
 
 class ResponseResponse {
   ResponseResponse({
-    this.recordsFiltered,
     this.data,
   });
 
-  String recordsFiltered;
   List<ResponseDetail> data;
 
   factory ResponseResponse.fromJson(Map<String, dynamic> json) => ResponseResponse(
-    recordsFiltered: json["recordsFiltered"],
+
     data: json["data"] != null ?
     List<ResponseDetail>.from(json["data"].map((x) => ResponseDetail.fromJson(x))) : [],
   );
 
   Map<String, dynamic> toJson() => {
-    "recordsFiltered": recordsFiltered,
     "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }

@@ -12,7 +12,7 @@
 
     <application
         android:name=".Application"
-        android:label="Akram Medical Complex"
+        android:label="AMC Patient App"
         android:screenOrientation="portrait"
         android:icon="@mipmap/ic_launcher">
         <activity

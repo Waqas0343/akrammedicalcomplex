@@ -200,21 +200,21 @@ class _DoctorProfileState extends State<DoctorProfile> {
                           ],
                         ),
                         Divider(),
-                        ListTile(
-                          leading: SvgPicture.asset(
-                            MyIcons.icMap,
-                            height: 24,
-                            width: 24,
-                            color: Colors.grey,
-                          ),
-                          title: Text(
-                              doctorProfile.assosiations[0].location ?? ""),
-                          subtitle: AutoSizeText(
-                            doctorProfile.assosiations[0].fullAddress ?? "",
-                            maxLines: 1,
-                          ),
-                        ),
-                        Divider(),
+                        // ListTile(
+                        //   leading: SvgPicture.asset(
+                        //     MyIcons.icMap,
+                        //     height: 24,
+                        //     width: 24,
+                        //     color: Colors.grey,
+                        //   ),
+                        //   title: Text(
+                        //       doctorProfile.assosiations[0].location ?? ""),
+                        //   subtitle: AutoSizeText(
+                        //     doctorProfile.assosiations[0].fullAddress ?? "",
+                        //     maxLines: 1,
+                        //   ),
+                        // ),
+                        // Divider(),
                         ListTile(
                           leading: SvgPicture.asset(
                             MyIcons.icClock,
