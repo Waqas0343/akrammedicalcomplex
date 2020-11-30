@@ -76,39 +76,40 @@ class _FindDoctorState extends State<FindDoctor> {
       body: Column(
         children: [
           Container(
-              margin: const EdgeInsets.only(top: 8, left: 8, right: 8),
-              child: TextField(
-                focusNode: nameFocus,
-                controller: nameController,
-                onEditingComplete: () {
-                  nameFocus.unfocus();
-                  setState(() {
-                    totalRecord = 0;
-                    doctors.clear();
-                    getDoctors();
-                  });
-                },
-                textInputAction: TextInputAction.search,
-                maxLength: 60,
-                decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    hintText: 'Search by Name',
-                    prefixIcon: Icon(Icons.search),
-                    counterText: "",
-                    suffix: GestureDetector(
-                        onTap: () {
-                          nameFocus.unfocus();
-                          setState(() {
-                            nameController.clear();
-                            pageNo = 0;
-                            totalRecord = 0;
-                            doctors.clear();
-                            getDoctors();
-                          });
-                        },
-                        child: Icon(Icons.close))),
-              )),
+            margin: const EdgeInsets.only(top: 8, left: 8, right: 8),
+            child: TextField(
+              focusNode: nameFocus,
+              controller: nameController,
+              onEditingComplete: () {
+                nameFocus.unfocus();
+                setState(() {
+                  totalRecord = 0;
+                  doctors.clear();
+                  getDoctors();
+                });
+              },
+              textInputAction: TextInputAction.search,
+              maxLength: 60,
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  hintText: 'Search by Name',
+                  prefixIcon: Icon(Icons.search),
+                  counterText: "",
+                  suffix: GestureDetector(
+                      onTap: () {
+                        nameFocus.unfocus();
+                        setState(() {
+                          nameController.clear();
+                          pageNo = 0;
+                          totalRecord = 0;
+                          doctors.clear();
+                          getDoctors();
+                        });
+                      },
+                      child: Icon(Icons.close))),
+            ),
+          ),
           doctors.isNotEmpty
               ? Expanded(
                   child: Column(
@@ -357,7 +358,6 @@ class _FindDoctorState extends State<FindDoctor> {
   }
 
   void updateUi() async {
-
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);
       return;
@@ -368,9 +368,11 @@ class _FindDoctorState extends State<FindDoctor> {
   }
 
   void _scrollListener() {
-    if (doctors.length < totalRecord && !isLoading) {
-      pageNo++;
-      getDoctors();
+    if (controller.position.pixels == controller.position.maxScrollExtent) {
+      if (doctors.length < totalRecord && !isLoading) {
+        pageNo++;
+        getDoctors();
+      }
     }
   }
 }

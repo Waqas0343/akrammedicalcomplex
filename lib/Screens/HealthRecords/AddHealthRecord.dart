@@ -166,7 +166,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                   BoxShadow(
                       color: Colors.black.withOpacity(0.1),
                       spreadRadius: 1,
-                      blurRadius: 10)
+                      blurRadius: 10,),
                 ]),
                 padding: const EdgeInsets.only(bottom: 12),
                 child: Image.file(file,),
@@ -190,7 +190,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
               ),
             ),
 
-            isLoading ? Align(alignment: Alignment.bottomCenter , child: LinearPercentIndicator(
+            isLoading ? Align(alignment: Alignment.bottomCenter, child: LinearPercentIndicator(
               lineHeight: 18.0,
               percent: uploadingValue,
               center: Text("${(uploadingValue * 100).toInt()} %",style: TextStyle(color: Colors.white,fontSize: 12),),

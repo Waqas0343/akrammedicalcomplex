@@ -35,7 +35,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   DateTime currentBackPressTime;
   SharedPreferences preferences;
-  String name, email, imagePath, oldId;
+  String name, email, imagePath;
   var rng = new Random();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
