@@ -86,7 +86,7 @@ class _BookTestState extends State<BookTest> {
                   onPressed: isTaped ? () => placeOrder() : null,
                   child: Text(
                     buttonText,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    // style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   textColor: Colors.white,
                 ),
@@ -250,7 +250,7 @@ class _BookTestState extends State<BookTest> {
           child: Text(
             patientDetails,
             textAlign: TextAlign.center,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
           ),
         ),
         TextField(

@@ -4,7 +4,9 @@ import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +22,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
   SharedPreferences preferences;
   List<HealthRecord> recordModel;
   List<HealthRecord> healthRecords = [];
+  bool isLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +52,8 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
       child: InkWell(
         onTap: () {
           FocusScope.of(context).requestFocus(FocusNode());
-          Route route = MaterialPageRoute(builder: (_) => MyHealthRecordDetails(record));
+          Route route =
+              MaterialPageRoute(builder: (_) => MyHealthRecordDetails(record));
           Navigator.push(context, route);
         },
         onLongPress: () {
@@ -58,15 +62,21 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
         },
         borderRadius: BorderRadius.circular(4),
         child: ListTile(
-          leading: FadeInImage.assetNetwork(
-            placeholder: MyImages.instaFile,
-            image: record.filePath,
+          leading: NetWorkImage(
+            placeHolder: MyImages.instaFile,
+            imagePath: record.filePath,
             width: 70,
-            fit: BoxFit.cover,
+            height: 70,
           ),
-          title: Text(record.fileName, style: TextStyle(fontWeight: FontWeight.bold),),
+          title: Text(
+            record.fileName,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           subtitle: Text(record.recordType),
-          trailing: Icon(Icons.arrow_forward_ios, size: 18,),
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            size: 18,
+          ),
         ),
       ),
     );
@@ -87,7 +97,8 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
       dummySearchList.forEach((item) {
         String type = item.recordType.toLowerCase();
         String file = item.fileName.toLowerCase();
-        if (type.contains(query.toLowerCase()) || file.contains(query.toLowerCase())) {
+        if (type.contains(query.toLowerCase()) ||
+            file.contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       });
@@ -107,17 +118,15 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
   void getRecords() async {
     preferences = await SharedPreferences.getInstance();
     String username = preferences.getString(Keys.username);
-
     if (await Utilities.isOnline()) {
-      Loading.build(context, true);
       String response = await Utilities.httpGet(
           ServerConfig.medicalRecords + "&username=$username");
-      Loading.dismiss();
 
       if (response != "404") {
         if (!mounted) return;
         setState(() {
-          recordModel.addAll(medicalRecordModelFromJson(response).healthRecordList.records);
+          recordModel.addAll(
+              medicalRecordModelFromJson(response).healthRecordList.records);
           healthRecords.addAll(recordModel);
         });
       } else {
@@ -126,44 +135,45 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
     } else {
       await Utilities.internetNotAvailable(context);
     }
+    setState(() => isLoading = false);
   }
 
   void deleteDialog(HealthRecord record) {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: Text("Do you want to delete it?"),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () async {
-                Navigator.pop(context);
-                bool result = await deleteRecord(record.id);
-                if (result) {
-                  Utilities.showToast("Removed");
-                  setState(() {
-                    healthRecords.remove(record);
-                  });
-                } else {
-                  Utilities.showToast("Something went wrong");
-                }
-              },
-              child: Text("Delete"),
-              color: MyColors.primary,
-              textColor: Colors.white,
-            ),
-            FlatButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Cancel"),
-              textColor: MyColors.primary,
-            )
-          ],
-        ));
+              title: Text("Do you want to delete it?"),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    bool result = await deleteRecord(record.id);
+                    if (result) {
+                      Utilities.showToast("Removed");
+                      setState(() {
+                        healthRecords.remove(record);
+                      });
+                    } else {
+                      Utilities.showToast("Something went wrong");
+                    }
+                  },
+                  child: Text("Delete"),
+                  color: MyColors.primary,
+                  textColor: Colors.white,
+                ),
+                FlatButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text("Cancel"),
+                  textColor: MyColors.primary,
+                )
+              ],
+            ));
   }
 
   Future<bool> deleteRecord(int id) async {
     Loading.build(context, true);
-    String response = await Utilities.httpPost(
-        ServerConfig.medicalRecordDelete + "&Id=$id");
+    String response =
+        await Utilities.httpPost(ServerConfig.medicalRecordDelete + "&Id=$id");
     Loading.dismiss();
     if (response != "404") {
       return true;
@@ -172,12 +182,12 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
     }
   }
 
-  void openRoute()async {
-    Route route = MaterialPageRoute<HealthRecord>(builder: (_) => AddHealthRecord());
-    HealthRecord record =  await Navigator.push(context, route);
+  void openRoute() async {
+    Route route =
+        MaterialPageRoute<HealthRecord>(builder: (_) => AddHealthRecord());
+    HealthRecord record = await Navigator.push(context, route);
 
-    if (record != null){
-
+    if (record != null) {
       setState(() {
         recordModel.insert(0, record);
         healthRecords.insert(0, record);
@@ -186,42 +196,56 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
   }
 
   Widget recordView() {
-    return recordModel.isNotEmpty ?  Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 8, right: 8, left: 8),
-          child: TextField(
-            textInputAction: TextInputAction.search,
-            maxLength: 60,
-            onChanged: (text){
-              filter(text);
-            },
-            decoration: InputDecoration(
-                fillColor: Colors.white,
-                filled: true,
-                hintText: "Search by File Name, File Type",
-              counterText: "",
-            ),
-          ),
-        ),
-        healthRecords.isNotEmpty?
-        Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-            physics: ScrollPhysics(),
-            itemBuilder: (BuildContext context, int index) =>
-                medicalRecordListView(context, index),
-            itemCount: healthRecords.length,
-          ),
-        ) : Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Text(
-            "No Health Record Found",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.grey),
-          ),
-        ),
-      ],
-    ) : Center(child: Text("No Health Records", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),);
+    return recordModel.isNotEmpty
+        ? Column(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 8, right: 8, left: 8),
+                child: TextField(
+                  textInputAction: TextInputAction.search,
+                  maxLength: 60,
+                  onChanged: (text) {
+                    filter(text);
+                  },
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: "Search by File Name, File Type",
+                    counterText: "",
+                  ),
+                ),
+              ),
+              healthRecords.isNotEmpty
+                  ? Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 4),
+                        physics: ScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) =>
+                            medicalRecordListView(context, index),
+                        itemCount: healthRecords.length,
+                      ),
+                    )
+                  : Container(
+                      margin: EdgeInsets.only(top: 20),
+                      child: Text(
+                        "No Health Record Found",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.grey),
+                      ),
+                    ),
+            ],
+          )
+        : healthRecords.isEmpty && !isLoading
+            ? Center(
+                child: Text(
+                  "No Health Records",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+              )
+            : LoadingHealthRecord();
   }
 }

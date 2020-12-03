@@ -1,5 +1,6 @@
 import 'package:amc/Models/LabTestOrdersModel.dart';
 import 'package:amc/Models/SearchLabTestModel.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:flutter/material.dart';
@@ -30,9 +31,9 @@ class LabTestOrderDetails extends StatelessWidget {
                         spreadRadius: 1,
                         blurRadius: 10)
                   ]),
-                  child: FadeInImage.assetNetwork(
-                    placeholder: MyImages.instaFile,
-                    image: order.prescriptionPath ?? "Hell",
+                  child: NetWorkImage(
+                    placeHolder: MyImages.instaFile,
+                    imagePath: order.prescriptionPath,
                   ),
                 ),
               ),

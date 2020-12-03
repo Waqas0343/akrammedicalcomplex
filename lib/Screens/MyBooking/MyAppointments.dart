@@ -1,3 +1,4 @@
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Models/AppointmentModel.dart';
 import 'package:amc/Styles/MyImages.dart';
@@ -77,12 +78,10 @@ class _MyAppointmentsState extends State<MyAppointments> {
                 elevation: 4,
                 child: ListTile(
                   leading: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(50)),
-                    child: Container(
-                      child: FadeInImage.assetNetwork(placeholder: MyImages.doctorPlace,
-                        image: appointment.doctorImage?? "Not Found",
-                        width: 60,
-                        height: 60,),
-                    ),
+                    child: NetWorkImage(placeHolder: MyImages.doctorPlace,
+                      imagePath: appointment.doctorImage,
+                      width: 60,
+                      height: 60,),
                   ),
                   title: AutoSizeText('$day, $finalDate At ${appointment.time}',style: TextStyle(fontWeight: FontWeight.bold),maxLines: 1,),
                   subtitle: Column(

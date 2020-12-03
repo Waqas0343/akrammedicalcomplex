@@ -1,3 +1,4 @@
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Models/TestOrderResponseModel.dart';
 import 'package:amc/Screens/MyBooking/LabOrderDetails.dart';
@@ -33,7 +34,7 @@ class _LabOrdersState extends State<LabOrders> {
       backgroundColor: Colors.grey.shade200,
       body: ordersModel.isNotEmpty
           ? view()
-          : Center(
+          :  Center(
               child: Text(
                 "No Tests",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -143,16 +144,12 @@ class _LabOrdersState extends State<LabOrders> {
                                     color: testModel.getColor()))
                           ],
                         ),
-                        leading: Container(
-                          child: FadeInImage(
-                            placeholder: AssetImage(MyImages.instaFile),
-                            image: NetworkImage(
-                              testModel.prescriptionPath ?? "notfound",
-                            ),
-                            height: 90,
-                            width: 70,
-                            fit: BoxFit.cover,
-                          ),
+                        leading: NetWorkImage(
+                          placeHolder: MyImages.instaFile,
+                          imagePath:
+                            testModel.prescriptionPath,
+                          height: 90,
+                          width: 70,
                         ),
                         onTap: () {
                           Route route = new MaterialPageRoute(

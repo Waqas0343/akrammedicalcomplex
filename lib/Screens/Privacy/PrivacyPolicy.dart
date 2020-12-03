@@ -8,7 +8,7 @@ class PrivacyPolicy extends StatefulWidget {
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
-  WebViewController _controller;
+  WebViewController controller;
 
   bool isLoading = true;
 
@@ -23,7 +23,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
           WebView(
             initialUrl: 'https://www.akrammedicalcomplex.com/about-us/',
             onWebViewCreated: (WebViewController webViewController) {
-              _controller = webViewController;
+              controller = webViewController;
               // _loadHtmlFromAssets();
             },
             onPageFinished: (text){

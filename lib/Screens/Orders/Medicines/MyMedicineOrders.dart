@@ -2,6 +2,7 @@ import 'package:amc/Models/MedicineOrderModel.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Styles/MyImages.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,6 +52,7 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
     username = preferences.getString(Keys.username);
     orders.addAll(widget.orders);
     ordersModel.addAll(orders);
+    if (!mounted) return;
     setState(() {});
   }
 
@@ -136,18 +138,14 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
               ),
             ],
           ),
-          leading: Container(
-            child: FadeInImage(
-              placeholder: AssetImage(MyImages.instaFile),
-              image: NetworkImage(
-                order.prescriptionPath ?? "notfound",
-              ),
+          leading: NetWorkImage(
+              placeHolder: MyImages.instaFile,
+              imagePath:
+                order.prescriptionPath,
               height: 90,
               width: 70,
               // height: MediaQuery.of(context).size.height,
-              fit: BoxFit.cover,
             ),
-          ),
         ),
       ),
     );

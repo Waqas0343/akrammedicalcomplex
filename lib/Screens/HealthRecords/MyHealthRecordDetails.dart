@@ -1,5 +1,6 @@
 import 'package:amc/Models/MedicalRecordModel.dart';
 import 'package:amc/Styles/MyImages.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:flutter/material.dart';
 
 class MyHealthRecordDetails extends StatelessWidget {
@@ -31,9 +32,9 @@ class MyHealthRecordDetails extends StatelessWidget {
                           )
                         ]
                     ),
-                    child: FadeInImage.assetNetwork(
-                      placeholder: MyImages.instaFile,
-                      image: record.filePath,
+                    child: NetWorkImage(
+                      placeHolder: MyImages.instaFile,
+                      imagePath: record.filePath,
                     ),
                   ),
                 ),

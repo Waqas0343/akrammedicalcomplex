@@ -9,6 +9,7 @@ import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyIcons.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/home_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -47,178 +48,207 @@ class _HomeState extends State<Home> {
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: () => onWillPop(),
-      child: Scaffold(
-        drawer: AppDrawer(
-          name: name,imagePath: imagePath, email: email,
-        ),
-        appBar: AppBar(
-          title: Text(Keys.appName),
-          actions: [
-            Container(
-              margin: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.white.withOpacity(0.2),
-                        spreadRadius: 1,
-                        blurRadius: 10)
-                  ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
-                child: FadeInImage.assetNetwork(
-                  image: imagePath ?? Keys.imageNotFound,
-                  placeholder: MyImages.imageNotFound,
-                  fit: BoxFit.cover,
-                  fadeInDuration: Duration(milliseconds: 100),
-                ),
-              ),
-            )
-          ],
-        ),
-        body: Stack(
-          children: [
-            Image.asset(MyImages.banner,
-              fit: BoxFit.cover,height: 200,width: size.width,),
-            Container(
-              height: size.height,
-              width: size.width,
-              margin: EdgeInsets.only(top: 170.0,bottom: 24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(32))
-              ),
-              child: Column(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: ListView(
-                      padding: EdgeInsets.only(
-                        left: 12,
-                        right: 12,
-                      ),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 16, bottom: 16, left: 4),
-                          child: Text('$greething!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            HomeWidget(
-                              title: "Book Home \nServices",
-                              icon: MyIcons.icHomeService,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => BookTreatment());
-                                Navigator.push(context, route);
-                              },
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          drawer: AppDrawer(
+            name: name, imagePath: imagePath, email: email,
+          ),
+          body: ListView(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(bottom: 50),
+                color: MyColors.primary,
+                child: Column(
+                  children: [
+                    AppBar(
+                      elevation: 0,
+                      title: Text(Keys.appName),
+                      actions: [
+                        Container(
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.white.withOpacity(0.2),
+                                  spreadRadius: 1,
+                                  blurRadius: 10)
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            child: NetWorkImage(
+                              imagePath: imagePath,
+                              placeHolder: MyImages.imageNotFound,
+                              width: 40, height: 30,
                             ),
-                            HomeWidget(
-                              title: "Find the Best \nSpecialist",
-                              icon: MyIcons.icDoctorColored,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => FindDoctor());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                            HomeWidget(
-                              title: "My Home \nServices",
-                              icon: MyIcons.icHomeService,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => MyTreatments());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 32,),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            HomeWidget(
-                              title: "Diagnostics",
-                              icon: MyIcons.icLabColored,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => TestType());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                            HomeWidget(
-                              title: "Medicines",
-                              icon: MyIcons.icMedicineColored,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => MedicineOrderType());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                            HomeWidget(
-                              title: "My Bookings",
-                              icon: MyIcons.icPharmacyColored,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => MyBooking());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 32,),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            HomeWidget(
-                              title: "My Prescriptions",
-                              icon: MyIcons.icPrescriptionColored,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => MyPrescriptions());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                            HomeWidget(
-                              title: "My Health \nRecords",
-                              icon: MyIcons.icHealthRecordColored,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => MyHealthRecords());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                            HomeWidget(
-                              title: "Settings",
-                              icon: MyIcons.icSettingsColored,
-                              onTap: (){
-                                Route route = new MaterialPageRoute(builder: (_) => Settings());
-                                Navigator.push(context, route);
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 0,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Smart Hospital App by ",
-                          style: TextStyle(fontSize: 14.0),
-                        ),
-                        Image.asset(
-                          MyImages.instaLogoBlue,
-                          height: 22.0,
+                          ),
                         )
                       ],
                     ),
-                  ),
-                ],
+                    Container(
+                      height: 40,
+                      margin: const EdgeInsets.only(top: 20,bottom: 20.0,left: 16.0,right: 16.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Route route = new MaterialPageRoute(builder: (_) => FindDoctor(isSearching: true,));
+                          Navigator.push(context, route);
+                        },
+                        child: TextFormField(
+                          enabled: false,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                                gapPadding: 0.0,
+                              ),
+                              isDense: true,
+                              isCollapsed: true,
+                              contentPadding: const EdgeInsets.only(top: 10.0),
+                              hintText: "Search Doctors",
+                              prefixIcon: Icon(Icons.search)
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              Container(
+                width: size.width,
+                transform: Matrix4.translationValues(0.0, -45, 0.0),
+                padding: EdgeInsets.only(
+                  left: 12,
+                  right: 12,
+                ),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(32))
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16, bottom: 16, left: 4),
+                      child: Text('$greething!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        HomeWidget(
+                          title: "Book Home \nServices",
+                          icon: MyIcons.icHomeService,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => BookTreatment());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                        HomeWidget(
+                          title: "Find the Best \nSpecialist",
+                          icon: MyIcons.icDoctorColored,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => FindDoctor(isSearching: false,));
+                            Navigator.push(context, route);
+                          },
+                        ),
+                        HomeWidget(
+                          title: "My Home \nServices",
+                          icon: MyIcons.icHomeService,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => MyTreatments());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 32,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        HomeWidget(
+                          title: "Diagnostics",
+                          icon: MyIcons.icLabColored,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => TestType());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                        HomeWidget(
+                          title: "Medicines",
+                          icon: MyIcons.icMedicineColored,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => MedicineOrderType());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                        HomeWidget(
+                          title: "My Bookings",
+                          icon: MyIcons.icPharmacyColored,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => MyBooking());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 32,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        HomeWidget(
+                          title: "My Prescriptions",
+                          icon: MyIcons.icPrescriptionColored,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => MyPrescriptions());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                        HomeWidget(
+                          title: "My Health \nRecords",
+                          icon: MyIcons.icHealthRecordColored,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => MyHealthRecords());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                        HomeWidget(
+                          title: "Settings",
+                          icon: MyIcons.icSettingsColored,
+                          onTap: (){
+                            Route route = new MaterialPageRoute(builder: (_) => Settings());
+                            Navigator.push(context, route);
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          bottomNavigationBar: Container(
+            height: 56,
+            color: Colors.white,
+            padding: const EdgeInsets.only(bottom: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "Smart Hospital App by ",
+                  style: TextStyle(fontSize: 14.0),
+                ),
+                Image.asset(
+                  MyImages.instaLogoBlue,
+                  height: 22.0,
+                )
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

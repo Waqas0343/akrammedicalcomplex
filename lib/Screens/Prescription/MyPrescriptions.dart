@@ -3,8 +3,8 @@ import 'package:amc/Screens/Prescription/PrescriptionWebView.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
-import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:intl/intl.dart';
@@ -19,6 +19,7 @@ class MyPrescriptions extends StatefulWidget {
 class _PrescriptionState extends State<MyPrescriptions> {
   List<Prescription> prescriptions = [];
   List<Prescription> prescriptionModels;
+  bool isLoading = true;
   final textController = TextEditingController();
 
   @override
@@ -30,12 +31,12 @@ class _PrescriptionState extends State<MyPrescriptions> {
       ),
       body: prescriptionModels.isNotEmpty
           ? prescriptionView()
-          : Center(
+          : prescriptionModels.isEmpty && !isLoading ? Center(
               child: Text(
                 "No Prescriptions",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-            ),
+            ) : LoadingMyPrescription(),
     );
   }
 
@@ -90,11 +91,8 @@ class _PrescriptionState extends State<MyPrescriptions> {
   void updateUi() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String username = preferences.getString(Keys.USERNAME);
-
-    Loading.build(context, true);
     String response = await Utilities.httpGet(
         ServerConfig.PRESCRIPTION + "&Username=$username");
-    Loading.dismiss();
     if (response != "404") {
       setState(() {
         prescriptionModels
@@ -104,6 +102,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
     } else {
       Utilities.showToast("Something went wrong");
     }
+    setState(() => isLoading = false);
   }
 
   void filter(String query) {

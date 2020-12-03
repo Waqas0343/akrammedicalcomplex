@@ -1,4 +1,5 @@
 import 'package:amc/Models/MedicineOrderModel.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:flutter/material.dart';
@@ -56,14 +57,16 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
                                 spreadRadius: 1,
                                 blurRadius: 10)
                           ]),
-                          child: FadeInImage(
+                          child: NetWorkImage(imagePath: widget.order.prescriptionPath, placeHolder: MyImages.instaFile,),
+
+                          /*FadeInImage(
                             placeholder: AssetImage(
                               MyImages.instaFile,
                             ),
                             image: NetworkImage(
                               widget.order.prescriptionPath ?? "Not Found",
                             ),
-                          ),
+                          ),*/
                         ),
                       ),
                     ),

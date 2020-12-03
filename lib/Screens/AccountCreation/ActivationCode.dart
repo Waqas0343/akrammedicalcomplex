@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:amc/Models/ActivationModel.dart';
 import 'package:amc/Screens/AccountCreation/LocationGettingScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';

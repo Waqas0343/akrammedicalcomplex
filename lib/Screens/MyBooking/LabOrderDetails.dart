@@ -1,3 +1,4 @@
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Models/SearchTeshModel.dart';
 import 'package:amc/Models/TestOrderResponseModel.dart';
@@ -124,13 +125,11 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                                 spreadRadius: 1,
                                 blurRadius: 10)
                           ]),
-                          child: FadeInImage(
-                            placeholder: AssetImage(
+                          child: NetWorkImage(
+                            placeHolder:
                               MyImages.instaFile,
-                            ),
-                            image: NetworkImage(
-                              widget.testModel.prescriptionPath ?? "Not Found",
-                            ),
+                            imagePath:
+                              widget.testModel.prescriptionPath,
                           ),
                         ),
                       ),

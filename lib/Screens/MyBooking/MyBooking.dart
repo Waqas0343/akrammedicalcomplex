@@ -7,6 +7,7 @@ import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Screens/Orders/Medicines/MyMedicineOrders.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -62,26 +63,17 @@ class _MyBookingState extends State<MyBooking> {
           },
           body: TabBarView(children: [
             ordersLoading
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CircularProgressIndicator()],
-                  )
+                ? MyLabOrderIsLoading()
                 : LabOrders(
                     orders:testOrders,
                   ),
             medicinesLoading
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [CircularProgressIndicator()],
-                )
+              ? MyMedicineOrdersIsLoading()
               : MyMedicineOrders(
                   orders: medicinesOrders,
                 ),
             appointmentLoading
-                ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [CircularProgressIndicator()],
-            )
+                ? LoadingMyAppointmentList()
                 : MyAppointments(
               appointments: appointments,
             ),
@@ -134,7 +126,7 @@ class _MyBookingState extends State<MyBooking> {
 
     String response = await Utilities.httpGet(ServerConfig.MEDICINE_ORDERS + "&username=$username");
     if (response != "404") {
-      var list = medicineOrdersFromJson(response).response.orders;
+      List<Order> list = medicineOrdersFromJson(response).response.orders;
       if (!mounted) return;
       setState(() {
         medicinesOrders.addAll(list);

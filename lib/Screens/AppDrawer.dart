@@ -1,11 +1,11 @@
 import 'package:amc/Screens/Prescription/MyPrescriptions.dart';
 import 'package:amc/Screens/Settings/AccountSettings.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Screens/Bookings/BookTreatment.dart';
 import 'package:amc/Screens/Bookings/SelectTestType.dart';
 import 'package:amc/Screens/Login.dart';
 import 'package:amc/Screens/MyBooking/MyBooking.dart';
-import 'package:amc/Screens/Privacy/PrivacyPolicy.dart';
 import 'package:amc/Screens/Settings/Settings.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyIcons.dart';
@@ -13,9 +13,7 @@ import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Widgets/drawer_list.dart';
 import 'package:amc/Screens/Orders/Medicines/MedicineOrderType.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'Doctors/FindDoctor.dart';
 import 'LabReports/LabReports.dart';
@@ -73,12 +71,10 @@ class _AppDrawerState extends State<AppDrawer> {
                                 child: ClipRRect(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(50)),
-                                  child: FadeInImage.assetNetwork(
-                                    image:
-                                        widget.imagePath ?? Keys.imageNotFound,
-                                    fit: BoxFit.cover,
-                                    placeholder: MyImages.imageNotFound,
-                                    fadeInDuration: Duration(milliseconds: 100),
+                                  child: NetWorkImage(
+                                    imagePath:
+                                        widget.imagePath,
+                                    placeHolder: MyImages.imageNotFound,
                                   ),
                                 ),
                               ),
@@ -133,7 +129,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   isDropdown: false,
                   onTap: () {
                     Route route =
-                        new MaterialPageRoute(builder: (_) => FindDoctor());
+                        new MaterialPageRoute(builder: (_) => FindDoctor(isSearching: false,));
                     Navigator.push(context, route);
                   },
                 ),

@@ -202,7 +202,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
 
   void usersLocation() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
+    // String username = preferences.getString(Keys.username);
     String area = preferences.getString(Keys.area);
     String city = preferences.getString(Keys.city);
     String address = preferences.getString(Keys.address);

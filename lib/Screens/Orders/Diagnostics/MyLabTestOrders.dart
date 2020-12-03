@@ -4,6 +4,7 @@ import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Screens/Orders/Diagnostics/LabTestOrderDetails.dart';
 import 'package:amc/Styles/MyImages.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -93,12 +94,11 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
               Text(order.datetime, style: TextStyle(fontSize: 12),),
             ],
           ),
-          leading: FadeInImage.assetNetwork(
-            placeholder: MyImages.instaFile,
-            image: order.prescriptionPath,
+          leading: NetWorkImage(
+            placeHolder: MyImages.instaFile,
+            imagePath: order.prescriptionPath,
             width: 60,
             height: MediaQuery.of(context).size.height,
-            fit: BoxFit.cover,
           ),
           trailing: Icon(Icons.arrow_forward_ios, size: 18,),
         ),

@@ -9,4 +9,5 @@ class MyColors{
   static const Color secondary_text = Color(0xFF757575);
   static const Color icons = Color(0xFFFFFFFF);
   static const Color divider = Color(0xFFBDBDBD);
+  static const highLight = Color(0xFFE0E0E0);
 }

@@ -1,10 +1,10 @@
-import 'package:amc/Models/CitiesModel.dart';
 import 'package:amc/Models/ProfileModel.dart';
 import 'package:amc/Screens/Settings/NewProfileSettings.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -47,8 +47,8 @@ class _SettingsState extends State<Settings> {
                   profile: profile,
                   cities: cities,
                 )
-              : Center(
-                  child:isLoading ? CircularProgressIndicator(): Text("Profile Not found"),
+              : isLoading ? ProfileShimmer() : Center(
+                  child: Text("Profile Not found"),
                 ),
         ),
       ),

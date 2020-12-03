@@ -7,6 +7,7 @@ import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
@@ -104,14 +105,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                               BadgePosition.bottomRight(bottom: 0, right: 0),
                           child: ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(50)),
-                            child: Container(
-                                child: FadeInImage.assetNetwork(
-                              placeholder: MyImages.user,
-                              image: imagePath ?? "notfound",
+                            child: NetWorkImage(
+                              placeHolder: MyImages.user,
+                              imagePath: imagePath,
                               height: 80,
                               width: 80,
-                              fit: BoxFit.cover,
-                            )),
+                            ),
                           ),
                         )),
                   ),

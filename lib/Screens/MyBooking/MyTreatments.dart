@@ -1,7 +1,7 @@
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
-import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Models/ServicesModel.dart';
 import 'package:amc/Models/TreatmentModel.dart';
@@ -33,12 +33,14 @@ class _MyTreatmentsState extends State<MyTreatments> {
         ),
         body: treatmentsModel.isNotEmpty
             ? treatmentsView()
-            : Center(
+            : !treatmentLoading && treatmentsModel.isEmpty ? Center(
                 child: Text(
                   "No Service Found",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-              ));
+              ) :
+        MyServicesLoading(),
+    );
   }
 
   Widget treatmentsView() {
@@ -174,31 +176,27 @@ class _MyTreatmentsState extends State<MyTreatments> {
   void getTreatments() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String username = preferences.getString(Keys.username);
-    Loading.build(context, true);
     if (!await Utilities.isOnline()) {
       Future.delayed(Duration(seconds: 1), () {
-        Loading.dismiss();
         Utilities.internetNotAvailable(context);
       });
-      treatmentLoading = false;
-      setState(() {});
+      setState(() => treatmentLoading = false);
       return;
     }
 
     String treatmentResponse = await Utilities.httpGet(ServerConfig.treatments +
         "&LocationId=${Keys.locationId}&PatientUsername=$username");
-    Loading.dismiss();
     if (treatmentResponse != "404") {
       if (!mounted) return;
       setState(() {
         var list = treatmentModelFromJson(treatmentResponse).response.response;
         treatments.addAll(list);
         treatmentsModel.addAll(treatments);
-        treatmentLoading = false;
       });
     } else {
       Utilities.showToast("Unable to load Services, try again later.");
     }
+    setState(() => treatmentLoading = false);
   }
 
   @override

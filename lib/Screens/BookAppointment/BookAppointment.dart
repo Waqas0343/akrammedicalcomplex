@@ -5,7 +5,9 @@ import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,7 +34,6 @@ class BookAppointment extends StatefulWidget {
 }
 
 class _BookAppointmentState extends State<BookAppointment> {
-  String patientName;
   int selected = 0;
   int timeSelect;
   bool isChecked = false;
@@ -55,7 +56,7 @@ class _BookAppointmentState extends State<BookAppointment> {
         padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
         child: timeSlots.isNotEmpty
             ? view()
-            : Center(child: CircularProgressIndicator()),
+            : AppointmentShimmer(),
       ),
     );
   }
@@ -68,11 +69,6 @@ class _BookAppointmentState extends State<BookAppointment> {
   }
 
   void updateUi() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    if (!mounted) return;
-    setState(() {
-      patientName = preferences.getString(Keys.name);
-    });
 
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);
@@ -104,17 +100,13 @@ class _BookAppointmentState extends State<BookAppointment> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 100,
-              width: 110,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(8)),
-                child: FadeInImage.assetNetwork(
-                  image: widget.image ?? Keys.imageNotFound,
-                  fit: BoxFit.cover,
-                  placeholder: MyImages.imageNotFound,
-                  fadeInDuration: Duration(milliseconds: 100),
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+              child: NetWorkImage(
+                imagePath: widget.image,
+                placeHolder: MyImages.imageNotFound,
+                height: 100,
+                width: 110,
               ),
             ),
             Expanded(

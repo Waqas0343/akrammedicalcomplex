@@ -7,6 +7,7 @@ import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import "package:intl/intl.dart";
@@ -39,7 +40,7 @@ class _BookTreatmentState extends State<BookTreatment> {
         title: Text(Keys.homeServices),
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? LoadingServicesList()
           : servicesModel.isNotEmpty
               ? view()
               : Center(
@@ -204,29 +205,11 @@ class _BookTreatmentState extends State<BookTreatment> {
               return Card(
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 4),
-                child: InkWell(
-                  radius: 8.0,
-                  onTap: (){
-
-                    servicesList[index].isSelected = !serviceModel.isSelected;
-
-                    bool value = serviceModel.isSelected;
-                    if (value) {
-                      selectedList.add(serviceModel);
-                    } else {
-                      selectedList.remove(serviceModel);
-                    }
-                    setState(() {
-
-                    });
-                  },
-                  child: ListTile(
-                    title: Text(serviceModel.name),
+                child: CheckboxListTile(
+                  controlAffinity: ListTileControlAffinity.leading,
+                  title: Text(serviceModel.name),
                     subtitle: Text("PKR/- " + serviceModel.fee),
-
-                    leading: Checkbox(
-                        activeColor: MyColors.primary,
-                        value: serviceModel.isSelected,
+                  value: serviceModel.isSelected,
                         onChanged: (value) {
                           if (value) {
                             selectedList.add(serviceModel);
@@ -236,9 +219,7 @@ class _BookTreatmentState extends State<BookTreatment> {
                           setState(() {
                             servicesList[index].isSelected = value;
                           });
-                        }),
-
-                  ),
+                        }
                 ),
               );
             },
