@@ -14,6 +14,7 @@ import 'package:amc/Widgets/home_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_greetings/flutter_greetings.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,6 +46,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: () => onWillPop(),
@@ -453,5 +455,11 @@ class _HomeState extends State<Home> {
       preferences.setString(Keys.googleMessageId, messageId);
       return true;
     }
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    super.dispose();
   }
 }
