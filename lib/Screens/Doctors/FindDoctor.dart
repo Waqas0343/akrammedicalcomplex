@@ -344,10 +344,11 @@ class _FindDoctorState extends State<FindDoctor> {
           onEditingComplete: () {
             nameFocus.unfocus();
             setState(() {
+              pageNo = 0;
               totalRecord = 0;
               doctors.clear();
-              checkInternet();
             });
+            checkInternet();
           },
           textInputAction: TextInputAction.search,
           maxLength: 60,
