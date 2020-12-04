@@ -36,20 +36,19 @@ class _FindDoctorState extends State<FindDoctor> {
 
   final nameController = TextEditingController();
 
-  Future<void> doctorSpecialtyDialogBox() {
-    return showDialog<void>(
+  void doctorSpecialtyDialogBox() {
+    showDialog(
       context: context,
-      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text("Select Specialty"),
           content: Container(
+            width: MediaQuery.of(context).size.width,
             child: DropdownButtonFormField(
                 isExpanded: true,
                 decoration: InputDecoration(
                   filled: false,
                   hintText: "All",
-                  hintStyle: TextStyle(color: Colors.black),
                 ),
                 style: TextStyle(
                   color: Colors.black,
@@ -78,7 +77,6 @@ class _FindDoctorState extends State<FindDoctor> {
                     nameController.clear();
                   });
                   nameFocus.unfocus();
-                  FocusScope.of(context).requestFocus(FocusNode());
                   checkInternet();
                 }),
           ),
@@ -112,9 +110,7 @@ class _FindDoctorState extends State<FindDoctor> {
             icon: cusIcon,
           ),
           IconButton(
-            onPressed: () {
-              doctorSpecialtyDialogBox();
-            },
+            onPressed: () => doctorSpecialtyDialogBox(),
             icon: Icon(
               Icons.filter_alt_sharp,
             ),
@@ -235,14 +231,6 @@ class _FindDoctorState extends State<FindDoctor> {
                       ],
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.only(right: 16),
-                  //   child: Icon(
-                  //     Icons.arrow_forward_ios,
-                  //     size: 18,
-                  //     color: Colors.grey,
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -277,53 +265,6 @@ class _FindDoctorState extends State<FindDoctor> {
               ),
             ),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          //   child: Row(
-          //     children: <Widget>[
-          //       Expanded(
-          //         flex: 1,
-          //         child: OutlineButton(
-          //           highlightElevation: 6,
-          //           highlightedBorderColor: MyColors.primary,
-          //           borderSide: BorderSide(color: MyColors.primary),
-          //           textColor: MyColors.primary,
-          //           onPressed: () {
-          //             Route route = new MaterialPageRoute(
-          //                 builder: (context) => DoctorProfile(
-          //                       username: doctorModel.username,
-          //                     ));
-          //             Navigator.push(context, route);
-          //           },
-          //           child: Text('View Profile'),
-          //         ),
-          //       ),
-          //       SizedBox(
-          //         width: 8,
-          //       ),
-          //       Expanded(
-          //         flex: 1,
-          //         child: RaisedButton(
-          //           elevation: 0,
-          //           highlightElevation: 6,
-          //           textColor: Colors.white,
-          //           onPressed: () {
-          //             Route route = new MaterialPageRoute(
-          //                 builder: (_) => BookAppointment(
-          //                       drName: doctorModel.name,
-          //                       drUsername: doctorModel.username,
-          //                       category: doctorModel.speciality,
-          //                       fee: doctorModel.fee,
-          //                       image: doctorModel.imagepath,
-          //                     ));
-          //             Navigator.push(context, route);
-          //           },
-          //           child: Text("Book Appointment"),
-          //         ),
-          //       )
-          //     ],
-          //   ),
-          // )
         ],
       ),
     );
@@ -339,7 +280,7 @@ class _FindDoctorState extends State<FindDoctor> {
             color: Colors.white,
           ),
           focusNode: nameFocus,
-          autofocus: widget.isSearching,
+          autofocus: true,
           controller: nameController,
           onEditingComplete: () {
             nameFocus.unfocus();
