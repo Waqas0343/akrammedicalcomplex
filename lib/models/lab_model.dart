@@ -16,8 +16,8 @@ class LabModel {
     this.response,
   });
 
-  Meta meta;
-  LabModelResponse response;
+  Meta? meta;
+  LabModelResponse? response;
 
   factory LabModel.fromJson(Map<String, dynamic> json) => LabModel(
     meta: Meta.fromJson(json["Meta"]),
@@ -25,8 +25,8 @@ class LabModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -35,14 +35,14 @@ class LabModelResponse {
     this.labs,
   });
 
-  List<Lab> labs;
+  List<Lab>? labs;
 
   factory LabModelResponse.fromJson(Map<String, dynamic> json) => LabModelResponse(
     labs: List<Lab>.from(json["Response"].map((x) => Lab.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(labs.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(labs!.map((x) => x.toJson())),
   };
 }
 
@@ -54,10 +54,10 @@ class Lab {
     this.testsAvailable,
   });
 
-  String username;
-  String name;
-  String imagePath;
-  String testsAvailable;
+  String? username;
+  String? name;
+  String? imagePath;
+  String? testsAvailable;
 
   factory Lab.fromJson(Map<String, dynamic> json) => Lab(
     username: json["Username"],

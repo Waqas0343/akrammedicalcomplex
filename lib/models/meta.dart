@@ -1,6 +1,6 @@
 class Meta {
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   Meta({
     this.status,

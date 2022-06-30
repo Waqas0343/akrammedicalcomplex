@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'LabTestOrderDetails.dart';
 
 class MyLabTestOrders extends StatefulWidget {
-  const MyLabTestOrders({Key key}) : super(key: key);
+  const MyLabTestOrders({Key? key}) : super(key: key);
 
   @override
   _MyLabTestOrdersState createState() => _MyLabTestOrdersState();
@@ -21,7 +21,7 @@ class MyLabTestOrders extends StatefulWidget {
 
 class _MyLabTestOrdersState extends State<MyLabTestOrders> {
 
-  List<TestOrder> orders;
+  late List<TestOrder> orders;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +50,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
   void getOrders() async{
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.USERNAME);
+    String? username = preferences.getString(Keys.USERNAME);
     if (!await Utilities.isOnline()){
       Utilities.internetNotAvailable(context);
       return;
@@ -65,7 +65,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
       var list = labTestOrdersModelFromJson(response);
 
       setState(() {
-        orders.addAll(list.response.tests);
+        orders.addAll(list.response!.tests!);
       });
     } else {
       Utilities.showToast("Someting went Wrong, try again latter");
@@ -88,12 +88,12 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
 
         },
         child: ListTile(
-          title: Text("Order #: "+order.orderId, softWrap: false ,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          title: Text("Order #: "+order.orderId!, softWrap: false ,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
           subtitle: Row(
             children: <Widget>[
-              Flexible(child: Text(order.status, softWrap: false ,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
+              Flexible(child: Text(order.status!, softWrap: false ,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
               const Icon(MdiIcons.circleSmall, color: Colors.blue,),
-              Text(order.datetime, style: const TextStyle(fontSize: 12),),
+              Text(order.datetime!, style: const TextStyle(fontSize: 12),),
             ],
           ),
           leading: NetWorkImage(

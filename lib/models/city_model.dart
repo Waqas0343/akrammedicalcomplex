@@ -5,7 +5,7 @@ Cities citiesFromJson(String str) => Cities.fromJson(json.decode(str));
 String citiesToJson(Cities data) => json.encode(data.toJson());
 
 class Cities {
-  CitiesList citiesList;
+  CitiesList? citiesList;
 
   Cities({
     this.citiesList,
@@ -16,13 +16,13 @@ class Cities {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": citiesList.toJson(),
+    "Response": citiesList!.toJson(),
   };
 }
 
 
 class CitiesList {
-  List<City> cities;
+  List<City>? cities;
 
   CitiesList({
     this.cities,
@@ -33,17 +33,17 @@ class CitiesList {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(cities.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(cities!.map((x) => x.toJson())),
   };
 }
 
 class City {
-  int totalDoctors;
-  int totalMedicalCenters;
-  String name;
-  String popularity;
-  String latitude;
-  String longitude;
+  int? totalDoctors;
+  int? totalMedicalCenters;
+  String? name;
+  String? popularity;
+  String? latitude;
+  String? longitude;
 
   City({
     this.totalDoctors,

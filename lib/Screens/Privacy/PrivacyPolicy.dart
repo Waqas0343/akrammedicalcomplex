@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PrivacyPolicy extends StatefulWidget {
-  const PrivacyPolicy({Key key}) : super(key: key);
+  const PrivacyPolicy({Key? key}) : super(key: key);
 
   @override
   _PrivacyPolicyState createState() => _PrivacyPolicyState();
 }
 
 class _PrivacyPolicyState extends State<PrivacyPolicy> {
-  WebViewController controller;
+  WebViewController? controller;
 
   bool isLoading = true;
 

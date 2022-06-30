@@ -4,7 +4,7 @@ description: A application for AMC
 version: 1.0.3+4
 
 environment:
-  sdk: ">=2.11.0 <3.0.0"
+  sdk: '>=2.16.2 <3.0.0'
 
 dependencies:
   flutter:
@@ -21,17 +21,14 @@ dependencies:
   auto_size_text: ^3.0.0
   flare_flutter: ^3.0.2
   flutter_pdfview: ^1.0.3+3
-  flutter_greetings: ^1.0.1
   path_provider: ^2.0.9
   material_design_icons_flutter: ^5.0.6595
   email_validator: ^2.0.1
   badges: ^2.0.2
   webview_flutter: ^3.0.2
-  progress_dialog: ^1.2.4
   firebase_messaging: ^11.2.13
   flutter_local_notifications: ^9.4.0
   sqflite: ^2.0.2
-  file_utils: ^1.0.1
   percent_indicator: 4.0.0
   url_launcher: ^6.0.20
   shimmer: ^2.0.0

@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import '../LabReports/ViewReport.dart';
 
 class LabOrderDetails extends StatefulWidget {
-  final TestModel testModel;
+  final TestModel? testModel;
 
-  const LabOrderDetails({Key key, this.testModel}) : super(key: key);
+  const LabOrderDetails({Key? key, this.testModel}) : super(key: key);
 
   @override
   _LabOrderDetailsState createState() => _LabOrderDetailsState();
@@ -24,14 +24,14 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("Order # ${widget.testModel.orderId}"),
+        title: Text("Order # ${widget.testModel!.orderId}"),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             orderDetails(),
-            widget.testModel.testList == null ? const SizedBox.shrink() : testCard(),
-            widget.testModel.attachmentsResults == null
+            widget.testModel!.testList == null ? const SizedBox.shrink() : testCard(),
+            widget.testModel!.attachmentsResults == null
                 ? const SizedBox.shrink()
                 : viewReport(),
           ],
@@ -41,14 +41,14 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
   }
 
   Widget makeList(BuildContext context, int index) {
-    Test test = widget.testModel.testList[index];
+    Test test = widget.testModel!.testList![index];
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       title: AutoSizeText(
-        test.testName,
+        test.testName!,
         maxLines: 1,
       ),
-      subtitle: Text(test.fee.replaceAll("Rs/-", "PKR/-")),
+      subtitle: Text(test.fee!.replaceAll("Rs/-", "PKR/-")),
       leading: SizedBox(
           width: 30,
           child: Align(
@@ -91,7 +91,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                 physics: const ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) =>
                     makeList(context, index),
-                itemCount: widget.testModel.testList.length,
+                itemCount: widget.testModel!.testList!.length,
               ),
             ),
           )
@@ -109,7 +109,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            widget.testModel.testList == null
+            widget.testModel!.testList == null
                 ? Align(
                     alignment: Alignment.center,
                     child: Padding(
@@ -129,7 +129,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                             placeHolder:
                               MyImages.instaFile,
                             imagePath:
-                              widget.testModel.prescriptionPath,
+                              widget.testModel!.prescriptionPath,
                           ),
                         ),
                       ),
@@ -158,7 +158,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      widget.testModel.status,
+                      widget.testModel!.status!,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   )
@@ -177,7 +177,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(widget.testModel.name),
+                    child: Text(widget.testModel!.name!),
                   )
                 ],
               ),
@@ -194,7 +194,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(widget.testModel.phone),
+                    child: Text(widget.testModel!.phone!),
                   )
                 ],
               ),
@@ -211,7 +211,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(widget.testModel.location ?? ""),
+                    child: Text(widget.testModel!.location ?? ""),
                   )
                 ],
               ),
@@ -235,8 +235,8 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
         onTap: () {
           Route route = MaterialPageRoute(
               builder: (_) => ViewReport(
-                    path: widget.testModel.attachmentsResults,
-                    name: widget.testModel.orderId,
+                    path: widget.testModel!.attachmentsResults,
+                    name: widget.testModel!.orderId,
                   ));
           Navigator.push(context, route);
         },

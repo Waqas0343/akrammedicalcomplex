@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 
 class TestType extends StatelessWidget {
-  const TestType({Key key}) : super(key: key);
+  const TestType({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

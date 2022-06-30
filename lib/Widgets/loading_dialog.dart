@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 
 class Loading {
 
-  static ProgressDialog pr;
-
   static build(BuildContext context, bool isDismissible){
-    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: isDismissible);
-    pr.style(
-      message: 'Please Wait...',
-      insetAnimCurve: Curves.easeOut,
-      progressWidget: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: CircularProgressIndicator(),
-      ),
-    );
-
-    pr.show();
+    // TODO: loading progress dialog
   }
 
   static dismiss(){
-    pr.hide();
+    // TODO: loading progress dialog dismiss
+
   }
 }

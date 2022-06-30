@@ -11,7 +11,7 @@ AppointmentModel appointmentModelFromJson(String str) => AppointmentModel.fromJs
 String appointmentModelToJson(AppointmentModel data) => json.encode(data.toJson());
 
 class AppointmentModel {
-  AppointmentsResponse response;
+  AppointmentsResponse? response;
 
   AppointmentModel({
     this.response,
@@ -22,13 +22,13 @@ class AppointmentModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
 
 class AppointmentsResponse {
-  List<Appointment> appointmentList;
+  List<Appointment>? appointmentList;
 
   AppointmentsResponse({
     this.appointmentList,
@@ -39,24 +39,24 @@ class AppointmentsResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(appointmentList.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(appointmentList!.map((x) => x.toJson())),
   };
 }
 
 class Appointment {
-  String id;
-  String patientUsername;
-  String doctorName;
-  String date;
-  String dateFormatted;
-  String time;
-  String location;
-  String reason;
-  String notes;
-  String status;
-  String doctorImage;
+  String? id;
+  String? patientUsername;
+  String? doctorName;
+  String? date;
+  String? dateFormatted;
+  String? time;
+  String? location;
+  String? reason;
+  String? notes;
+  String? status;
+  String? doctorImage;
   Color statusColor = Colors.orangeAccent;
-  bool providedByInstacare;
+  bool? providedByInstacare;
 
   Appointment({
     this.id,
@@ -110,12 +110,12 @@ class Appointment {
 
   Color getStatusColor() {
     if (status != null) {
-      if (status
+      if (status!
           .trim()
           .isNotEmpty) {
-        if (status.toLowerCase() == "pending") {
+        if (status!.toLowerCase() == "pending") {
           return Colors.blue;
-        } else if (status.toLowerCase() == "cancelled") {
+        } else if (status!.toLowerCase() == "cancelled") {
           return Colors.red;
         }
       }

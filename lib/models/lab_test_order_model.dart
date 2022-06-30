@@ -12,8 +12,8 @@ class LabTestOrdersModel {
     this.response,
   });
 
-  Meta meta;
-  LabTestOrdersModelResponse response;
+  Meta? meta;
+  LabTestOrdersModelResponse? response;
 
   factory LabTestOrdersModel.fromJson(Map<String, dynamic> json) => LabTestOrdersModel(
     meta: Meta.fromJson(json["Meta"]),
@@ -21,8 +21,8 @@ class LabTestOrdersModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -31,14 +31,14 @@ class LabTestOrdersModelResponse {
     this.tests,
   });
 
-  List<TestOrder> tests;
+  List<TestOrder>? tests;
 
   factory LabTestOrdersModelResponse.fromJson(Map<String, dynamic> json) => LabTestOrdersModelResponse(
     tests: List<TestOrder>.from(json["Response"].map((x) => TestOrder.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(tests.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(tests!.map((x) => x.toJson())),
   };
 }
 
@@ -61,21 +61,21 @@ class TestOrder {
     this.datetime,
   });
 
-  int id;
-  String orderId;
-  String name;
-  String phone;
-  String email;
-  String prescriptionPath;
-  String labId;
-  String location;
-  String area;
-  String city;
-  String prescriptionString;
-  List<Test> testList;
-  String prescriptionType;
-  String status;
-  String datetime;
+  int? id;
+  String? orderId;
+  String? name;
+  String? phone;
+  String? email;
+  String? prescriptionPath;
+  String? labId;
+  String? location;
+  String? area;
+  String? city;
+  String? prescriptionString;
+  List<Test>? testList;
+  String? prescriptionType;
+  String? status;
+  String? datetime;
 
   factory TestOrder.fromJson(Map<String, dynamic> json) => TestOrder(
     id: json["ID"],

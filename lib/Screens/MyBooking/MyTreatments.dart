@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyTreatments extends StatefulWidget {
-  const MyTreatments({Key key}) : super(key: key);
+  const MyTreatments({Key? key}) : super(key: key);
 
   @override
   _MyTreatmentsState createState() => _MyTreatmentsState();
 }
 
 class _MyTreatmentsState extends State<MyTreatments> {
-  List<TreatmentData> treatments;
+  late List<TreatmentData> treatments;
   final List<TreatmentData> treatmentsModel = [];
   bool treatmentLoading = true;
 
@@ -82,12 +82,12 @@ class _MyTreatmentsState extends State<MyTreatments> {
                         children: [
                           ListTile(
                             title: AutoSizeText(
-                              "Order Id # " + treatmentData.id,
+                              "Order Id # " + treatmentData.id!,
                               style: const TextStyle(fontWeight: FontWeight.bold,),
                               maxLines: 1,
                             ),
                             subtitle: Text(
-                              treatmentData.status,
+                              treatmentData.status!,
                               style: TextStyle(
                                 color: treatmentData.getStatusColor(),
                               ),
@@ -110,14 +110,14 @@ class _MyTreatmentsState extends State<MyTreatments> {
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   ServiceModel model =
-                                      treatmentData.details[index];
+                                      treatmentData.details![index];
                                   return ListTile(
                                     dense: true,
-                                    title: Text(model.name),
-                                    subtitle: Text("PKR/- " + model.fee),
+                                    title: Text(model.name!),
+                                    subtitle: Text("PKR/- " + model.fee!),
                                   );
                                 },
-                                itemCount: treatmentData.details.length,
+                                itemCount: treatmentData.details!.length,
                               ))
                         ],
                       ),
@@ -147,8 +147,8 @@ class _MyTreatmentsState extends State<MyTreatments> {
       bool isAdded = false;
       for (var item in treatmentsModel) {
         if (item.details != null) {
-          for (var element in item.details) {
-            String name = element.name.toLowerCase();
+          for (var element in item.details!) {
+            String name = element.name!.toLowerCase();
 
             if (name.contains(query.toLowerCase()) && !isAdded) {
               dummyListData.add(item);
@@ -175,7 +175,7 @@ class _MyTreatmentsState extends State<MyTreatments> {
 
   void getTreatments() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
+    String? username = preferences.getString(Keys.username);
     if (!await Utilities.isOnline()) {
       Future.delayed(const Duration(seconds: 1), () {
         Utilities.internetNotAvailable(context);
@@ -189,7 +189,7 @@ class _MyTreatmentsState extends State<MyTreatments> {
     if (treatmentResponse != "404") {
       if (!mounted) return;
       setState(() {
-        var list = treatmentModelFromJson(treatmentResponse).response.response;
+        var list = treatmentModelFromJson(treatmentResponse).response!.response!;
         treatments.addAll(list);
         treatmentsModel.addAll(treatments);
       });

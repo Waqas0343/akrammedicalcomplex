@@ -21,16 +21,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MedicineOrderPlace extends StatefulWidget {
   final bool isPrescription;
 
-  const MedicineOrderPlace(this.isPrescription,{Key key}) : super(key: key);
-
+  const MedicineOrderPlace(this.isPrescription, {Key? key}) : super(key: key);
 
   @override
   _MedicineOrderPlaceState createState() => _MedicineOrderPlaceState();
 }
 
 class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
-  File file;
-  String prescriptionPath, username, buttonText = "Place Order";
+  File? file;
+  String? prescriptionPath, username, buttonText = "Place Order";
   bool isTaped = true;
   List<PrescriptionConverterModel> medicines = [];
   String phoneError = "Phone can't be Empty";
@@ -75,7 +74,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                 child: ElevatedButton(
                   onPressed: isTaped ? () => placeOrder() : null,
                   child: Text(
-                    buttonText,
+                    buttonText!,
                   ),
                 ),
               )
@@ -104,7 +103,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                     ),
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Image.file(
-                      file,
+                      file!,
                     ),
                   ),
                 ),
@@ -136,7 +135,8 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                           percent: uploadingValue,
                           center: Text(
                             "${(uploadingValue * 100).toInt()} %",
-                            style: const TextStyle(color: Colors.white, fontSize: 12),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 12),
                           ),
                           barRadius: const Radius.circular(8),
                           progressColor: MyColors.primary,
@@ -152,84 +152,84 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   Widget uploadPrescriptionActions() {
     return widget.isPrescription && file == null
         ? Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Card(
-                margin: const EdgeInsets.all(0),
-                elevation: 2,
-                color: Colors.white,
-                child: InkWell(
-                  onTap: () async {
-                    var image =
-                        await _picker.pickImage(source: ImageSource.camera);
-                    if (image != null) {
-                      setState(() {
-                        file = File(image.path);
-                      });
-                      uploadImage(file);
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: const <Widget>[
-                        Icon(
-                          Icons.camera,
-                          size: 38,
-                          color: MyColors.primary,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text("Camera"),
-                      ],
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Card(
+                  margin: const EdgeInsets.all(0),
+                  elevation: 2,
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () async {
+                      var image =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        setState(() {
+                          file = File(image.path);
+                        });
+                        uploadImage(file!);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.camera,
+                            size: 38,
+                            color: MyColors.primary,
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text("Camera"),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              width: 8,
-            ),
-            Expanded(
-              flex: 1,
-              child: Card(
-                elevation: 2,
-                margin: const EdgeInsets.all(0),
-                color: Colors.white,
-                child: InkWell(
-                  onTap: () async {
-                    var image =
-                        await _picker.pickImage(source: ImageSource.gallery);
-                    if (image != null) {
-                      setState(() {
-                        file = File(image.path);
-                      });
-                      uploadImage(file);
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: const <Widget>[
-                        Icon(
-                          Icons.image,
-                          size: 38,
-                          color: MyColors.primary,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text("Gallery"),
-                      ],
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                flex: 1,
+                child: Card(
+                  elevation: 2,
+                  margin: const EdgeInsets.all(0),
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () async {
+                      var image =
+                          await _picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        setState(() {
+                          file = File(image.path);
+                        });
+                        uploadImage(file!);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.image,
+                            size: 38,
+                            color: MyColors.primary,
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text("Gallery"),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
-        )
+            ],
+          )
         : const SizedBox.shrink();
   }
 
@@ -283,7 +283,9 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             FocusScope.of(context).requestFocus(emailFocus);
           },
           focusNode: phoneFocus,
-          inputFormatters: [Utilities.onlyNumberFormat(),],
+          inputFormatters: [
+            Utilities.onlyNumberFormat(),
+          ],
           onChanged: (text) {
             if (text.trim().isNotEmpty) {
               if (Utilities.numberHasValid(text)) {
@@ -314,12 +316,12 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
           },
           onChanged: (text) {
             if (text.trim().isNotEmpty) {
-                bool validate = EmailValidator.validate(text);
-                if (validate) {
-                  setState(() {
-                    emailValidate = false;
-                  });
-                }
+              bool validate = EmailValidator.validate(text);
+              if (validate) {
+                setState(() {
+                  emailValidate = false;
+                });
+              }
             }
           },
           focusNode: emailFocus,
@@ -364,7 +366,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   Widget selectMedicines() {
     return !widget.isPrescription
         ? Card(
-      margin: EdgeInsets.zero,
+            margin: EdgeInsets.zero,
             elevation: 2,
             child: Column(
               children: <Widget>[
@@ -379,8 +381,8 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                     },
                     noItemsFoundBuilder: (context) {
                       return const Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         child: Text(
                           "No Medicine Found!",
                           style: TextStyle(fontSize: 18, color: Colors.grey),
@@ -390,9 +392,9 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                     itemBuilder: (context, ProductDetail suggestion) {
                       return ListTile(
                         dense: true,
-                        subtitle: Text("PKR/- " + suggestion.price),
+                        subtitle: Text("PKR/- " + suggestion.price!),
                         title: AutoSizeText(
-                          suggestion.name,
+                          suggestion.name!,
                           maxLines: 1,
                         ),
                       );
@@ -422,7 +424,9 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   Widget medicineList() {
     return medicines.isNotEmpty
         ? Card(
-            margin: const EdgeInsets.only(top: 8.0,),
+            margin: const EdgeInsets.only(
+              top: 8.0,
+            ),
             child: ListView.builder(
               shrinkWrap: true,
               physics: const ScrollPhysics(),
@@ -432,10 +436,10 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   title: AutoSizeText(
-                    medicines[index].productName,
+                    medicines[index].productName!,
                     maxLines: 1,
                   ),
-                  subtitle: Text("PKR " + medicines[index].productPrice),
+                  subtitle: Text("PKR " + medicines[index].productPrice!),
                   trailing: IconButton(
                       icon: const Icon(Icons.cancel),
                       onPressed: () {
@@ -465,7 +469,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
         await Utilities.httpGet(ServerConfig.otcMedicines + "&name=$name");
     List<ProductDetail> list = [];
     if (response != "404") {
-      list = otcMedicinesFromJson(response).response.otcMedicines;
+      list = otcMedicinesFromJson(response).response!.otcMedicines!;
     }
     return list;
   }
@@ -477,8 +481,8 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
     String phone = phoneController.text.trim();
     String email = emailController.text.trim();
     String location = locationController.text.trim();
-    String username = preferences.getString(Keys.USERNAME);
-    String medicinesString;
+    String? username = preferences.getString(Keys.USERNAME);
+    String? medicinesString;
 
     if (!await Utilities.isOnline()) {
       enableButton();
@@ -558,13 +562,15 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
       "OrderList": medicinesString,
     });
 
-    Response response;
+    Response? response;
 
     String values =
-        "&FullName=$name&username=$username&address=$location&Phone=$phone" "&Email=$email&PaymentMethod=Cash On Delivery&Source=${Keys.source}&attachment=$prescriptionPath" "&ReferanceBy=${Keys.locationId}";
+        "&FullName=$name&username=$username&address=$location&Phone=$phone"
+        "&Email=$email&PaymentMethod=Cash On Delivery&Source=${Keys.source}&attachment=$prescriptionPath"
+        "&ReferanceBy=${Keys.locationId}";
     try {
-      response = await dio.post(ServerConfig.medicineOrderPlace + values,
-          data: data);
+      response =
+          await dio.post(ServerConfig.medicineOrderPlace + values, data: data);
     } catch (e) {
       print(e);
     }
@@ -598,7 +604,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
       "file": await MultipartFile.fromFile(file.path, filename: 'file.jpg'),
     });
 
-    Response response;
+    Response? response;
     try {
       response = await dio.post(
         ServerConfig.uploadImages,
@@ -651,10 +657,10 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   void getPrefrences() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     username = preferences.getString(Keys.USERNAME);
-    nameController.text = preferences.getString(Keys.name);
-    phoneController.text = preferences.getString(Keys.phone);
-    emailController.text = preferences.getString(Keys.email);
-    locationController.text = preferences.getString(Keys.address);
+    nameController.text = preferences.getString(Keys.name)!;
+    phoneController.text = preferences.getString(Keys.phone)!;
+    emailController.text = preferences.getString(Keys.email)!;
+    locationController.text = preferences.getString(Keys.address)!;
   }
 
   @override

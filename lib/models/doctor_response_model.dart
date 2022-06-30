@@ -16,14 +16,14 @@ class DoctorModel {
     this.response,
   });
 
-  DoctorModelResponse response;
+  DoctorModelResponse? response;
 
   factory DoctorModel.fromJson(Map<String, dynamic> json) => DoctorModel(
     response: DoctorModelResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -33,14 +33,14 @@ class DoctorModelResponse {
     this.response,
   });
 
-  ResponseResponse response;
+  ResponseResponse? response;
 
   factory DoctorModelResponse.fromJson(Map<String, dynamic> json) => DoctorModelResponse(
     response: ResponseResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -49,7 +49,7 @@ class ResponseResponse {
     this.data,
   });
 
-  List<ResponseDetail> data;
+  List<ResponseDetail>? data;
 
   factory ResponseResponse.fromJson(Map<String, dynamic> json) => ResponseResponse(
 
@@ -58,7 +58,7 @@ class ResponseResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
   };
 }
 
@@ -77,17 +77,17 @@ class ResponseDetail {
     this.onlineStatus,
   });
 
-  String username;
-  String name;
-  String imagepath;
-  String speciality;
-  String fee;
-  String practiceName;
-  String practiceId;
-  String practiceLogo;
-  String location;
-  bool isTeleMedicineProvider;
-  bool onlineStatus;
+  String? username;
+  String? name;
+  String? imagepath;
+  String? speciality;
+  String? fee;
+  String? practiceName;
+  String? practiceId;
+  String? practiceLogo;
+  String? location;
+  bool? isTeleMedicineProvider;
+  bool? onlineStatus;
 
   factory ResponseDetail.fromJson(Map<String, dynamic> json) => ResponseDetail(
     username: json["username"],
@@ -125,7 +125,7 @@ DoctorProfileModel doctorProfileFromJson(String str) => DoctorProfileModel.fromJ
 String doctorProfileToJson(DoctorProfileModel data) => json.encode(data.toJson());
 
 class DoctorProfileModel {
-  DoctorProfileResponse doctorProfileResponse;
+  DoctorProfileResponse? doctorProfileResponse;
 
   DoctorProfileModel({
     this.doctorProfileResponse,
@@ -136,12 +136,12 @@ class DoctorProfileModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": doctorProfileResponse.toJson(),
+    "Response": doctorProfileResponse!.toJson(),
   };
 }
 
 class DoctorProfileResponse {
-  DocProfile docProfile;
+  DocProfile? docProfile;
 
   DoctorProfileResponse({
     this.docProfile,
@@ -152,41 +152,41 @@ class DoctorProfileResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": docProfile.toJson(),
+    "Response": docProfile!.toJson(),
   };
 }
 
 class DocProfile {
-  String username;
-  String about;
-  String registrationNo;
-  String registrationType;
-  String verificationMethod;
-  String videoUrl;
-  String facebookUrl;
-  String twitterUrl;
-  String linkedInUrl;
-  String googlePlusUrl;
-  String workingSince;
-  String experience;
-  bool onboard;
-  String featured;
-  String name;
-  String phone;
-  String imagePath;
-  String email;
-  String background;
-  bool status;
-  bool isOnline;
-  bool isTeleMedicineProvider;
+  String? username;
+  String? about;
+  String? registrationNo;
+  String? registrationType;
+  String? verificationMethod;
+  String? videoUrl;
+  String? facebookUrl;
+  String? twitterUrl;
+  String? linkedInUrl;
+  String? googlePlusUrl;
+  String? workingSince;
+  String? experience;
+  bool? onboard;
+  String? featured;
+  String? name;
+  String? phone;
+  String? imagePath;
+  String? email;
+  String? background;
+  bool? status;
+  bool? isOnline;
+  bool? isTeleMedicineProvider;
   dynamic bookmarked;
-  List<dynamic> timeSlots;
-  Category speciality;
-  List<String> qualifications;
-  List<Assosiation> assosiations;
-  List<Review> reviews;
+  List<dynamic>? timeSlots;
+  Category? speciality;
+  List<String>? qualifications;
+  List<Assosiation>? assosiations;
+  List<Review>? reviews;
   dynamic averageRating;
-  List<Service> services;
+  List<Service>? services;
   dynamic addresses;
 
   DocProfile({
@@ -279,13 +279,13 @@ class DocProfile {
     "Background": background,
     "Status": status,
     "Bookmarked": bookmarked,
-    "TimeSlots": List<dynamic>.from(timeSlots.map((x) => x)),
-    "Speciality": speciality.toJson(),
-    "Qualifications": List<dynamic>.from(qualifications.map((x) => x)),
-    "Assosiations": List<dynamic>.from(assosiations.map((x) => x.toJson())),
-    "Reviews": List<Review>.from(reviews.map((x) => x)),
+    "TimeSlots": List<dynamic>.from(timeSlots!.map((x) => x)),
+    "Speciality": speciality!.toJson(),
+    "Qualifications": List<dynamic>.from(qualifications!.map((x) => x)),
+    "Assosiations": List<dynamic>.from(assosiations!.map((x) => x.toJson())),
+    "Reviews": List<Review>.from(reviews!.map((x) => x)),
     "average_rating": averageRating,
-    "Services": List<dynamic>.from(services.map((x) => x.toJson())),
+    "Services": List<dynamic>.from(services!.map((x) => x.toJson())),
     "addresses": addresses,
     "IsTeleMedicineProvider": isTeleMedicineProvider,
     "OnlineStatus": isOnline,
@@ -293,38 +293,38 @@ class DocProfile {
 }
 
 class Assosiation {
-  String locationId;
-  String location;
-  String city;
-  String lat;
+  String? locationId;
+  String? location;
+  String? city;
+  String? lat;
   dynamic lng;
-  String fullAddress;
-  String logo;
-  bool isMonday;
-  String minMonday;
-  String maxMonday;
-  bool isTuesday;
-  String minTuesday;
-  String maxTuesday;
-  bool isWednesday;
-  String minWednesday;
-  String maxWednesday;
-  bool isThursday;
-  String minThursday;
-  String maxThursday;
-  bool isFriday;
-  String minFriday;
-  String maxFriday;
-  bool isSaturday;
-  String minSaturday;
-  String maxSaturday;
-  bool isSunday;
-  String minSunday;
-  String maxSunday;
-  String regularCharges;
-  String videoCharges;
-  String type;
-  Weeklyschedule weeklyschedule;
+  String? fullAddress;
+  String? logo;
+  bool? isMonday;
+  String? minMonday;
+  String? maxMonday;
+  bool? isTuesday;
+  String? minTuesday;
+  String? maxTuesday;
+  bool? isWednesday;
+  String? minWednesday;
+  String? maxWednesday;
+  bool? isThursday;
+  String? minThursday;
+  String? maxThursday;
+  bool? isFriday;
+  String? minFriday;
+  String? maxFriday;
+  bool? isSaturday;
+  String? minSaturday;
+  String? maxSaturday;
+  bool? isSunday;
+  String? minSunday;
+  String? maxSunday;
+  String? regularCharges;
+  String? videoCharges;
+  String? type;
+  Weeklyschedule? weeklyschedule;
 
   Assosiation({
     this.locationId,
@@ -428,19 +428,19 @@ class Assosiation {
     "RegularCharges": regularCharges,
     "VideoCharges": videoCharges,
     "type": type,
-    "weeklyschedule": weeklyschedule.toJson(),
+    "weeklyschedule": weeklyschedule!.toJson(),
   };
 }
 
 class Weeklyschedule {
-  String monday;
-  String tuesday;
-  String wednesday;
-  String thursday;
-  String friday;
-  String saturday;
-  String sunday;
-  String today;
+  String? monday;
+  String? tuesday;
+  String? wednesday;
+  String? thursday;
+  String? friday;
+  String? saturday;
+  String? sunday;
+  String? today;
 
   Weeklyschedule({
     this.monday,
@@ -477,10 +477,10 @@ class Weeklyschedule {
 }
 
 class Service {
-  int id;
-  String name;
-  String description;
-  String charges;
+  int? id;
+  String? name;
+  String? description;
+  String? charges;
 
   Service({
     this.id,
@@ -519,17 +519,17 @@ class Review {
     this.status,
   });
 
-  String patientName;
-  String imagePath;
-  int id;
-  String patientUsername;
-  String spUsername;
+  String? patientName;
+  String? imagePath;
+  int? id;
+  String? patientUsername;
+  String? spUsername;
   dynamic rating;
-  String title;
-  String description;
-  DateTime timeStamp;
-  bool isRecommended;
-  String status;
+  String? title;
+  String? description;
+  DateTime? timeStamp;
+  bool? isRecommended;
+  String? status;
 
   factory Review.fromJson(Map<String, dynamic> json) => Review(
     patientName: json["PatientName"],
@@ -554,7 +554,7 @@ class Review {
     "Rating": rating,
     "Title": title,
     "Description": description,
-    "TimeStamp": timeStamp.toIso8601String(),
+    "TimeStamp": timeStamp!.toIso8601String(),
     "isRecommended": isRecommended,
     "status": status,
   };

@@ -8,7 +8,7 @@ import '../Privacy/PrivacyPolicy.dart';
 import '../home.dart';
 
 class AccountCompletion extends StatefulWidget {
-  const AccountCompletion({Key key}) : super(key: key);
+  const AccountCompletion({Key? key}) : super(key: key);
 
   @override
   _AccountCompletionState createState() => _AccountCompletionState();

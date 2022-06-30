@@ -14,7 +14,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key key}) : super(key: key);
+  const SignUp({Key? key}) : super(key: key);
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -41,7 +41,7 @@ class _SignUpState extends State<SignUp> {
   String userNameError = "Username can't be empty";
   String phoneError = "Phone can't be Empty";
 
-  SharedPreferences preferences;
+  late SharedPreferences preferences;
   bool visible = true;
 
   bool isTaped = true;
@@ -357,11 +357,11 @@ class _SignUpState extends State<SignUp> {
     String response = await Utilities.httpPost(ServerConfig.signUp + values);
     Loading.dismiss();
     if (response != "404") {
-      User user = loginFromJson(response).response.user;
-      preferences.setString(Keys.phone, user.phone);
+      User user = loginFromJson(response).response!.user!;
+      preferences.setString(Keys.phone, user.phone!);
       preferences.setString(Keys.password, password);
-      preferences.setString(Keys.username, user.username);
-      preferences.setString(Keys.name, user.name);
+      preferences.setString(Keys.username, user.username!);
+      preferences.setString(Keys.name, user.name!);
 
 
       Route route = MaterialPageRoute(builder: (context) => AccountActivation(user.phone));

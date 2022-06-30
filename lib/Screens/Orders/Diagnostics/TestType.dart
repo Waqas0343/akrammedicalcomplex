@@ -7,7 +7,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'BookLabTest.dart';
 
 class LabTestType extends StatelessWidget {
-  const LabTestType({Key key}) : super(key: key);
+  const LabTestType({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

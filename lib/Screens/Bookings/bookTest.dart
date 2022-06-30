@@ -19,24 +19,24 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookTest extends StatefulWidget {
-  final bool isPrescription;
+  final bool? isPrescription;
 
-  const BookTest({Key key, this.isPrescription}) : super(key: key);
+  const BookTest({Key? key, this.isPrescription}) : super(key: key);
 
   @override
   _BookTestState createState() => _BookTestState();
 }
 
 class _BookTestState extends State<BookTest> {
-  File file;
-  String prescriptionPath, username;
-  SharedPreferences preferences;
+  File? file;
+  String? prescriptionPath, username;
+  late SharedPreferences preferences;
 
   List<Test> chooseTestList = [];
 
   final _picker = ImagePicker();
 
-  String title, hint, book, patientDetails;
+  String title = "", hint= "", book= "", patientDetails= "";
 
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
@@ -112,7 +112,7 @@ class _BookTestState extends State<BookTest> {
                     ]),
                     padding: const EdgeInsets.only(bottom: 12),
                     child: Image.file(
-                      file,
+                      file!,
                     ),
                   ),
                 ),
@@ -154,7 +154,7 @@ class _BookTestState extends State<BookTest> {
   }
 
   Widget uploadPrescriptionActions() {
-    return widget.isPrescription && file == null
+    return widget.isPrescription! && file == null
         ? Row(
         children: <Widget>[
           Expanded(
@@ -171,7 +171,7 @@ class _BookTestState extends State<BookTest> {
                     setState(() {
                       file = File(image.path);
                     });
-                    uploadImage(file);
+                    uploadImage(file!);
                   }
                 },
                 child: Padding(
@@ -210,7 +210,7 @@ class _BookTestState extends State<BookTest> {
                     setState(() {
                       file = File(image.path);
                     });
-                    uploadImage(file);
+                    uploadImage(file!);
                   }
                 },
                 child: Padding(
@@ -363,7 +363,7 @@ class _BookTestState extends State<BookTest> {
   }
 
   Widget selectTest() {
-    return !widget.isPrescription
+    return !widget.isPrescription!
         ? Card(
             elevation: 2,
             margin: const EdgeInsets.all(0),
@@ -383,16 +383,16 @@ class _BookTestState extends State<BookTest> {
                     },
                     errorBuilder: (context, error) {
                       return null;
-                    },
+                    } as Widget Function(BuildContext, Object?)?,
                     suggestionsCallback: (name) async {
                       return await searchTest(name.isEmpty ? "l" : name);
                     },
                     itemBuilder: (context, Test test) {
                       return ListTile(
                         dense: true,
-                        subtitle: Text(test.fee.replaceAll("Rs/-", "PKR/-")),
+                        subtitle: Text(test.fee!.replaceAll("Rs/-", "PKR/-")),
                         title: AutoSizeText(
-                          test.testName,
+                          test.testName!,
                           maxLines: 1,
                         ),
                       );
@@ -423,10 +423,10 @@ class _BookTestState extends State<BookTest> {
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   title: AutoSizeText(
-                    chooseTestList[index].testName,
+                    chooseTestList[index].testName!,
                     maxLines: 1,
                   ),
-                  subtitle: Text(chooseTestList[index].fee.replaceAll("Rs/-", "PKR/-")),
+                  subtitle: Text(chooseTestList[index].fee!.replaceAll("Rs/-", "PKR/-")),
                   trailing: IconButton(
                       icon: const Icon(Icons.cancel),
                       onPressed: () {
@@ -456,7 +456,7 @@ class _BookTestState extends State<BookTest> {
     List<Test> list = [];
     if (response != "404") {
       list.addAll(
-          searchLabTestModelFromJson(response).response.response.testsList);
+          searchLabTestModelFromJson(response).response!.response!.testsList!);
     }
     return list;
   }
@@ -473,7 +473,7 @@ class _BookTestState extends State<BookTest> {
       "file": await MultipartFile.fromFile(file.path, filename: 'file.jpg'),
     });
 
-    Response response;
+    Response? response;
     try {
       response = await dio.post(
         ServerConfig.uploadImages,
@@ -507,10 +507,10 @@ class _BookTestState extends State<BookTest> {
   void getPreferences() async {
     preferences = await SharedPreferences.getInstance();
     username = preferences.getString(Keys.username);
-    nameController.text = preferences.getString(Keys.name);
-    phoneController.text = preferences.getString(Keys.phone);
-    emailController.text = preferences.getString(Keys.email);
-    locationController.text = preferences.getString(Keys.address);
+    nameController.text = preferences.getString(Keys.name)!;
+    phoneController.text = preferences.getString(Keys.phone)!;
+    emailController.text = preferences.getString(Keys.email)!;
+    locationController.text = preferences.getString(Keys.address)!;
   }
 
   @override
@@ -530,8 +530,8 @@ class _BookTestState extends State<BookTest> {
     String phone = phoneController.text.trim();
     String email = emailController.text.trim();
     String location = locationController.text.trim();
-    String username = this.username;
-    String testString;
+    String? username = this.username;
+    String? testString;
 
     nameFocus.unfocus();
     phoneFocus.unfocus();
@@ -586,7 +586,7 @@ class _BookTestState extends State<BookTest> {
       return;
     }
 
-    if (widget.isPrescription) {
+    if (widget.isPrescription!) {
       if (file == null) {
         enableButton();
         Utilities.showToast("Please Upload Prescription");
@@ -624,7 +624,7 @@ class _BookTestState extends State<BookTest> {
 
     Dio dio = Dio();
 
-    Response response;
+    Response? response;
     try {
       debugPrint(ServerConfig.bookLabTest + values);
       response =

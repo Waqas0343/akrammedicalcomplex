@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomeWidget extends StatelessWidget {
-  final String icon;
-  final String title;
-  final VoidCallback onTap;
+  final String? icon;
+  final String? title;
+  final VoidCallback? onTap;
 
-  const HomeWidget({Key key, this.icon, this.title, this.onTap}) : super(key: key);
+  const HomeWidget({Key? key, this.icon, this.title, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,9 +18,9 @@ class HomeWidget extends StatelessWidget {
         color: Colors.transparent,
         child: Column(
           children: [
-            SvgPicture.asset(icon, height: 40,),
+            SvgPicture.asset(icon!, height: 40,),
             const SizedBox(height: 8,),
-            Text(title, textAlign: TextAlign.center,style: const TextStyle(fontWeight: FontWeight.bold, height: 1.3, fontSize: 12),maxLines: 2,)
+            Text(title!, textAlign: TextAlign.center,style: const TextStyle(fontWeight: FontWeight.bold, height: 1.3, fontSize: 12),maxLines: 2,)
           ],
         ),
       ),

@@ -12,7 +12,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: MyColors.primary,
-        primaryColorLight: MyColors.primary_light,
-        primaryColorDark: MyColors.primary_dark,
+        primaryColorLight: MyColors.primaryLight,
+        primaryColorDark: MyColors.primaryDark,
         fontFamily: "Regular",
         appBarTheme: AppBarTheme(
           iconTheme: const IconThemeData(color: Colors.white),

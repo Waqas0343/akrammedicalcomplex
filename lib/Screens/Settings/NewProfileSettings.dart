@@ -18,20 +18,20 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileSettings extends StatefulWidget {
-  final List<String> cities;
-  final Profile profile;
+  final List<String>? cities;
+  final Profile? profile;
 
-  const ProfileSettings({Key key, this.profile, this.cities}) : super(key: key);
+  const ProfileSettings({Key? key, this.profile, this.cities}) : super(key: key);
 
   @override
   _ProfileSettingsState createState() => _ProfileSettingsState(profile);
 }
 
 class _ProfileSettingsState extends State<ProfileSettings> {
-  final Profile profile;
+  final Profile? profile;
 
   final _picker = ImagePicker();
-  String title, imagePath;
+  String? title, imagePath;
 
   final FocusNode nameFocus = FocusNode();
   final FocusNode usernameFocus = FocusNode();
@@ -52,7 +52,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   var isPhoneEmpty = false;
   bool emailValidate = false;
 
-  File _file;
+  late File _file;
   var isLoading = false;
   String phoneError = "Phone can't be Empty";
   double uploadingValue = 0.0;
@@ -151,7 +151,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                                 "Title",
                                 maxLines: 1,
                               ),
-                              onChanged: (String value) {
+                              onChanged: (String? value) {
                                 setState(() {
                                   title = value;
                                   isTitleEmpty = false;
@@ -309,20 +309,20 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
   void updateUi() {
     if (profile != null) {
-      String title;
-      if (profile.user.title != null) {
-        title = profile.user.title.isNotEmpty && profile.user.title != "null"
-            ? profile.user.title.replaceAll(".", "")
+      String? title;
+      if (profile!.user!.title != null) {
+        title = profile!.user!.title!.isNotEmpty && profile!.user!.title != "null"
+            ? profile!.user!.title!.replaceAll(".", "")
             : null;
       }
-      imagePath = profile.user.imagePath;
-      String name = profile.user.name;
-      String username = profile.user.username;
-      String phone = profile.user.phone ?? "";
-      String email = profile.user.email ?? "";
-      String area = profile.address.area ?? "";
-      String city = profile.address.city ?? "";
-      String address = profile.address.location ?? "";
+      imagePath = profile!.user!.imagePath;
+      String name = profile!.user!.name!;
+      String username = profile!.user!.username!;
+      String phone = profile!.user!.phone ?? "";
+      String email = profile!.user!.email ?? "";
+      String area = profile!.address!.area ?? "";
+      String city = profile!.address!.city ?? "";
+      String address = profile!.address!.location ?? "";
 
       this.title = title;
       nameController.text = name;
@@ -444,7 +444,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
   void uploadImage(File file) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
+    String? username = preferences.getString(Keys.username);
 
     setState(() {
       isLoading = true;
@@ -500,7 +500,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     String city = cityController.text.trim();
     String address = addressController.text.trim();
 
-    String username = preferences.getString(Keys.username);
+    String? username = preferences.getString(Keys.username);
 
     if (title == null) {
       setState(() {
@@ -566,13 +566,13 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     Loading.dismiss();
 
     if (response != "404") {
-      preferences.setString(Keys.image, imagePath);
+      preferences.setString(Keys.image, imagePath!);
       preferences.setString(Keys.phone, phone);
       preferences.setString(Keys.name, name);
       preferences.setString(Keys.email, email);
-      preferences.setString(Keys.city, city ?? "");
-      preferences.setString(Keys.area, area ?? "");
-      preferences.setString(Keys.address, address ?? "");
+      preferences.setString(Keys.city, city);
+      preferences.setString(Keys.area, area);
+      preferences.setString(Keys.address, address);
       preferences.setString(Keys.title, title ?? "");
       Navigator.push(
               context,

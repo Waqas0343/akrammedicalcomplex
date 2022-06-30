@@ -13,15 +13,15 @@ import 'AddHealthRecord.dart';
 import 'MyHealthRecordDetails.dart';
 
 class MyHealthRecords extends StatefulWidget {
-  const MyHealthRecords({Key key}) : super(key: key);
+  const MyHealthRecords({Key? key}) : super(key: key);
 
   @override
   _MyHealthRecordsState createState() => _MyHealthRecordsState();
 }
 
 class _MyHealthRecordsState extends State<MyHealthRecords> {
-  SharedPreferences preferences;
-  List<HealthRecord> recordModel;
+  late SharedPreferences preferences;
+  late List<HealthRecord> recordModel;
   List<HealthRecord> healthRecords = [];
   bool isLoading = true;
 
@@ -70,10 +70,10 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
             height: 70,
           ),
           title: Text(
-            record.fileName,
+            record.fileName!,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          subtitle: Text(record.recordType),
+          subtitle: Text(record.recordType!),
           trailing: const Icon(
             Icons.arrow_forward_ios,
             size: 18,
@@ -96,8 +96,8 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
       dummySearchList.addAll(recordModel);
       List<HealthRecord> dummyListData = <HealthRecord>[];
       for (var item in dummySearchList) {
-        String type = item.recordType.toLowerCase();
-        String file = item.fileName.toLowerCase();
+        String type = item.recordType!.toLowerCase();
+        String file = item.fileName!.toLowerCase();
         if (type.contains(query.toLowerCase()) ||
             file.contains(query.toLowerCase())) {
           dummyListData.add(item);
@@ -118,7 +118,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
 
   void getRecords() async {
     preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
+    String? username = preferences.getString(Keys.username);
     if (await Utilities.isOnline()) {
       String response = await Utilities.httpGet(
           ServerConfig.medicalRecords + "&username=$username");
@@ -127,7 +127,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
         if (!mounted) return;
         setState(() {
           recordModel.addAll(
-              medicalRecordModelFromJson(response).healthRecordList.records);
+              medicalRecordModelFromJson(response).healthRecordList!.records!);
           healthRecords.addAll(recordModel);
         });
       } else {
@@ -169,7 +169,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
             ));
   }
 
-  Future<bool> deleteRecord(int id) async {
+  Future<bool> deleteRecord(int? id) async {
     Loading.build(context, true);
     String response =
         await Utilities.httpPost(ServerConfig.medicalRecordDelete + "&Id=$id");
@@ -184,7 +184,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
   void openRoute() async {
     Route route =
         MaterialPageRoute<HealthRecord>(builder: (_) => const AddHealthRecord());
-    HealthRecord record = await Navigator.push(context, route);
+    HealthRecord? record = await Navigator.push(context, route as Route<HealthRecord>);
 
     if (record != null) {
       setState(() {

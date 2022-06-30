@@ -16,14 +16,14 @@ class TreatmentModel {
     this.response,
   });
 
-  TreatmentModelResponse response;
+  TreatmentModelResponse? response;
 
   factory TreatmentModel.fromJson(Map<String, dynamic> json) => TreatmentModel(
     response: TreatmentModelResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -32,14 +32,14 @@ class TreatmentModelResponse {
     this.response,
   });
 
-  List<TreatmentData> response;
+  List<TreatmentData>? response;
 
   factory TreatmentModelResponse.fromJson(Map<String, dynamic> json) => TreatmentModelResponse(
     response: List<TreatmentData>.from(json["Response"].map((x) => TreatmentData.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(response.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(response!.map((x) => x.toJson())),
   };
 }
 
@@ -55,14 +55,14 @@ class TreatmentData {
     this.type,
   });
 
-  String id;
-  String patientUsername;
-  String patientName;
-  List<ServiceModel> details;
-  String status;
-  String scheduledDate;
-  String location;
-  String type;
+  String? id;
+  String? patientUsername;
+  String? patientName;
+  List<ServiceModel>? details;
+  String? status;
+  String? scheduledDate;
+  String? location;
+  String? type;
   bool isExpanded = false;
 
   factory TreatmentData.fromJson(Map<String, dynamic> json) => TreatmentData(
@@ -88,9 +88,9 @@ class TreatmentData {
   };
 
   Color getStatusColor(){
-    if (status.toLowerCase() == "pending"){
+    if (status!.toLowerCase() == "pending"){
       return Colors.blue;
-    } else if (status.toLowerCase() == "cancelled"){
+    } else if (status!.toLowerCase() == "cancelled"){
       return Colors.red;
     } else {
       return Colors.green;

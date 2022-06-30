@@ -14,8 +14,8 @@ class ServicesModel {
     this.response,
   });
 
-  Meta meta;
-  ServicesModelResponse response;
+  Meta? meta;
+  ServicesModelResponse? response;
 
   factory ServicesModel.fromJson(Map<String, dynamic> json) => ServicesModel(
     meta: Meta.fromJson(json["Meta"]),
@@ -23,8 +23,8 @@ class ServicesModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -34,8 +34,8 @@ class Meta {
     this.message,
   });
 
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
     status: json["Status"],
@@ -53,14 +53,14 @@ class ServicesModelResponse {
     this.response,
   });
 
-  List<ServiceModel> response;
+  List<ServiceModel>? response;
 
   factory ServicesModelResponse.fromJson(Map<String, dynamic> json) => ServicesModelResponse(
     response: List<ServiceModel>.from(json["Response"].map((x) => ServiceModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(response.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(response!.map((x) => x.toJson())),
   };
 }
 
@@ -73,13 +73,13 @@ class ServiceModel {
     this.serviceId,
   });
 
-  String id;
-  String name;
-  String description;
-  String fee;
-  String serviceId;
+  String? id;
+  String? name;
+  String? description;
+  String? fee;
+  String? serviceId;
 
-  bool isSelected = false;
+  bool? isSelected = false;
 
   factory ServiceModel.fromJson(Map<String, dynamic> json) => ServiceModel(
     id: json["ID"],

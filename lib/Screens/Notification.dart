@@ -4,7 +4,7 @@ import '../Database/Database.dart';
 import '../models/notification_model.dart';
 
 class Notifications extends StatefulWidget {
-  const Notifications({Key key}) : super(key: key);
+  const Notifications({Key? key}) : super(key: key);
 
   @override
   _NotificationsState createState() => _NotificationsState();
@@ -13,7 +13,7 @@ class Notifications extends StatefulWidget {
 class _NotificationsState extends State<Notifications> {
   DatabaseManager dbManager = DatabaseManager();
 
-  List<NotificationModel> notifications;
+  late List<NotificationModel> notifications;
 
   @override
   Widget build(BuildContext context) {

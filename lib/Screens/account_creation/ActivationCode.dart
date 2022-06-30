@@ -13,9 +13,9 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountActivation extends StatefulWidget {
-  final String phoneNumber;
+  final String? phoneNumber;
 
-  const AccountActivation(this.phoneNumber, {Key key}) : super(key: key);
+  const AccountActivation(this.phoneNumber, {Key? key}) : super(key: key);
 
 
   @override
@@ -24,14 +24,14 @@ class AccountActivation extends StatefulWidget {
 
 class _AccountActivationState extends State<AccountActivation> {
   TextEditingController textEditingController = TextEditingController();
-  SharedPreferences preferences;
-  String username;
+  late SharedPreferences preferences;
+  String? username;
   bool isTaped = true;
   String buttonText = "Verify";
 
-  StreamController<ErrorAnimationType> errorController;
+  StreamController<ErrorAnimationType>? errorController;
 
-  Timer _timer;
+  late Timer _timer;
   int _start = 60;
 
   bool hasError = false;
@@ -49,7 +49,7 @@ class _AccountActivationState extends State<AccountActivation> {
 
   @override
   void dispose() {
-    errorController.close();
+    errorController!.close();
     _timer.cancel();
     super.dispose();
   }
@@ -193,7 +193,7 @@ class _AccountActivationState extends State<AccountActivation> {
                                 setState(() {
                                   hasError = true;
                                 });
-                                errorController.add(ErrorAnimationType
+                                errorController!.add(ErrorAnimationType
                                     .shake); // Triggering error shake animation
                               }
                             }
@@ -283,7 +283,7 @@ class _AccountActivationState extends State<AccountActivation> {
             builder: (context) => const LocationGettingScreen(false));
         Navigator.pushAndRemoveUntil(context, route, (route) => false);
       } else {
-        errorController.add(ErrorAnimationType.shake);
+        errorController!.add(ErrorAnimationType.shake);
         setState(() {
           hasError = true;
         });

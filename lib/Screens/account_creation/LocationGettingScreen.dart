@@ -17,7 +17,7 @@ import '../home.dart';
 class LocationGettingScreen extends StatefulWidget {
   final bool isAlreadyExists;
 
-  const LocationGettingScreen(this.isAlreadyExists, {Key key}) : super(key: key);
+  const LocationGettingScreen(this.isAlreadyExists, {Key? key}) : super(key: key);
 
 
   @override
@@ -34,10 +34,10 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
   final FocusNode areaFocus = FocusNode();
   final FocusNode cityFocus = FocusNode();
   final FocusNode addressFocus = FocusNode();
-  Profile profile;
+  Profile? profile;
   bool isAreaEmpty = false, isLocationEmpty = false, isCityEmpty = false;
-  SharedPreferences preferences;
-  List<String> cities;
+  late SharedPreferences preferences;
+  late List<String?> cities;
   bool isLoading = true;
 
   _LocationGettingScreenState(this.isAlreadyExists);
@@ -126,13 +126,13 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
                 suggestionsCallback: (name) {
                   var values = [];
                   for (var city in cities) {
-                    if (city.toLowerCase().contains(name.toLowerCase())) {
+                    if (city!.toLowerCase().contains(name.toLowerCase())) {
                       values.add(city);
                     }
                   }
                   return values;
                 },
-                itemBuilder: (context, suggestion) {
+                itemBuilder: (context, dynamic suggestion) {
                   return ListTile(
                     dense: true,
                     title: AutoSizeText(
@@ -141,7 +141,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
                     ),
                   );
                 },
-                onSuggestionSelected: (suggestion) {
+                onSuggestionSelected: (dynamic suggestion) {
                   setState(() {
                     isCityEmpty = false;
                     cityController.text = suggestion;
@@ -191,7 +191,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
   @override
   void initState() {
     super.initState();
-    cities = <String>[];
+    cities = <String?>[];
     getCities();
     isAlreadyExists ? usersLocation() : isLoading = false;
   }
@@ -199,9 +199,9 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
   void usersLocation() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     // String username = preferences.getString(Keys.username);
-    String area = preferences.getString(Keys.area);
-    String city = preferences.getString(Keys.city);
-    String address = preferences.getString(Keys.address);
+    String? area = preferences.getString(Keys.area);
+    String? city = preferences.getString(Keys.city);
+    String? address = preferences.getString(Keys.address);
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);
       setState(() {
@@ -210,17 +210,17 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
       return;
     }
 
-    if (area.isNotEmpty) {
+    if (area!.isNotEmpty) {
       setState(() {
         areaController.text = area;
       });
     }
-    if (city.isNotEmpty) {
+    if (city!.isNotEmpty) {
       setState(() {
         cityController.text = city;
       });
     }
-    if (address.isNotEmpty != null) {
+    if (address!.isNotEmpty != null) {
       setState(() {
         locationController.text = address;
       });
@@ -259,7 +259,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
     String response = await Utilities.httpGet(ServerConfig.cities);
     if (response != "404") {
       if (!mounted) return;
-      citiesFromJson(response).citiesList.cities.forEach((city) {
+      citiesFromJson(response).citiesList!.cities!.forEach((city) {
         setState(() {
           cities.add(city.name);
         });
@@ -272,10 +272,10 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
   void updateInfo() async {
     disableButton();
     preferences = await SharedPreferences.getInstance();
-    String phone = preferences.getString(Keys.phone);
-    String username = preferences.getString(Keys.username);
-    String name = preferences.getString(Keys.name);
-    String email, image, title;
+    String? phone = preferences.getString(Keys.phone);
+    String? username = preferences.getString(Keys.username);
+    String? name = preferences.getString(Keys.name);
+    String? email, image, title;
     if (isAlreadyExists) {
       email = preferences.getString(Keys.email);
       image = preferences.getString(Keys.image);
@@ -327,7 +327,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
     }
 
     String values = "&Username=" +
-        username +
+        username! +
         "&Title=${title ?? ""}" +
         "&Name=$name" +
 //            "&CNIC=" +

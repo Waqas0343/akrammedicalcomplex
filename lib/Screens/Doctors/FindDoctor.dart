@@ -13,9 +13,9 @@ import 'package:flutter/material.dart';
 import 'DoctorProfile.dart';
 
 class FindDoctor extends StatefulWidget {
-  final bool isSearching;
+  final bool? isSearching;
 
-  const FindDoctor({Key key, this.isSearching}) : super(key: key);
+  const FindDoctor({Key? key, this.isSearching}) : super(key: key);
 
   @override
   _FindDoctorState createState() => _FindDoctorState();
@@ -27,10 +27,10 @@ class _FindDoctorState extends State<FindDoctor> {
   bool isLoading = false, hasMore = true;
   int totalRecord = 0, pageNo = 0;
 
-  List<ResponseDetail> doctors;
+  late List<ResponseDetail> doctors;
 
-  Category category;
-  List<Category> categories;
+  Category? category;
+  late List<Category> categories;
 
   final nameFocus = FocusNode();
 
@@ -60,17 +60,17 @@ class _FindDoctorState extends State<FindDoctor> {
                 items: categories.map((e) {
                   return DropdownMenuItem(
                     child: AutoSizeText(
-                      e.name,
+                      e.name!,
                       softWrap: false,
                       overflow: TextOverflow.fade,
                     ),
                     value: e,
                   );
                 }).toList(),
-                onChanged: (Category cate) {
+                onChanged: (Category? cate) {
                   Navigator.of(context).pop();
                   setState(() {
-                    category = cate.name != "All" ? cate : null;
+                    category = cate!.name != "All" ? cate : null;
                     pageNo = 0;
                     totalRecord = 0;
                     doctors.clear();
@@ -192,7 +192,7 @@ class _FindDoctorState extends State<FindDoctor> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  doctorModel.name,
+                                  doctorModel.name!,
                                   maxLines: 2,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w700,
@@ -317,7 +317,7 @@ class _FindDoctorState extends State<FindDoctor> {
   @override
   void initState() {
     updateUi();
-    if (widget.isSearching) {
+    if (widget.isSearching!) {
       cusIcon = const Icon(Icons.search);
       setAppBarValue();
     }
@@ -333,7 +333,7 @@ class _FindDoctorState extends State<FindDoctor> {
     String response;
     try {
       response = await Utilities.httpGet(ServerConfig.doctors +
-          "&PageNumber=$pageNo&SearchPramas=$name&PageSize=10&Speciality=${category == null ? "0" : category.id}");
+          "&PageNumber=$pageNo&SearchPramas=$name&PageSize=10&Speciality=${category == null ? "0" : category!.id}");
     } catch (e) {
       response = "404";
     }
@@ -341,7 +341,7 @@ class _FindDoctorState extends State<FindDoctor> {
     if (response != "404") {
       DoctorModel responseDetail = doctorModelFromJson(response);
       if (!mounted) return;
-      var list = responseDetail.response.response.data;
+      var list = responseDetail.response!.response!.data!;
       if (list.length < 10) {
         hasMore = false;
       } else {
@@ -360,10 +360,10 @@ class _FindDoctorState extends State<FindDoctor> {
   void getCategory() async {
     String response = await Utilities.httpGet(ServerConfig.categories);
     if (response != "404") {
-      var list = categoryFromJson(response).response.categoryList;
+      var list = categoryFromJson(response).response!.categoryList;
       if (!mounted) return;
       setState(() {
-        categories.addAll(list);
+        categories.addAll(list!);
       });
     } else {
       Utilities.showToast("Unable to load Categories");

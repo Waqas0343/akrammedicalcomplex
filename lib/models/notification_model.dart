@@ -10,11 +10,11 @@ class NotificationModel {
     this.time,
   });
 
-  int id;
-  String title;
-  String description;
-  String date;
-  String time;
+  int? id;
+  String? title;
+  String? description;
+  String? date;
+  String? time;
 
   factory NotificationModel.fromMap(Map<String, dynamic> json) => NotificationModel(
     id: json[Keys.ID],

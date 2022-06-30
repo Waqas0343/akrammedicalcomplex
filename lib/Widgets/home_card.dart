@@ -9,7 +9,7 @@ class HomeCard extends StatelessWidget {
   final String icon;
   final Function onTap;
 
-  const HomeCard({Key key,@required this.title,@required this.description,@required this.icon,@required this.onTap}) : super(key: key);
+  const HomeCard({Key? key,required this.title,required this.description,required this.icon,required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class HomeCard extends StatelessWidget {
         elevation: 6,
         child: InkWell(
           borderRadius: BorderRadius.circular(4.0),
-          onTap: onTap,
+          onTap: onTap as void Function()?,
           child: Container(
             padding: const EdgeInsets.all(16),
             child: Column(

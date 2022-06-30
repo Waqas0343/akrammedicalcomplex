@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 class MedicineOrderDetails extends StatefulWidget {
   final Order order;
 
-  const MedicineOrderDetails(this.order, {Key key}) : super(key: key);
-
+  const MedicineOrderDetails(this.order, {Key? key}) : super(key: key);
 
   @override
   _MedicineOrderDetailsState createState() => _MedicineOrderDetailsState();
@@ -21,18 +20,21 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order # " + widget.order.orderId),
+        title: Text("Order # " + widget.order.orderId!),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             orderDetails(),
-            widget.order.medicines.isEmpty ? const SizedBox.shrink() : medicineCard(),
+            widget.order.medicines!.isEmpty
+                ? const SizedBox.shrink()
+                : medicineCard(),
           ],
         ),
       ),
     );
   }
+
   Widget orderDetails() {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -42,7 +44,7 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            widget.order.medicines.isEmpty
+            widget.order.medicines!.isEmpty
                 ? Align(
                     alignment: Alignment.center,
                     child: Padding(
@@ -58,7 +60,10 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
                                 spreadRadius: 1,
                                 blurRadius: 10)
                           ]),
-                          child: NetWorkImage(imagePath: widget.order.prescriptionPath, placeHolder: MyImages.instaFile,),
+                          child: NetWorkImage(
+                            imagePath: widget.order.prescriptionPath,
+                            placeHolder: MyImages.instaFile,
+                          ),
 
                           /*FadeInImage(
                             placeholder: AssetImage(
@@ -95,7 +100,7 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      widget.order.status,
+                      widget.order.status!,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   )
@@ -114,7 +119,7 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(widget.order.name),
+                    child: Text(widget.order.name!),
                   )
                 ],
               ),
@@ -131,7 +136,7 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(widget.order.phone),
+                    child: Text(widget.order.phone!),
                   )
                 ],
               ),
@@ -189,7 +194,7 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
                 physics: const ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) =>
                     makeList(context, index),
-                itemCount: widget.order.medicines.length,
+                itemCount: widget.order.medicines!.length,
               ),
             ),
           )
@@ -199,14 +204,14 @@ class _MedicineOrderDetailsState extends State<MedicineOrderDetails> {
   }
 
   Widget makeList(BuildContext context, int index) {
-    PrescriptionConverterModel medicine = widget.order.medicines[index];
+    PrescriptionConverterModel medicine = widget.order.medicines![index];
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       title: AutoSizeText(
         medicine.productName ?? "",
         maxLines: 2,
       ),
-      subtitle: Text("PKR/- " + medicine.productPrice ?? ""),
+      subtitle: Text("PKR/- " + medicine.productPrice!),
       leading: SizedBox(
           width: 30,
           child: Align(

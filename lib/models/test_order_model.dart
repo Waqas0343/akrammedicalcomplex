@@ -17,14 +17,14 @@ class TestOrderResponseModel {
     this.response,
   });
 
-  Response response;
+  Response? response;
 
   factory TestOrderResponseModel.fromJson(Map<String, dynamic> json) => TestOrderResponseModel(
     response: Response.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -33,14 +33,14 @@ class Response {
     this.response,
   });
 
-  List<TestModel> response;
+  List<TestModel>? response;
 
   factory Response.fromJson(Map<String, dynamic> json) => Response(
     response: List<TestModel>.from(json["Response"].map((x) => TestModel.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(response.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(response!.map((x) => x.toJson())),
   };
 }
 
@@ -63,20 +63,20 @@ class TestModel {
     this.attachmentsResults,
   });
 
-  int id;
-  String orderId;
-  String name;
-  String phone;
-  String email;
-  String prescriptionPath;
-  String labId;
-  String location;
-  String area;
-  String city;
-  List<Test> testList;
-  String prescriptionType;
-  String status;
-  String datetime;
+  int? id;
+  String? orderId;
+  String? name;
+  String? phone;
+  String? email;
+  String? prescriptionPath;
+  String? labId;
+  String? location;
+  String? area;
+  String? city;
+  List<Test>? testList;
+  String? prescriptionType;
+  String? status;
+  String? datetime;
   bool isExpanded = false;
   dynamic attachmentsResults;
 
@@ -122,9 +122,9 @@ class TestModel {
   };
 
   Color getColor(){
-    if (status.toLowerCase() == "pending"){
+    if (status!.toLowerCase() == "pending"){
       return Colors.blue;
-    } else if (status.toLowerCase() == "cancelled"){
+    } else if (status!.toLowerCase() == "cancelled"){
       return Colors.red;
     } else {
       return Colors.green;

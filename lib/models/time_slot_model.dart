@@ -13,14 +13,14 @@ class TimeSlotModel {
     this.response,
   });
 
-  TimeSlotModelResponse response;
+  TimeSlotModelResponse? response;
 
   factory TimeSlotModel.fromJson(Map<String, dynamic> json) => TimeSlotModel(
     response: TimeSlotModelResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -30,14 +30,14 @@ class TimeSlotModelResponse {
     this.response,
   });
 
-  List<TimeSlot> response;
+  List<TimeSlot>? response;
 
   factory TimeSlotModelResponse.fromJson(Map<String, dynamic> json) => TimeSlotModelResponse(
     response: List<TimeSlot>.from(json["Response"].map((x) => TimeSlot.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(response.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(response!.map((x) => x.toJson())),
   };
 }
 
@@ -47,9 +47,9 @@ class TimeSlot {
     this.timeSlots,
   });
 
-  String date;
+  String? date;
   bool isSelected = false;
-  List<String> timeSlots;
+  List<String>? timeSlots;
 
   factory TimeSlot.fromJson(Map<String, dynamic> json) => TimeSlot(
     date: json["Date"],
@@ -58,6 +58,6 @@ class TimeSlot {
 
   Map<String, dynamic> toJson() => {
     "Date": date,
-    "TimeSlots": List<dynamic>.from(timeSlots.map((x) => x)),
+    "TimeSlots": List<dynamic>.from(timeSlots!.map((x) => x)),
   };
 }

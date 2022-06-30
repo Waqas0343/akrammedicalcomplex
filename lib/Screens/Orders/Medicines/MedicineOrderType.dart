@@ -5,7 +5,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'MedicineOrderPlace.dart';
 
 class MedicineOrderType extends StatelessWidget {
-  const MedicineOrderType({Key key}) : super(key: key);
+  const MedicineOrderType({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

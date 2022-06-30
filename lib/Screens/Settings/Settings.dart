@@ -10,15 +10,15 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Settings extends StatefulWidget {
-  const Settings({Key key}) : super(key: key);
+  const Settings({Key? key}) : super(key: key);
 
   @override
   _SettingsState createState() => _SettingsState();
 }
 
 class _SettingsState extends State<Settings> {
-  Profile profile;
-  List<String> cities;
+  Profile? profile;
+  List<String>? cities;
   bool isLoading = true;
 
   @override
@@ -63,7 +63,7 @@ class _SettingsState extends State<Settings> {
 
   void getInfo() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
+    String? username = preferences.getString(Keys.username);
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);
       setState(() {
@@ -79,7 +79,7 @@ class _SettingsState extends State<Settings> {
 
     if (response != "404") {
       setState(() {
-        profile = profileModelFromJson(response).response.response;
+        profile = profileModelFromJson(response).response!.response;
         isLoading = false;
       });
     } else {

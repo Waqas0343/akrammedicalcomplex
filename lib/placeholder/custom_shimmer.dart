@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LoadingDoctorsList extends StatelessWidget {
-  const LoadingDoctorsList({Key key}) : super(key: key);
+  const LoadingDoctorsList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +99,7 @@ class LoadingDoctorsList extends StatelessWidget {
 }
 
 class LoadingServicesList extends StatelessWidget {
-  const LoadingServicesList({Key key}) : super(key: key);
+  const LoadingServicesList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +142,7 @@ class LoadingServicesList extends StatelessWidget {
 }
 
 class MyServicesLoading extends StatelessWidget {
-  const MyServicesLoading({Key key}) : super(key: key);
+  const MyServicesLoading({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +190,7 @@ class MyServicesLoading extends StatelessWidget {
 }
 
 class DoctorDetailLoading extends StatelessWidget {
-  const DoctorDetailLoading({Key key}) : super(key: key);
+  const DoctorDetailLoading({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -524,7 +524,7 @@ class DoctorDetailLoading extends StatelessWidget {
 }
 
 class AppointmentShimmer extends StatelessWidget {
-  const AppointmentShimmer({Key key}) : super(key: key);
+  const AppointmentShimmer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -581,7 +581,7 @@ class AppointmentShimmer extends StatelessWidget {
 }
 
 class BookAppointmentScreen extends StatelessWidget {
-  const BookAppointmentScreen({Key key}) : super(key: key);
+  const BookAppointmentScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -741,7 +741,7 @@ class BookAppointmentScreen extends StatelessWidget {
 }
 
 class MyLabOrderIsLoading extends StatelessWidget {
-  const MyLabOrderIsLoading({Key key}) : super(key: key);
+  const MyLabOrderIsLoading({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -800,7 +800,7 @@ class MyLabOrderIsLoading extends StatelessWidget {
 }
 
 class MyMedicineOrdersIsLoading extends StatelessWidget {
-  const MyMedicineOrdersIsLoading({Key key}) : super(key: key);
+  const MyMedicineOrdersIsLoading({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -858,7 +858,7 @@ class MyMedicineOrdersIsLoading extends StatelessWidget {
 }
 
 class LoadingMyAppointmentList extends StatelessWidget {
-  const LoadingMyAppointmentList({Key key}) : super(key: key);
+  const LoadingMyAppointmentList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -920,7 +920,7 @@ class LoadingMyAppointmentList extends StatelessWidget {
 }
 
 class LoadingMyPrescription extends StatelessWidget {
-  const LoadingMyPrescription({Key key}) : super(key: key);
+  const LoadingMyPrescription({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -979,7 +979,7 @@ class LoadingMyPrescription extends StatelessWidget {
 }
 
 class LoadingHealthRecord extends StatelessWidget {
-  const LoadingHealthRecord({Key key}) : super(key: key);
+  const LoadingHealthRecord({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1025,7 +1025,7 @@ class LoadingHealthRecord extends StatelessWidget {
 }
 
 class ProfileShimmer extends StatelessWidget {
-  const ProfileShimmer({Key key}) : super(key: key);
+  const ProfileShimmer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1098,7 +1098,7 @@ class ProfileShimmer extends StatelessWidget {
 }
 
 class MyLabReportsShimmer extends StatelessWidget {
-  const MyLabReportsShimmer({Key key}) : super(key: key);
+  const MyLabReportsShimmer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -1155,10 +1155,10 @@ class MyLabReportsShimmer extends StatelessWidget {
 
 
 class MyShimmer extends StatelessWidget {
-  final double width;
-  final double height;
+  final double? width;
+  final double? height;
 
-  const MyShimmer({Key key, this.width, this.height}) : super(key: key);
+  const MyShimmer({Key? key, this.width, this.height}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

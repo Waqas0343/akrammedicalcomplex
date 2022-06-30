@@ -16,8 +16,8 @@ class MedicalHistoryModel {
     this.response,
   });
 
-  Meta meta;
-  MedicalHistoryModelResponse response;
+  Meta? meta;
+  MedicalHistoryModelResponse? response;
 
   factory MedicalHistoryModel.fromJson(Map<String, dynamic> json) => MedicalHistoryModel(
     meta: Meta.fromJson(json["Meta"]),
@@ -25,8 +25,8 @@ class MedicalHistoryModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -35,14 +35,14 @@ class MedicalHistoryModelResponse {
     this.historyModel,
   });
 
-  HistoryModel historyModel;
+  HistoryModel? historyModel;
 
   factory MedicalHistoryModelResponse.fromJson(Map<String, dynamic> json) => MedicalHistoryModelResponse(
     historyModel:json["Response"] != null ? HistoryModel.fromJson(json["Response"]) : null,
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": historyModel.toJson(),
+    "Response": historyModel!.toJson(),
   };
 }
 
@@ -104,60 +104,60 @@ class HistoryModel {
     this.addedOn,
   });
 
-  String id;
-  String patientId;
+  String? id;
+  String? patientId;
   dynamic locationId;
-  String fillingDate;
-  bool mHospitalized;
-  bool mTakingMedication;
-  bool mAlcohol;
-  bool mSmoke;
-  bool mHeartattack;
-  bool mAngina;
-  bool mBp;
-  bool mCardiacPacemaker;
-  bool mAnemia;
-  bool mHepatitis;
-  bool mBleedingDisorder;
-  bool mRenalDiseases;
-  bool mHiv;
-  bool mSexualDisease;
-  bool mRespiratory;
-  bool mTuberculosis;
-  bool mHayFeverAllergies;
-  bool mDiabetes;
-  bool mThyroid;
-  bool mFainting;
-  bool mStroke;
-  bool mArthritis;
-  bool mJointReplacement;
-  bool mStomachUlcers;
-  bool mOphthalmologicalProb;
-  bool mEnt;
-  bool mDengue;
-  bool dGumBleeding;
-  bool dTeethPain;
-  bool dTeethHotCold;
-  bool dTeethSweetSour;
-  bool dSoresLumps;
-  bool dHeadNeckInjury;
-  bool dClicking;
-  bool dPainJointEar;
-  bool dDifficultyOpeningMouth;
-  bool dDifficultyChewing;
-  bool dHeadaches;
-  bool dClenchTeeth;
-  bool dBiteLips;
-  bool dDifficultExtraction;
-  bool dOrthoTreatment;
-  bool dProlongedBleeding;
-  bool dInstCorrectBrushing;
-  bool dInstCateOfGums;
-  String dHowManyTimesBrush;
-  bool permissionCertify;
+  String? fillingDate;
+  bool? mHospitalized;
+  bool? mTakingMedication;
+  bool? mAlcohol;
+  bool? mSmoke;
+  bool? mHeartattack;
+  bool? mAngina;
+  bool? mBp;
+  bool? mCardiacPacemaker;
+  bool? mAnemia;
+  bool? mHepatitis;
+  bool? mBleedingDisorder;
+  bool? mRenalDiseases;
+  bool? mHiv;
+  bool? mSexualDisease;
+  bool? mRespiratory;
+  bool? mTuberculosis;
+  bool? mHayFeverAllergies;
+  bool? mDiabetes;
+  bool? mThyroid;
+  bool? mFainting;
+  bool? mStroke;
+  bool? mArthritis;
+  bool? mJointReplacement;
+  bool? mStomachUlcers;
+  bool? mOphthalmologicalProb;
+  bool? mEnt;
+  bool? mDengue;
+  bool? dGumBleeding;
+  bool? dTeethPain;
+  bool? dTeethHotCold;
+  bool? dTeethSweetSour;
+  bool? dSoresLumps;
+  bool? dHeadNeckInjury;
+  bool? dClicking;
+  bool? dPainJointEar;
+  bool? dDifficultyOpeningMouth;
+  bool? dDifficultyChewing;
+  bool? dHeadaches;
+  bool? dClenchTeeth;
+  bool? dBiteLips;
+  bool? dDifficultExtraction;
+  bool? dOrthoTreatment;
+  bool? dProlongedBleeding;
+  bool? dInstCorrectBrushing;
+  bool? dInstCateOfGums;
+  String? dHowManyTimesBrush;
+  bool? permissionCertify;
   dynamic signedName;
   dynamic signedCnic;
-  String addedOn;
+  String? addedOn;
 
   factory HistoryModel.fromJson(Map<String, dynamic> json) => HistoryModel(
     id: json["id"],

@@ -7,8 +7,8 @@ ImageModel imageModelFromJson(String str) => ImageModel.fromJson(json.decode(str
 String imageModelToJson(ImageModel data) => json.encode(data.toJson());
 
 class ImageModel {
-  Meta meta;
-  ImagePath response;
+  Meta? meta;
+  ImagePath? response;
 
   ImageModel({
     this.meta,
@@ -21,13 +21,13 @@ class ImageModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
 class ImagePath {
-  String path;
+  String? path;
 
   ImagePath({
     this.path,

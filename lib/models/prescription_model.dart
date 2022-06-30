@@ -11,8 +11,8 @@ PrescriptionModel prescriptionModelFromJson(String str) => PrescriptionModel.fro
 String prescriptionModelToJson(PrescriptionModel data) => json.encode(data.toJson());
 
 class PrescriptionModel {
-  Meta meta;
-  PrescriptionResponse response;
+  Meta? meta;
+  PrescriptionResponse? response;
 
   PrescriptionModel({
     this.meta,
@@ -25,13 +25,13 @@ class PrescriptionModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
 class PrescriptionResponse {
-  List<Prescription> prescriptions;
+  List<Prescription>? prescriptions;
 
   PrescriptionResponse({
     this.prescriptions,
@@ -42,25 +42,25 @@ class PrescriptionResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(prescriptions.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(prescriptions!.map((x) => x.toJson())),
   };
 }
 
 class Prescription {
-  int prescriptionId;
-  String caseHistoryTitle;
-  String patientHistory;
-  String onExamination;
-  String bloodPressure;
-  String pulse;
-  String tempurature;
-  String weight;
-  String title;
-  String doctorName;
-  String timeStamp;
-  String prescriptionUrl;
-  List<MedicalTest> medicalTest;
-  List<Medicine> medicines;
+  int? prescriptionId;
+  String? caseHistoryTitle;
+  String? patientHistory;
+  String? onExamination;
+  String? bloodPressure;
+  String? pulse;
+  String? tempurature;
+  String? weight;
+  String? title;
+  String? doctorName;
+  String? timeStamp;
+  String? prescriptionUrl;
+  List<MedicalTest>? medicalTest;
+  List<Medicine>? medicines;
 
   Prescription({
     this.prescriptionId,
@@ -109,16 +109,16 @@ class Prescription {
     "Title": title,
     "TimeStamp": timeStamp,
     "prescription_url": prescriptionUrl,
-    "MedicalTest": List<dynamic>.from(medicalTest.map((x) => x.toJson())),
-    "Medicines": List<dynamic>.from(medicines.map((x) => x.toJson())),
+    "MedicalTest": List<dynamic>.from(medicalTest!.map((x) => x.toJson())),
+    "Medicines": List<dynamic>.from(medicines!.map((x) => x.toJson())),
   };
 }
 
 class MedicalTest {
-  int id;
-  int prescriptionId;
-  String medicalTest;
-  String medicalTestNotes;
+  int? id;
+  int? prescriptionId;
+  String? medicalTest;
+  String? medicalTestNotes;
   dynamic labUsername;
 
   MedicalTest({
@@ -147,13 +147,13 @@ class MedicalTest {
 }
 
 class Medicine {
-  int id;
-  int prescriptionId;
-  String medicine;
-  String formType;
-  String grams;
-  String frequency;
-  String medicineNotes;
+  int? id;
+  int? prescriptionId;
+  String? medicine;
+  String? formType;
+  String? grams;
+  String? frequency;
+  String? medicineNotes;
 
   Medicine({
     this.id,

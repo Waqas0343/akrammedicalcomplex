@@ -10,18 +10,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'MedicineOrderDetails.dart';
 
 class MyMedicineOrders extends StatefulWidget {
-  final List<Order> orders;
+  final List<Order>? orders;
 
-  const MyMedicineOrders({Key key, this.orders}) : super(key: key);
+  const MyMedicineOrders({Key? key, this.orders}) : super(key: key);
 
   @override
   _MyMedicineOrdersState createState() => _MyMedicineOrdersState();
 }
 
 class _MyMedicineOrdersState extends State<MyMedicineOrders> {
-  List<Order> orders;
-  SharedPreferences preferences;
-  String username;
+  late List<Order> orders;
+  late SharedPreferences preferences;
+  String? username;
   final nameController = TextEditingController();
   List<Order> ordersModel = [];
 
@@ -50,7 +50,7 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
   void getPreferences() async {
     preferences = await SharedPreferences.getInstance();
     username = preferences.getString(Keys.username);
-    orders.addAll(widget.orders);
+    orders.addAll(widget.orders!);
     ordersModel.addAll(orders);
     if (!mounted) return;
     setState(() {});
@@ -114,7 +114,7 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
         child: ListTile(
           isThreeLine: true,
           title: Text(
-            "Order ID # " + order.orderId,
+            "Order ID # " + order.orderId!,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
@@ -124,13 +124,13 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
                 height: 4,
               ),
               Text(
-                order.orderDate,
+                order.orderDate!,
               ),
               const SizedBox(
                 height: 4,
               ),
               AutoSizeText(
-                order.status,
+                order.status!,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: order.getColor(),
@@ -157,11 +157,8 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
       bool isAdded = false;
       for (var item in ordersModel) {
         if (item.medicines != null) {
-          for (var element in item.medicines) {
+          for (var element in item.medicines!) {
             String name = element.productName.toString().toLowerCase();
-            if (name == null) {
-              return;
-            }
             if (name.contains(query.toLowerCase()) && !isAdded) {
               isAdded = true;
               dummyListData.add(item);

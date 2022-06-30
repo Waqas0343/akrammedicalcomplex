@@ -15,30 +15,30 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DoctorProfile extends StatefulWidget {
-  final String username;
+  final String? username;
 
-  const DoctorProfile({Key key, this.username}) : super(key: key);
+  const DoctorProfile({Key? key, this.username}) : super(key: key);
 
   @override
   _DoctorProfileState createState() => _DoctorProfileState(username);
 }
 
 class _DoctorProfileState extends State<DoctorProfile> {
-  String sessionToken;
-  final String username;
+  String? sessionToken;
+  final String? username;
 
-  DocProfile doctorProfile;
+  DocProfile? doctorProfile;
   bool isLoading = true;
 
-  SharedPreferences preferences;
+  late SharedPreferences preferences;
 
   _DoctorProfileState(this.username);
 
   @override
   Widget build(BuildContext context) {
-    String mon, tues, wed, thur, fri, sat, sun, qualification;
+    String? mon, tues, wed, thur, fri, sat, sun, qualification;
     if (doctorProfile != null) {
-      Weeklyschedule week = doctorProfile.assosiations[0].weeklyschedule;
+      Weeklyschedule week = doctorProfile!.assosiations![0].weeklyschedule!;
       mon = week.monday;
       tues = week.tuesday;
       wed = week.wednesday;
@@ -46,7 +46,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
       fri = week.friday;
       sat = week.saturday;
       sun = week.sunday;
-      qualification = doctorProfile.qualifications.join(", ");
+      qualification = doctorProfile!.qualifications!.join(", ");
     }
 
     return doctorProfile == null
@@ -83,7 +83,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                               Radius.circular(50)),
                                           child: NetWorkImage(
                                             imagePath:
-                                                doctorProfile.imagePath,
+                                                doctorProfile!.imagePath,
                                             placeHolder: MyImages.doctorPlace,
                                             width: 70,
                                             height: 70,
@@ -121,7 +121,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         AutoSizeText(
-                                          doctorProfile.name,
+                                          doctorProfile!.name!,
                                           maxLines: 1,
                                           style: const TextStyle(
                                               color: Colors.white,
@@ -132,7 +132,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           height: 2,
                                         ),
                                         AutoSizeText(
-                                          doctorProfile.speciality.name,
+                                          doctorProfile!.speciality!.name!,
                                           style: const TextStyle(color: Colors.white),
                                         ),
                                         const SizedBox(
@@ -159,7 +159,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             color: Colors.grey.shade500,
                           ),
                           title: Text(
-                              "PKR ${doctorProfile.assosiations[0].regularCharges ?? "N/A"}"),
+                              "PKR ${doctorProfile!.assosiations![0].regularCharges ?? "N/A"}"),
                         ),
                         const Divider(),
                         Row(
@@ -174,8 +174,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   color: Colors.grey.shade500,
                                 ),
                                 title: AutoSizeText(
-                                  doctorProfile.averageRating == "NAN"
-                                      ? doctorProfile.averageRating
+                                  doctorProfile!.averageRating == "NAN"
+                                      ? doctorProfile!.averageRating
                                       : "N/A",
                                   maxLines: 1,
                                 ),
@@ -191,7 +191,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   color: Colors.grey.shade500,
                                 ),
                                 title: AutoSizeText(
-                                  doctorProfile.experience ?? "N/A",
+                                  doctorProfile!.experience ?? "N/A",
                                   maxLines: 1,
                                 ),
                               ),
@@ -292,7 +292,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             color: Colors.grey,
                           ),
                           title: const Text("Services"),
-                          subtitle: doctorProfile.services.isNotEmpty
+                          subtitle: doctorProfile!.services!.isNotEmpty
                               ? ListView.builder(
                                   shrinkWrap: true,
                                   physics: const ScrollPhysics(),
@@ -311,7 +311,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           ),
                                           Flexible(
                                               child: Text(
-                                            doctorProfile.services[index].name,
+                                            doctorProfile!.services![index].name!,
                                             softWrap: false,
                                             overflow: TextOverflow.fade,
                                           ))
@@ -319,7 +319,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       ),
                                     );
                                   },
-                                  itemCount: doctorProfile.services.length,
+                                  itemCount: doctorProfile!.services!.length,
                                 )
                               : const Text("N/A"),
                         ),
@@ -332,7 +332,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             color: Colors.grey,
                           ),
                           title: const Text("Reviews"),
-                          subtitle: doctorProfile.reviews.isNotEmpty
+                          subtitle: doctorProfile!.reviews!.isNotEmpty
                               ? ListView.builder(
                                   shrinkWrap: true,
                                   physics: const ScrollPhysics(),
@@ -348,8 +348,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                             borderRadius: const BorderRadius.all(
                                                 Radius.circular(30)),
                                             child: FadeInImage.assetNetwork(
-                                              image: doctorProfile
-                                                  .reviews[index].imagePath,
+                                              image: doctorProfile!
+                                                  .reviews![index].imagePath!,
                                               fit: BoxFit.cover,
                                               placeholder: MyImages.user,
                                               fadeInDuration:
@@ -366,7 +366,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 Text(
-                                                  doctorProfile.reviews[index]
+                                                  doctorProfile!.reviews![index]
                                                           .title ??
                                                       "",
                                                   softWrap: false,
@@ -376,7 +376,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                                           FontWeight.bold),
                                                 ),
                                                 Text(
-                                                  doctorProfile.reviews[index]
+                                                  doctorProfile!.reviews![index]
                                                           .description ??
                                                       "",
                                                 )
@@ -387,7 +387,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                       ),
                                     );
                                   },
-                                  itemCount: doctorProfile.reviews.length,
+                                  itemCount: doctorProfile!.reviews!.length,
                                 )
                               : const Text("N/A"),
                         ),
@@ -402,12 +402,12 @@ class _DoctorProfileState extends State<DoctorProfile> {
                       onPressed: () {
                         Route route = MaterialPageRoute(
                             builder: (_) => BookAppointment(
-                                  drUsername: doctorProfile.username,
-                                  drName: doctorProfile.name,
-                                  fee: doctorProfile
-                                      .assosiations[0].regularCharges,
-                                  category: doctorProfile.speciality.name,
-                                  image: doctorProfile.imagePath,
+                                  drUsername: doctorProfile!.username,
+                                  drName: doctorProfile!.name,
+                                  fee: doctorProfile!
+                                      .assosiations![0].regularCharges,
+                                  category: doctorProfile!.speciality!.name,
+                                  image: doctorProfile!.imagePath,
                                 ));
                         Navigator.push(context, route);
                       },
@@ -434,7 +434,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
     if (response != "404") {
       setState(() {
         doctorProfile =
-            doctorProfileFromJson(response).doctorProfileResponse.docProfile;
+            doctorProfileFromJson(response).doctorProfileResponse!.docProfile;
       });
     } else {
       Utilities.showToast("Something went wrong");

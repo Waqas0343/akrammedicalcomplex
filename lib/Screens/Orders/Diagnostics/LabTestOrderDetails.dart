@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 class LabTestOrderDetails extends StatelessWidget {
   final TestOrder order;
 
-  const LabTestOrderDetails(this.order,{Key key}) : super(key: key);
+  const LabTestOrderDetails(this.order,{Key? key}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order # "+order.orderId),
+        title: Text("Order # "+order.orderId!),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -50,7 +50,7 @@ class LabTestOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.status),
+                    child: Text(order.status!),
                   )
                 ],
               ),
@@ -67,7 +67,7 @@ class LabTestOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.name),
+                    child: Text(order.name!),
                   )
                 ],
               ),
@@ -84,7 +84,7 @@ class LabTestOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.phone),
+                    child: Text(order.phone!),
                   )
                 ],
               ),
@@ -101,7 +101,7 @@ class LabTestOrderDetails extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text(order.location),
+                    child: Text(order.location!),
                   )
                 ],
               ),
@@ -122,7 +122,7 @@ class LabTestOrderDetails extends StatelessWidget {
               physics: const ScrollPhysics(),
               itemBuilder: (BuildContext context, int index) =>
                   makeList(context, index),
-              itemCount: order.testList.length,
+              itemCount: order.testList!.length,
             )
                 : const SizedBox.shrink()
           ],
@@ -133,7 +133,7 @@ class LabTestOrderDetails extends StatelessWidget {
 
 
   Widget makeList(BuildContext context, int index) {
-    Test medicine = order.testList[index];
+    Test medicine = order.testList![index];
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       title: AutoSizeText(

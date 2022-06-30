@@ -8,8 +8,8 @@ MedicineOrders medicineOrdersFromJson(String str) => MedicineOrders.fromJson(jso
 String medicineOrdersToJson(MedicineOrders data) => json.encode(data.toJson());
 
 class MedicineOrders {
-  Meta meta;
-  MedicineOrdersResponse response;
+  Meta? meta;
+  MedicineOrdersResponse? response;
 
   MedicineOrders({
     this.meta,
@@ -22,13 +22,13 @@ class MedicineOrders {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
 class MedicineOrdersResponse {
-  List<Order> orders;
+  List<Order>? orders;
 
   MedicineOrdersResponse({
     this.orders,
@@ -39,23 +39,23 @@ class MedicineOrdersResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(orders.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(orders!.map((x) => x.toJson())),
   };
 }
 
 class Order {
-  String id;
-  String orderId;
-  String name;
-  String phone;
-  String address;
-  String email;
-  String prescriptionPath;
-  String status;
-  String prescriptionType;
-  String orderDate;
-  List<PrescriptionConverterModel> medicines;
-  Orderdetails orderdetails;
+  String? id;
+  String? orderId;
+  String? name;
+  String? phone;
+  String? address;
+  String? email;
+  String? prescriptionPath;
+  String? status;
+  String? prescriptionType;
+  String? orderDate;
+  List<PrescriptionConverterModel>? medicines;
+  Orderdetails? orderdetails;
   dynamic postedPrescription;
 
   Order({
@@ -103,15 +103,15 @@ class Order {
     "status": status,
     "PrescriptionType": prescriptionType,
     "OrderDate": orderDate,
-    "PrescriptionString": List<dynamic>.from(medicines.map((x) => x.toJson())),
-    "orderdetails": orderdetails.toJson(),
+    "PrescriptionString": List<dynamic>.from(medicines!.map((x) => x.toJson())),
+    "orderdetails": orderdetails!.toJson(),
     "PostedPrescription": postedPrescription,
   };
 
   Color getColor(){
-    if (status.toLowerCase() == "pending"){
+    if (status!.toLowerCase() == "pending"){
       return Colors.blue;
-    } else if (status.toLowerCase() == "cancelled"){
+    } else if (status!.toLowerCase() == "cancelled"){
       return Colors.red;
     } else {
       return Colors.green;
@@ -121,12 +121,12 @@ class Order {
 }
 
 class Orderdetails {
-  String orderId;
-  String username;
-  String type;
+  String? orderId;
+  String? username;
+  String? type;
   dynamic foreignId;
   dynamic confirmed;
-  String referencedBy;
+  String? referencedBy;
 
   Orderdetails({
     this.orderId,
@@ -157,13 +157,13 @@ class Orderdetails {
 }
 
 class PrescriptionConverterModel{
-  String productImage;
-  String productName;
-  String productId;
-  String productPrice;
+  String? productImage;
+  String? productName;
+  String? productId;
+  String? productPrice;
   dynamic productQuantity;
-  int uniqueKey;
-  String formType;
+  int? uniqueKey;
+  String? formType;
 
 
 

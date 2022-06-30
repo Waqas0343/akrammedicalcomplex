@@ -8,8 +8,8 @@ HealthRecordModel medicalRecordModelFromJson(String str) => HealthRecordModel.fr
 String medicalRecordModelToJson(HealthRecordModel data) => json.encode(data.toJson());
 
 class HealthRecordModel {
-  Meta meta;
-  HealthRecordModelList healthRecordList;
+  Meta? meta;
+  HealthRecordModelList? healthRecordList;
 
   HealthRecordModel({
     this.meta,
@@ -22,13 +22,13 @@ class HealthRecordModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": healthRecordList.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": healthRecordList!.toJson(),
   };
 }
 
 class HealthRecordModelList {
-  List<HealthRecord> records;
+  List<HealthRecord>? records;
 
   HealthRecordModelList({
     this.records,
@@ -39,20 +39,20 @@ class HealthRecordModelList {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(records.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(records!.map((x) => x.toJson())),
   };
 }
 
 class HealthRecord {
-  List<SharedWith> sharedWithUsernameAndName;
-  int id;
-  String username;
-  String fileName;
-  String filePath;
-  String recordType;
-  String description;
-  String timeStamp;
-  String timeStampShort;
+  List<SharedWith>? sharedWithUsernameAndName;
+  int? id;
+  String? username;
+  String? fileName;
+  String? filePath;
+  String? recordType;
+  String? description;
+  String? timeStamp;
+  String? timeStampShort;
   bool isSelected = false;
 
   HealthRecord({
@@ -82,7 +82,7 @@ class HealthRecord {
   );
 
   Map<String, dynamic> toJson() => {
-    "SharedWithUsernameAndName": List<dynamic>.from(sharedWithUsernameAndName.map((x) => x.toJson())),
+    "SharedWithUsernameAndName": List<dynamic>.from(sharedWithUsernameAndName!.map((x) => x.toJson())),
     "ID": id,
     "Username": username,
     "FileName": fileName,
@@ -95,8 +95,8 @@ class HealthRecord {
 }
 
 class SharedWith {
-  String username;
-  String name;
+  String? username;
+  String? name;
 
   SharedWith({
     this.username,

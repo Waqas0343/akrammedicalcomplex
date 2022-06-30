@@ -7,9 +7,9 @@ import 'package:intl/intl.dart';
 
 
 class MyAppointments extends StatefulWidget {
-  final List<Appointment> appointments;
+  final List<Appointment>? appointments;
 
-  const MyAppointments({Key key, this.appointments}) : super(key: key);
+  const MyAppointments({Key? key, this.appointments}) : super(key: key);
 
   @override
   _MyAppointmentsState createState() => _MyAppointmentsState(appointments);
@@ -17,7 +17,7 @@ class MyAppointments extends StatefulWidget {
 
 class _MyAppointmentsState extends State<MyAppointments> {
 
-  final List<Appointment> appointments;
+  final List<Appointment>? appointments;
 
   List<Appointment> appointmentsModel = [];
 
@@ -60,14 +60,14 @@ class _MyAppointmentsState extends State<MyAppointments> {
                     child: const Icon(Icons.close))),
           ),
         ),
-        appointments.isNotEmpty ?
+        appointments!.isNotEmpty ?
         Expanded(
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 4),
             itemBuilder: (BuildContext context, int index){
-              Appointment appointment = appointments[index];
+              Appointment appointment = appointments![index];
 
-              DateTime dateObj = DateFormat("MM/dd/yyyy").parse(appointment.dateFormatted);
+              DateTime dateObj = DateFormat("MM/dd/yyyy").parse(appointment.dateFormatted!);
               DateTime nowDateTime = DateTime(dateObj.year, dateObj.month, dateObj.day);
 
               String day =  DateFormat("EE").format(nowDateTime);
@@ -86,15 +86,15 @@ class _MyAppointmentsState extends State<MyAppointments> {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(appointment.doctorName, softWrap: false,),
+                      Text(appointment.doctorName!, softWrap: false,),
                       const SizedBox(height: 8,),
-                      Text(appointment.status, softWrap: false,style: TextStyle(fontWeight: FontWeight.bold, color: appointment.getStatusColor())),
+                      Text(appointment.status!, softWrap: false,style: TextStyle(fontWeight: FontWeight.bold, color: appointment.getStatusColor())),
                     ],
                   ),
                   isThreeLine: true,
                 ),
               );
-            },itemCount: appointments.length,
+            },itemCount: appointments!.length,
           ),
         ) : Container(
           margin: const EdgeInsets.only(top: 20),
@@ -112,8 +112,8 @@ class _MyAppointmentsState extends State<MyAppointments> {
       List<Appointment> dummyListData = <Appointment>[];
       for (var item in appointmentsModel) {
 
-        String name = item.doctorName.toLowerCase();
-        String status = item.status.toLowerCase();
+        String name = item.doctorName!.toLowerCase();
+        String status = item.status!.toLowerCase();
         if(name.contains(query.toLowerCase()) || status.contains(query.toLowerCase())) {
           dummyListData.add(item);
           return;
@@ -122,15 +122,15 @@ class _MyAppointmentsState extends State<MyAppointments> {
 
       }
       setState(() {
-        appointments.clear();
-        appointments.addAll(dummyListData);
+        appointments!.clear();
+        appointments!.addAll(dummyListData);
       });
 
       return;
     } else {
       setState(() {
-        appointments.clear();
-        appointments.addAll(appointmentsModel);
+        appointments!.clear();
+        appointments!.addAll(appointmentsModel);
       });
     }
 
@@ -138,7 +138,7 @@ class _MyAppointmentsState extends State<MyAppointments> {
 
   @override
   void initState() {
-    appointmentsModel.addAll(appointments);
+    appointmentsModel.addAll(appointments!);
     super.initState();
   }
 }

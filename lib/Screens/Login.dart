@@ -16,7 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'home.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -35,7 +35,7 @@ class _LoginState extends State<Login> {
 
   bool visible = true;
 
-  SharedPreferences preferences;
+  late SharedPreferences preferences;
 
   bool isTaped = true;
   String buttonText = "Login";
@@ -321,18 +321,18 @@ class _LoginState extends State<Login> {
     Loading.dismiss();
 
     if (response != "404") {
-      User user = loginFromJson(response).response.user;
+      User user = loginFromJson(response).response!.user!;
 
-      preferences.setString(Keys.username, user.username);
-      preferences.setString(Keys.phone, user.phone);
-      preferences.setString(Keys.image, user.imagePath);
-      preferences.setString(Keys.name, user.name);
-      preferences.setString(Keys.email, user.email);
-      preferences.setString(Keys.sessionToken, user.sessionToken);
-      preferences.setString(Keys.address, user.huAddress.location);
-      preferences.setString(Keys.city, user.huAddress.city);
-      preferences.setString(Keys.area, user.huAddress.area);
-      if (!user.activationStatus) {
+      preferences.setString(Keys.username, user.username!);
+      preferences.setString(Keys.phone, user.phone!);
+      preferences.setString(Keys.image, user.imagePath!);
+      preferences.setString(Keys.name, user.name!);
+      preferences.setString(Keys.email, user.email!);
+      preferences.setString(Keys.sessionToken, user.sessionToken!);
+      preferences.setString(Keys.address, user.huAddress!.location!);
+      preferences.setString(Keys.city, user.huAddress!.city!);
+      preferences.setString(Keys.area, user.huAddress!.area!);
+      if (!user.activationStatus!) {
         Route route = MaterialPageRoute(
             builder: (context) => AccountActivation(user.phone));
         Navigator.pushAndRemoveUntil(context, route, (route) => false);

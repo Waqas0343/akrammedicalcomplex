@@ -14,7 +14,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_greetings/flutter_greetings.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,20 +28,20 @@ import 'Prescription/MyPrescriptions.dart';
 import 'Settings/Settings.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  String name, email, imagePath, oldId, greething;
-  SharedPreferences preferences;
-  DateTime currentBackPressTime;
+  String? name, email, imagePath, oldId;
+  late SharedPreferences preferences;
+  DateTime? currentBackPressTime;
 
   var rng = Random();
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   Widget build(BuildContext context) {
@@ -138,12 +137,12 @@ class _HomeState extends State<Home> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
+                    const Padding(
                       padding:
-                          const EdgeInsets.only(top: 16, bottom: 16, left: 4),
+                          EdgeInsets.only(top: 16, bottom: 16, left: 4),
                       child: Text(
-                        '$greething!',
-                        style: const TextStyle(
+                        'Hello!', // TODO: add greeting
+                        style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                     ),
@@ -284,7 +283,6 @@ class _HomeState extends State<Home> {
   }
 
   void getUpdate() async {
-    greething = YonoGreetings.showGreetings();
     preferences = await SharedPreferences.getInstance();
     setState(() {
       name = preferences.getString(Keys.name);
@@ -359,15 +357,15 @@ class _HomeState extends State<Home> {
       print("Settings registered: $settings");
     });*/
 
-    _firebaseMessaging.getToken().then((String token) {
+    _firebaseMessaging.getToken().then((String? token) {
       assert(token != null);
       saveTokenTask(token: token);
     });
   }
 
-  static saveTokenTask({@required String token}) async {
+  static saveTokenTask({required String? token}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
+    String? username = preferences.getString(Keys.username);
 
     String response = await Utilities.httpPost(ServerConfig.saveToken +
         '&deviceType=Flutter&username=$username&token=$token&ProjectId=${Keys.projectId}');
@@ -379,7 +377,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  showNotification({String title, String body}) async {
+  showNotification({String? title, String? body}) async {
     var android = const AndroidNotificationDetails("Updates", "Updates",
         importance: Importance.defaultImportance,
         styleInformation: BigTextStyleInformation(""));
@@ -390,7 +388,7 @@ class _HomeState extends State<Home> {
         rng.nextInt(100), title, body, platform);
   }
 
-  void navigate(String type) {
+  void navigate(String? type) {
     if (type == Keys.labOrders) {
       Route route = MaterialPageRoute(
           builder: (_) => const MyBooking(
@@ -421,7 +419,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  void alertOnNotification({String title, String description, String action}) {
+  void alertOnNotification({String? title, String? description, String? action}) {
     showDialog(
         context: (context),
         builder: (context) {
@@ -433,13 +431,13 @@ class _HomeState extends State<Home> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                   child: AutoSizeText(
-                    title,
+                    title!,
                     maxLines: 1,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 )),
-            content: Text(description),
+            content: Text(description!),
             actions: [
               TextButton(
                 onPressed: () {
@@ -462,7 +460,7 @@ class _HomeState extends State<Home> {
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       Utilities.showToast("Press back again to Exit.");
       return Future.value(false);

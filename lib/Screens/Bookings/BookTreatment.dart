@@ -13,7 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class BookTreatment extends StatefulWidget {
-  const BookTreatment({Key key}) : super(key: key);
+  const BookTreatment({Key? key}) : super(key: key);
 
   @override
   _BookTreatmentState createState() => _BookTreatmentState();
@@ -28,7 +28,7 @@ class _BookTreatmentState extends State<BookTreatment> {
   final nameController = TextEditingController();
 
   bool isLoading = true;
-  SharedPreferences preferences;
+  SharedPreferences? preferences;
 
   bool isTaped = true;
   String buttonText = "Confirm";
@@ -81,7 +81,7 @@ class _BookTreatmentState extends State<BookTreatment> {
     if (response != "404") {
       if (!mounted) return;
       setState(() {
-        servicesList.addAll(servicesModelFromJson(response).response.response);
+        servicesList.addAll(servicesModelFromJson(response).response!.response!);
         servicesModel.addAll(servicesList);
         isLoading = false;
       });
@@ -93,8 +93,8 @@ class _BookTreatmentState extends State<BookTreatment> {
 
   void bookTreatment() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
-    String name = preferences.getString(Keys.name);
+    String? username = preferences.getString(Keys.username);
+    String? name = preferences.getString(Keys.name);
 
     disableButton();
     if (!await Utilities.isOnline()) {
@@ -114,9 +114,9 @@ class _BookTreatmentState extends State<BookTreatment> {
     String newDate = date + " " + time.trim();
 
     String values = "&DoctorUsername=" "&Location=${Keys.locationId}" "&patname=" +
-        name +
+        name! +
         "&PatientUsername=" +
-        username +
+        username! +
         "&Status=Pending" +
         "&ScheduledDate_Short=" +
         newDate +
@@ -216,11 +216,11 @@ class _BookTreatmentState extends State<BookTreatment> {
                       margin: const EdgeInsets.symmetric(vertical: 4),
                       child: CheckboxListTile(
                           controlAffinity: ListTileControlAffinity.leading,
-                          title: Text(serviceModel.name),
-                          subtitle: Text("PKR/- " + serviceModel.fee),
+                          title: Text(serviceModel.name!),
+                          subtitle: Text("PKR/- " + serviceModel.fee!),
                           value: serviceModel.isSelected,
                           onChanged: (value) {
-                            if (value) {
+                            if (value!) {
                               selectedList.add(serviceModel);
                             } else {
                               selectedList.remove(serviceModel);
@@ -252,7 +252,7 @@ class _BookTreatmentState extends State<BookTreatment> {
     if (query.isNotEmpty) {
       List<ServiceModel> dummyListData = <ServiceModel>[];
       for (var item in servicesModel) {
-        if (item.name.toLowerCase().contains(query.toLowerCase())) {
+        if (item.name!.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
           return;
         }

@@ -13,14 +13,14 @@ class ProfileModel {
     this.response,
   });
 
-  ProfileModelResponse response;
+  ProfileModelResponse? response;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
     response: ProfileModelResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -29,14 +29,14 @@ class ProfileModelResponse {
     this.response,
   });
 
-  Profile response;
+  Profile? response;
 
   factory ProfileModelResponse.fromJson(Map<String, dynamic> json) => ProfileModelResponse(
     response: Profile.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -47,9 +47,9 @@ class Profile {
     this.humanUser,
   });
 
-  Address address;
-  User user;
-  HumanUser humanUser;
+  Address? address;
+  User? user;
+  HumanUser? humanUser;
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
     address: Address.fromJson(json["Address"]),
@@ -58,9 +58,9 @@ class Profile {
   );
 
   Map<String, dynamic> toJson() => {
-    "Address": address.toJson(),
-    "User": user.toJson(),
-    "humanUser": humanUser.toJson(),
+    "Address": address!.toJson(),
+    "User": user!.toJson(),
+    "humanUser": humanUser!.toJson(),
   };
 }
 
@@ -73,9 +73,9 @@ class Address {
     this.longitude,
   });
 
-  String area;
-  String location;
-  String city;
+  String? area;
+  String? location;
+  String? city;
   dynamic latitude;
   dynamic longitude;
 
@@ -115,21 +115,21 @@ class HumanUser {
     this.salutation,
   });
 
-  String username;
+  String? username;
   dynamic gender;
-  String dateOfBirth;
-  String cnic;
-  String bloodGroup;
-  String height;
-  String weight;
-  String bmi;
+  String? dateOfBirth;
+  String? cnic;
+  String? bloodGroup;
+  String? height;
+  String? weight;
+  String? bmi;
   dynamic bsa;
-  int age;
-  String maritalStatus;
-  String religion;
-  String profession;
-  String nationality;
-  String salutation;
+  int? age;
+  String? maritalStatus;
+  String? religion;
+  String? profession;
+  String? nationality;
+  String? salutation;
 
   factory HumanUser.fromJson(Map<String, dynamic> json) => HumanUser(
     username: json["Username"],
@@ -185,19 +185,19 @@ class User {
     this.profession
   });
 
-  String username;
-  String title;
+  String? username;
+  String? title;
   dynamic gender;
-  String name;
-  String phone;
-  String cnic;
-  String imagePath;
-  String email;
-  String dateofbirth;
-  String bloodgroup;
-  String height;
-  String weight;
-  String profession;
+  String? name;
+  String? phone;
+  String? cnic;
+  String? imagePath;
+  String? email;
+  String? dateofbirth;
+  String? bloodgroup;
+  String? height;
+  String? weight;
+  String? profession;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     username: json["Username"],

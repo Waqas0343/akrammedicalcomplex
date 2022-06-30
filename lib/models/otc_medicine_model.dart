@@ -7,8 +7,8 @@ OtcMedicines otcMedicinesFromJson(String str) => OtcMedicines.fromJson(json.deco
 String otcMedicinesToJson(OtcMedicines data) => json.encode(data.toJson());
 
 class OtcMedicines {
-  Meta meta;
-  OtcMedicinesResponse response;
+  Meta? meta;
+  OtcMedicinesResponse? response;
 
   OtcMedicines({
     this.meta,
@@ -21,13 +21,13 @@ class OtcMedicines {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
 class OtcMedicinesResponse {
-  List<ProductDetail> otcMedicines;
+  List<ProductDetail>? otcMedicines;
 
   OtcMedicinesResponse({
     this.otcMedicines,
@@ -38,19 +38,19 @@ class OtcMedicinesResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(otcMedicines.map((x) => x)),
+    "Response": List<dynamic>.from(otcMedicines!.map((x) => x)),
   };
 }
 
 class ProductDetail {
-  String id;
-  String name;
-  String price;
-  String company;
-  String category;
-  bool isFeatured;
+  String? id;
+  String? name;
+  String? price;
+  String? company;
+  String? category;
+  bool? isFeatured;
   dynamic addedOn;
-  String img;
+  String? img;
 
   ProductDetail({
     this.id,
@@ -87,7 +87,7 @@ class ProductDetail {
 
   @override
   String toString() {
-    return name;
+    return name!;
   }
 
 

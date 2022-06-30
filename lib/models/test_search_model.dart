@@ -13,14 +13,14 @@ class SearchLabTestModel {
     this.response,
   });
 
-  SearchLabTestModelResponse response;
+  SearchLabTestModelResponse? response;
 
   factory SearchLabTestModel.fromJson(Map<String, dynamic> json) => SearchLabTestModel(
     response: SearchLabTestModelResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -29,14 +29,14 @@ class SearchLabTestModelResponse {
     this.response,
   });
 
-  ResponseResponse response;
+  ResponseResponse? response;
 
   factory SearchLabTestModelResponse.fromJson(Map<String, dynamic> json) => SearchLabTestModelResponse(
     response: ResponseResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -46,8 +46,8 @@ class ResponseResponse {
     this.testsList,
   });
 
-  int totalItems;
-  List<Test> testsList;
+  int? totalItems;
+  List<Test>? testsList;
 
   factory ResponseResponse.fromJson(Map<String, dynamic> json) => ResponseResponse(
     totalItems: json["TotalItems"],
@@ -56,7 +56,7 @@ class ResponseResponse {
 
   Map<String, dynamic> toJson() => {
     "TotalItems": totalItems,
-    "TestsList": List<dynamic>.from(testsList.map((x) => x.toJson())),
+    "TestsList": List<dynamic>.from(testsList!.map((x) => x.toJson())),
   };
 }
 
@@ -71,13 +71,13 @@ class Test {
     this.fee,
   });
 
-  String id;
-  String testId;
-  String testName;
-  String sampleRequired;
-  String description;
-  String views;
-  String fee;
+  String? id;
+  String? testId;
+  String? testName;
+  String? sampleRequired;
+  String? description;
+  String? views;
+  String? fee;
 
   factory Test.fromJson(Map<String, dynamic> json) => Test(
     id: json["ID"],

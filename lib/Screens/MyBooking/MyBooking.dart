@@ -12,19 +12,19 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyBooking extends StatefulWidget {
-  final int initialIndex;
+  final int? initialIndex;
 
-  const MyBooking({Key key, this.initialIndex}) : super(key: key);
+  const MyBooking({Key? key, this.initialIndex}) : super(key: key);
 
   @override
   _MyBookingState createState() => _MyBookingState();
 }
 
 class _MyBookingState extends State<MyBooking> {
-  List<Appointment> appointments;
+  List<Appointment>? appointments;
   // List<TreatmentData> treatments;
-  List<TestModel> testOrders;
-  List<Order> medicinesOrders;
+  List<TestModel>? testOrders;
+  List<Order>? medicinesOrders;
 
   bool appointmentLoading = true;
   // bool treatmentLoading = true;
@@ -93,15 +93,15 @@ class _MyBookingState extends State<MyBooking> {
     getBookings();
   }
 
-  void getAppointments(String username) async {
+  void getAppointments(String? username) async {
     String appointmentResponse = await Utilities.httpGet(
         ServerConfig.appointments + "&patientusername=$username");
     if (appointmentResponse != "404") {
       if (!mounted) return;
       setState(() {
-        appointments.addAll(appointmentModelFromJson(appointmentResponse)
-            .response
-            .appointmentList);
+        appointments!.addAll(appointmentModelFromJson(appointmentResponse)
+            .response!
+            .appointmentList!);
         appointmentLoading = false;
       });
     } else {
@@ -109,27 +109,27 @@ class _MyBookingState extends State<MyBooking> {
     }
   }
 
-  void getOrders(String username) async {
+  void getOrders(String? username) async {
     String response = await Utilities.httpGet(
         ServerConfig.myTestOrders + "&username=$username&Attachments=false");
     if (response != "404") {
-      var list = testOrderResponseModelFromJson(response).response.response;
+      var list = testOrderResponseModelFromJson(response).response!.response;
       if (!mounted) return;
       setState(() {
-       testOrders.addAll(list);
+       testOrders!.addAll(list!);
         ordersLoading = false;
       });
     }
   }
 
-  void getMedicineOrders(String username) async {
+  void getMedicineOrders(String? username) async {
 
     String response = await Utilities.httpGet(ServerConfig.medicineOrders + "&username=$username");
     if (response != "404") {
-      List<Order> list = medicineOrdersFromJson(response).response.orders;
+      List<Order>? list = medicineOrdersFromJson(response).response!.orders;
       if (!mounted) return;
       setState(() {
-        medicinesOrders.addAll(list);
+        medicinesOrders!.addAll(list!);
         medicinesLoading = false;
       });
     }
@@ -137,7 +137,7 @@ class _MyBookingState extends State<MyBooking> {
 
   void getBookings() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.username);
+    String? username = preferences.getString(Keys.username);
 
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);

@@ -11,18 +11,18 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LabReports extends StatefulWidget {
-  const LabReports({Key key}) : super(key: key);
+  const LabReports({Key? key}) : super(key: key);
 
   @override
   _LabReportsState createState() => _LabReportsState();
 }
 
 class _LabReportsState extends State<LabReports> {
-  List<TestModel> orders;
+  late List<TestModel> orders;
   List<TestModel> ordersModel = [];
-  SharedPreferences preferences;
+  late SharedPreferences preferences;
   bool isLoading = true;
-  String username;
+  String? username;
   int offset = 0;
 
   final nameController = TextEditingController();
@@ -72,7 +72,7 @@ class _LabReportsState extends State<LabReports> {
     String response =
         await Utilities.httpGet(ServerConfig.myTestOrders + values);
     if (response != "404") {
-      var list = testOrderResponseModelFromJson(response).response.response;
+      var list = testOrderResponseModelFromJson(response).response!.response!;
 
       if (list.isNotEmpty) {
         list[0].isExpanded = true;
@@ -124,7 +124,7 @@ class _LabReportsState extends State<LabReports> {
                         children: [
                           ListTile(
                             subtitle: Text(
-                              testModel.status,
+                              testModel.status!,
                               style: TextStyle(color: testModel.getColor()),
                             ),
                             title: Text(
@@ -180,7 +180,7 @@ class _LabReportsState extends State<LabReports> {
                                       shrinkWrap: true,
                                       itemBuilder:
                                           (BuildContext context, int index) {
-                                        Test test = testModel.testList[index];
+                                        Test test = testModel.testList![index];
                                         return ListTile(
                                           onTap: () {
                                             Route route = MaterialPageRoute(
@@ -196,20 +196,20 @@ class _LabReportsState extends State<LabReports> {
                                               margin: const EdgeInsets.only(
                                                   left: 16, bottom: 6),
                                               child: Text(
-                                                test.testName.trim(),
+                                                test.testName!.trim(),
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                               )),
                                           subtitle: Container(
                                               margin: const EdgeInsets.only(left: 16),
-                                              child: Text(test.fee)),
+                                              child: Text(test.fee!)),
                                           trailing: const Icon(
                                             Icons.arrow_forward_ios,
                                             size: 18,
                                           ),
                                         );
                                       },
-                                      itemCount: testModel.testList.length,
+                                      itemCount: testModel.testList!.length,
                                     ))
                         ],
                       ),
@@ -238,8 +238,8 @@ class _LabReportsState extends State<LabReports> {
       bool isAdded = false;
       for (var item in ordersModel) {
         if (item.testList != null) {
-          for (var element in item.testList) {
-            String name = element.testName.toLowerCase();
+          for (var element in item.testList!) {
+            String name = element.testName!.toLowerCase();
 
             if (name.contains(query.toLowerCase()) && !isAdded) {
               isAdded = true;

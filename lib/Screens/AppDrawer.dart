@@ -19,9 +19,9 @@ import 'Doctors/FindDoctor.dart';
 import 'LabReports/LabReports.dart';
 
 class AppDrawer extends StatefulWidget {
-  final String name, email, imagePath;
+  final String? name, email, imagePath;
 
-  const AppDrawer({Key key, this.name, this.email, this.imagePath})
+  const AppDrawer({Key? key, this.name, this.email, this.imagePath})
       : super(key: key);
 
   @override
@@ -29,7 +29,7 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  SharedPreferences preferences;
+  late SharedPreferences preferences;
 
   @override
   Widget build(BuildContext context) {

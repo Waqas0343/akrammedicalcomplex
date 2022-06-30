@@ -21,23 +21,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 class BookLabTest extends StatefulWidget {
   final bool isPrescription;
 
-  const BookLabTest(this.isPrescription, {Key key}) : super(key: key);
-
+  const BookLabTest(this.isPrescription, {Key? key}) : super(key: key);
 
   @override
   _BookLabTestState createState() => _BookLabTestState();
 }
 
 class _BookLabTestState extends State<BookLabTest> {
-  File file;
-  String prescriptionPath, username;
+  File? file;
+  String? prescriptionPath, username;
 
   List<Test> chooseTest = [];
   List<Lab> labs = [];
 
   final _picker = ImagePicker();
 
-  Lab lab;
+  Lab? lab;
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
   final emailController = TextEditingController();
@@ -107,7 +106,7 @@ class _BookLabTestState extends State<BookLabTest> {
                   ]),
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Image.file(
-                    file,
+                    file!,
                   ),
                 )),
                 Align(
@@ -145,83 +144,83 @@ class _BookLabTestState extends State<BookLabTest> {
   Widget uploadPrescriptionActions() {
     return widget.isPrescription && file == null
         ? Row(
-        children: <Widget>[
-          Expanded(
-            flex: 1,
-            child: Card(
-              margin: const EdgeInsets.all(0),
-              elevation: 2,
-              color: Colors.white,
-              child: InkWell(
-                onTap: () async {
-                  var image =
-                      await _picker.pickImage(source: ImageSource.camera);
-                  if (image != null) {
-                    setState(() {
-                      file = File(image.path);
-                    });
-                    uploadImage(file);
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: const <Widget>[
-                      Icon(
-                        Icons.camera,
-                        size: 38,
-                        color: MyColors.accent,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Card(
+                  margin: const EdgeInsets.all(0),
+                  elevation: 2,
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () async {
+                      var image =
+                          await _picker.pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        setState(() {
+                          file = File(image.path);
+                        });
+                        uploadImage(file!);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.camera,
+                            size: 38,
+                            color: MyColors.accent,
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text("Camera")
+                        ],
                       ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text("Camera")
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            flex: 1,
-            child: Card(
-              elevation: 2,
-              margin: const EdgeInsets.all(0),
-              color: Colors.white,
-              child: InkWell(
-                onTap: () async {
-                  var image =
-                      await _picker.pickImage(source: ImageSource.gallery);
-                  if (image != null) {
-                    setState(() {
-                      file = File(image.path);
-                    });
-                    uploadImage(file);
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: const <Widget>[
-                      Icon(
-                        Icons.image,
-                        size: 38,
-                        color: MyColors.accent,
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                flex: 1,
+                child: Card(
+                  elevation: 2,
+                  margin: const EdgeInsets.all(0),
+                  color: Colors.white,
+                  child: InkWell(
+                    onTap: () async {
+                      var image =
+                          await _picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        setState(() {
+                          file = File(image.path);
+                        });
+                        uploadImage(file!);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: const <Widget>[
+                          Icon(
+                            Icons.image,
+                            size: 38,
+                            color: MyColors.accent,
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Text("Gallery")
+                        ],
                       ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Text("Gallery")
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-        ],
+            ],
           )
         : const SizedBox.shrink();
   }
@@ -380,9 +379,9 @@ class _BookLabTestState extends State<BookLabTest> {
                     itemBuilder: (context, Test suggestion) {
                       return ListTile(
                         dense: true,
-                        subtitle: Text(suggestion.fee),
+                        subtitle: Text(suggestion.fee!),
                         title: AutoSizeText(
-                          suggestion.testName,
+                          suggestion.testName!,
                           maxLines: 1,
                         ),
                       );
@@ -413,10 +412,10 @@ class _BookLabTestState extends State<BookLabTest> {
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   title: AutoSizeText(
-                    chooseTest[index].testName,
+                    chooseTest[index].testName!,
                     maxLines: 1,
                   ),
-                  subtitle: Text(chooseTest[index].fee),
+                  subtitle: Text(chooseTest[index].fee!),
                   trailing: IconButton(
                       icon: const Icon(Icons.cancel),
                       onPressed: () {
@@ -442,10 +441,11 @@ class _BookLabTestState extends State<BookLabTest> {
 
   Future<List<Test>> searchTest(String name) async {
     String response = await Utilities.httpGet(ServerConfig.searchTest +
-        "&q=$name&pageLimit=15&page=0&labid=${lab.username}");
-    List<Test> list = [];
+        "&q=$name&pageLimit=15&page=0&labid=${lab!.username}");
+    List<Test>? list = [];
     if (response != "404") {
-      list = searchLabTestModelFromJson(response).response.response.testsList;
+      list =
+          searchLabTestModelFromJson(response).response!.response!.testsList!;
     }
     return list;
   }
@@ -455,7 +455,7 @@ class _BookLabTestState extends State<BookLabTest> {
       isLoading = true;
     });
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.USERNAME);
+    String? username = preferences.getString(Keys.USERNAME);
 
     Dio dio = Dio();
 
@@ -469,7 +469,7 @@ class _BookLabTestState extends State<BookLabTest> {
         await dio.post(ServerConfig.uploadImages, data: imageFormData);
 
     if (response.statusCode == 200) {
-      prescriptionPath = imageModelFromJson(response.toString()).response.path;
+      prescriptionPath = imageModelFromJson(response.toString()).response!.path;
     } else {
       Utilities.showToast("Unable to upload Prescription");
     }
@@ -482,10 +482,10 @@ class _BookLabTestState extends State<BookLabTest> {
   void getPrefrences() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     username = preferences.getString(Keys.USERNAME);
-    nameController.text = preferences.getString(Keys.name);
-    phoneController.text = preferences.getString(Keys.phone);
-    emailController.text = preferences.getString(Keys.email);
-    locationController.text = preferences.getString(Keys.address);
+    nameController.text = preferences.getString(Keys.name)!;
+    phoneController.text = preferences.getString(Keys.phone)!;
+    emailController.text = preferences.getString(Keys.email)!;
+    locationController.text = preferences.getString(Keys.address)!;
   }
 
   Widget labView() {
@@ -513,11 +513,11 @@ class _BookLabTestState extends State<BookLabTest> {
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 0),
                           dense: true,
-                          title: Text(e.name),
+                          title: Text(e.name!),
                           leading: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
                               child: Image.network(
-                                e.imagePath,
+                                e.imagePath!,
                                 width: 32,
                                 height: 32,
                               )),
@@ -527,7 +527,7 @@ class _BookLabTestState extends State<BookLabTest> {
                         value: e,
                       );
                     }).toList(),
-                    onChanged: (lab) {
+                    onChanged: (dynamic lab) {
                       setState(() {
                         chooseTest.clear();
                         this.lab = lab;
@@ -556,7 +556,7 @@ class _BookLabTestState extends State<BookLabTest> {
     if (response != "404") {
       var list = labModelFromJson(response);
       setState(() {
-        labs.addAll(list.response.labs);
+        labs.addAll(list.response!.labs!);
         lab = labs[0];
       });
     } else {
@@ -573,8 +573,8 @@ class _BookLabTestState extends State<BookLabTest> {
     String phone = phoneController.text.trim();
     String email = emailController.text.trim();
     String location = locationController.text.trim();
-    String username = preferences.getString(Keys.USERNAME);
-    String testString;
+    String? username = preferences.getString(Keys.USERNAME);
+    String? testString;
 
     if (name.isEmpty) {
       enableButton();
@@ -643,14 +643,13 @@ class _BookLabTestState extends State<BookLabTest> {
       "OrderList": testString,
     });
 
-    String values = "&LabId=${lab.username}&Name=$name&username=$username"
+    String values = "&LabId=${lab!.username}&Name=$name&username=$username"
         "&Location=$location&Phone=$phone&Email=$email&Area=&City="
         "&SessionToken=&RefferedBy=&fetchtype=mobile&attachment=$prescriptionPath&Amount=";
 
-
     Dio dio = Dio();
 
-    Response response;
+    Response? response;
     try {
       response =
           await dio.post(ServerConfig.labTestBook + values, data: formData);

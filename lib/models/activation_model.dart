@@ -14,8 +14,8 @@ class Update {
     this.response,
   });
 
-  Meta meta;
-  UpdateResponse response;
+  Meta? meta;
+  UpdateResponse? response;
 
   factory Update.fromJson(Map<String, dynamic> json) => Update(
     meta: Meta.fromJson(json["Meta"]),
@@ -23,8 +23,8 @@ class Update {
   );
 
   Map<String, dynamic> toJson() => {
-    "Meta": meta.toJson(),
-    "Response": response.toJson(),
+    "Meta": meta!.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -34,8 +34,8 @@ class Meta {
     this.message,
   });
 
-  String status;
-  String message;
+  String? status;
+  String? message;
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
     status: json["Status"],
@@ -53,14 +53,14 @@ class UpdateResponse {
     this.response,
   });
 
-  ResponseResponse response;
+  ResponseResponse? response;
 
   factory UpdateResponse.fromJson(Map<String, dynamic> json) => UpdateResponse(
     response: ResponseResponse.fromJson(json["Response"]),
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
@@ -83,21 +83,21 @@ class ResponseResponse {
     this.huAddress,
   });
 
-  String username;
-  String type;
-  String timeStamp;
-  String name;
-  String phone;
-  String imagePath;
-  String email;
-  bool status;
-  String sessionToken;
-  String authToken;
+  String? username;
+  String? type;
+  String? timeStamp;
+  String? name;
+  String? phone;
+  String? imagePath;
+  String? email;
+  bool? status;
+  String? sessionToken;
+  String? authToken;
   dynamic ipAddress;
-  String facebookId;
+  String? facebookId;
   dynamic googleId;
-  HuDetails huDetails;
-  HuAddress huAddress;
+  HuDetails? huDetails;
+  HuAddress? huAddress;
 
   factory ResponseResponse.fromJson(Map<String, dynamic> json) => ResponseResponse(
     username: json["Username"],
@@ -131,8 +131,8 @@ class ResponseResponse {
     "IPAddress": ipAddress,
     "facebook_id": facebookId,
     "google_id": googleId,
-    "hu_details": huDetails.toJson(),
-    "hu_address": huAddress.toJson(),
+    "hu_details": huDetails!.toJson(),
+    "hu_address": huAddress!.toJson(),
   };
 }
 
@@ -149,15 +149,15 @@ class HuAddress {
     this.longitude,
   });
 
-  int id;
-  String username;
-  String country;
-  String stateProvince;
-  String city;
-  String location;
-  String area;
-  String latitude;
-  String longitude;
+  int? id;
+  String? username;
+  String? country;
+  String? stateProvince;
+  String? city;
+  String? location;
+  String? area;
+  String? latitude;
+  String? longitude;
 
   factory HuAddress.fromJson(Map<String, dynamic> json) => HuAddress(
     id: json["ID"],
@@ -203,21 +203,21 @@ class HuDetails {
     this.salutation,
   });
 
-  String username;
-  String gender;
-  String dateOfBirth;
-  String cnic;
-  String bloodGroup;
-  String height;
-  String weight;
-  String bmi;
-  String bsa;
-  int age;
-  String maritalStatus;
-  String religion;
-  String profession;
-  String nationality;
-  String salutation;
+  String? username;
+  String? gender;
+  String? dateOfBirth;
+  String? cnic;
+  String? bloodGroup;
+  String? height;
+  String? weight;
+  String? bmi;
+  String? bsa;
+  int? age;
+  String? maritalStatus;
+  String? religion;
+  String? profession;
+  String? nationality;
+  String? salutation;
 
   factory HuDetails.fromJson(Map<String, dynamic> json) => HuDetails(
     username: json["Username"],

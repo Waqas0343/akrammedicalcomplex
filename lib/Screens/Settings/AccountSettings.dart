@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountSettings extends StatefulWidget {
-  const AccountSettings({Key key}) : super(key: key);
+  const AccountSettings({Key? key}) : super(key: key);
 
   @override
   _AccountSettingsState createState() => _AccountSettingsState();
@@ -129,8 +129,8 @@ class _AccountSettingsState extends State<AccountSettings> {
     String newConfirmPassword = newConPassController.text.trim();
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String phone = preferences.getString(Keys.phone);
-    String username = preferences.getString(Keys.username);
+    String? phone = preferences.getString(Keys.phone);
+    String? username = preferences.getString(Keys.username);
 
     currentFocus.unfocus();
     newPassFocus.unfocus();

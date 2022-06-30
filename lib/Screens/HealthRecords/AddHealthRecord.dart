@@ -14,19 +14,19 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddHealthRecord extends StatefulWidget {
-  const AddHealthRecord({Key key}) : super(key: key);
+  const AddHealthRecord({Key? key}) : super(key: key);
 
   @override
   _AddHealthRecordState createState() => _AddHealthRecordState();
 }
 
 class _AddHealthRecordState extends State<AddHealthRecord> {
-  File file;
-  String prescriptionPath;
-  SharedPreferences preferences;
+  File? file;
+  String? prescriptionPath;
+  late SharedPreferences preferences;
 
   List<String> types = ["Lab Report", "Prescription", "Other"];
-  String type, username;
+  String? type, username;
 
   bool isTaped = true;
   String buttonText = "Save";
@@ -115,7 +115,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                             );
                           }).toList(),
 
-                          onChanged: (type) {
+                          onChanged: (dynamic type) {
                             setState(() {
                               this.type = type;
                             });
@@ -174,7 +174,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                       blurRadius: 10,),
                 ]),
                 padding: const EdgeInsets.only(bottom: 12),
-                child: Image.file(file,),
+                child: Image.file(file!,),
               ),
             ),
             Align(
@@ -225,7 +225,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                       setState(() {
                         file = File(image.path);
                       });
-                      uploadImage(file);
+                      uploadImage(file!);
                     }
                   },
                   child: Padding(
@@ -264,7 +264,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                       setState(() {
                         file = File(image.path);
                       });
-                      uploadImage(file);
+                      uploadImage(file!);
                     }
                   },
                   child: Padding(

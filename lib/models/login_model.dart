@@ -6,7 +6,7 @@ Login loginFromJson(String str) => Login.fromJson(json.decode(str));
 String loginToJson(Login data) => json.encode(data.toJson());
 
 class Login {
-  LoginResponse response;
+  LoginResponse? response;
 
   Login({
     this.response,
@@ -17,12 +17,12 @@ class Login {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
 class LoginResponse {
-  User user;
+  User? user;
 
   LoginResponse({
     this.user,
@@ -33,26 +33,26 @@ class LoginResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": user.toJson(),
+    "Response": user!.toJson(),
   };
 }
 
 class User {
-  String username;
-  String type;
-  String timeStamp;
-  String name;
-  String phone;
-  String imagePath;
-  String email;
-  bool status;
-  bool activationStatus;
-  String sessionToken;
-  String authToken;
+  String? username;
+  String? type;
+  String? timeStamp;
+  String? name;
+  String? phone;
+  String? imagePath;
+  String? email;
+  bool? status;
+  bool? activationStatus;
+  String? sessionToken;
+  String? authToken;
   dynamic ipAddress;
-  String facebookId;
-  HumanDetails huDetails;
-  HumanAddress huAddress;
+  String? facebookId;
+  HumanDetails? huDetails;
+  HumanAddress? huAddress;
 
   User({
     this.username,
@@ -103,19 +103,19 @@ class User {
     "AuthToken": authToken,
     "IPAddress": ipAddress,
     "facebook_id": facebookId,
-    "hu_details": huDetails.toJson(),
-    "hu_address": huAddress.toJson(),
+    "hu_details": huDetails!.toJson(),
+    "hu_address": huAddress!.toJson(),
   };
 }
 
 class HumanAddress {
-  int id;
-  String username;
-  String country;
-  String stateProvince;
-  String city;
-  String location;
-  String area;
+  int? id;
+  String? username;
+  String? country;
+  String? stateProvince;
+  String? city;
+  String? location;
+  String? area;
   dynamic latitude;
   dynamic longitude;
 
@@ -157,21 +157,21 @@ class HumanAddress {
 }
 
 class HumanDetails {
-  String username;
+  String? username;
   dynamic gender;
-  String dateOfBirth;
-  String cnic;
-  String bloodGroup;
-  String height;
-  String weight;
-  String bmi;
+  String? dateOfBirth;
+  String? cnic;
+  String? bloodGroup;
+  String? height;
+  String? weight;
+  String? bmi;
   dynamic bsa;
-  int age;
-  String maritalStatus;
-  String religion;
-  String profession;
-  String nationality;
-  String salutation;
+  int? age;
+  String? maritalStatus;
+  String? religion;
+  String? profession;
+  String? nationality;
+  String? salutation;
 
   HumanDetails({
     this.username,

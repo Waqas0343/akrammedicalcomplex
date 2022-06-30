@@ -2,17 +2,16 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:amc/Utilities/Utilities.dart';
-import 'package:file_utils/file_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' show get;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ViewReport extends StatefulWidget {
-  final String path;
-  final String name;
+  final String? path;
+  final String? name;
 
-  const ViewReport({Key key, this.path, this.name}) : super(key: key);
+  const ViewReport({Key? key, this.path, this.name}) : super(key: key);
 
   @override
   _ViewReportState createState() => _ViewReportState();
@@ -22,14 +21,14 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
 
   bool pdfReady = false, isError = false;
   String urlPDFPath = "";
-  Directory externalDir;
+  Directory? externalDir;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Order # "+widget.name),
+        title: Text("Order # "+widget.name!),
       ),
       body: Center(
         child: pdfReady
@@ -48,7 +47,7 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
           },
           onViewCreated: (PDFViewController vc) {
           },
-          onPageChanged: (int page, int total) {
+          onPageChanged: (int? page, int? total) {
           },
           onPageError: (page, e) {},
         )
@@ -68,7 +67,7 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    getFileFromUrl(widget.path);
+    getFileFromUrl(widget.path!);
   }
 
 
@@ -77,7 +76,7 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
       var data = await get(Uri.parse(url));
       var bytes = data.bodyBytes;
       var dir = await getApplicationDocumentsDirectory();
-      String filename = widget.name.replaceAll(" ", "_");
+      String filename = widget.name!.replaceAll(" ", "_");
       File file = File("${dir.path}/$filename.pdf");
 
       File urlFile = await file.writeAsBytes(bytes);
@@ -126,8 +125,7 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
 
       String finalPath = '$path/ReportNo${widget.name}.pdf';
       try {
-        FileUtils.mkdir([path]);
-        var data = await get(Uri.parse(widget.path));
+        var data = await get(Uri.parse(widget.path!));
         var bytes = data.bodyBytes;
         File file = File(finalPath);
         await file.writeAsBytes(bytes);

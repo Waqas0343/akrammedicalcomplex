@@ -12,7 +12,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyPrescriptions extends StatefulWidget {
-  const MyPrescriptions({Key key}) : super(key: key);
+  const MyPrescriptions({Key? key}) : super(key: key);
 
   @override
   _PrescriptionState createState() => _PrescriptionState();
@@ -20,7 +20,7 @@ class MyPrescriptions extends StatefulWidget {
 
 class _PrescriptionState extends State<MyPrescriptions> {
   List<Prescription> prescriptions = [];
-  List<Prescription> prescriptionmodels;
+  late List<Prescription> prescriptionmodels;
   bool isLoading = true;
   final textController = TextEditingController();
 
@@ -45,7 +45,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
   Widget prescriptionListView(BuildContext context, int index) {
     Prescription prescription = prescriptions[index];
     DateFormat dateFormat = DateFormat("MM/dd/yyyy HH:mm:ss a");
-    DateTime dateTime = dateFormat.parse(prescription.timeStamp);
+    DateTime dateTime = dateFormat.parse(prescription.timeStamp!);
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       elevation: 4,
@@ -64,7 +64,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              prescription.doctorName,
+              prescription.doctorName!,
               style: const TextStyle(fontSize: 12),
               softWrap: false,
             ),
@@ -92,13 +92,13 @@ class _PrescriptionState extends State<MyPrescriptions> {
 
   void updateUi() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String username = preferences.getString(Keys.USERNAME);
+    String? username = preferences.getString(Keys.USERNAME);
     String response = await Utilities.httpGet(
         ServerConfig.prescriptions + "&Username=$username");
     if (response != "404") {
       setState(() {
         prescriptionmodels
-            .addAll(prescriptionModelFromJson(response).response.prescriptions);
+            .addAll(prescriptionModelFromJson(response).response!.prescriptions!);
         prescriptions.addAll(prescriptionmodels);
       });
     } else {
@@ -111,9 +111,9 @@ class _PrescriptionState extends State<MyPrescriptions> {
     if (query.isNotEmpty) {
       List<Prescription> dummyListData = <Prescription>[];
       for (var item in prescriptionmodels) {
-        String title = item.title != null ? item.title.toLowerCase() : "";
-        String drName = item.doctorName.toLowerCase();
-        String date = item.timeStamp.toLowerCase();
+        String title = item.title != null ? item.title!.toLowerCase() : "";
+        String drName = item.doctorName!.toLowerCase();
+        String date = item.timeStamp!.toLowerCase();
         if (drName.contains(query.toLowerCase()) ||
             date.contains(query.toLowerCase()) ||
             title.contains(query.toLowerCase())) {

@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 import '../home.dart';
 
 class ThankYouScreen extends StatefulWidget {
-  const ThankYouScreen({Key key}) : super(key: key);
+  const ThankYouScreen({Key? key}) : super(key: key);
 
   @override
   _ThankYouScreenState createState() => _ThankYouScreenState();

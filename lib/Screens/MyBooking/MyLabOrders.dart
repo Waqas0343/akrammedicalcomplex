@@ -11,19 +11,19 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LabOrders extends StatefulWidget {
-  final List<TestModel> orders;
+  final List<TestModel>? orders;
 
-  const LabOrders({Key key, this.orders}) : super(key: key);
+  const LabOrders({Key? key, this.orders}) : super(key: key);
 
   @override
   _LabOrdersState createState() => _LabOrdersState();
 }
 
 class _LabOrdersState extends State<LabOrders> {
-  List<TestModel> orders;
+  late List<TestModel> orders;
   List<TestModel> ordersModel = [];
-  SharedPreferences preferences;
-  String username;
+  late SharedPreferences preferences;
+  String? username;
   int offset = 0;
 
   final nameController = TextEditingController();
@@ -53,7 +53,7 @@ class _LabOrdersState extends State<LabOrders> {
   void getPreferences() async {
     preferences = await SharedPreferences.getInstance();
     username = preferences.getString(Keys.username);
-    orders.addAll(widget.orders);
+    orders.addAll(widget.orders!);
     ordersModel.addAll(orders);
     setState(() {});
   }
@@ -73,7 +73,7 @@ class _LabOrdersState extends State<LabOrders> {
         await Utilities.httpGet(ServerConfig.myTestOrders + values);
     Loading.dismiss();
     if (response != "404") {
-      var list = testOrderResponseModelFromJson(response).response.response;
+      var list = testOrderResponseModelFromJson(response).response!.response!;
 
       for (var element in list) {
         if (element.attachmentsResults != null) {
@@ -133,12 +133,12 @@ class _LabOrdersState extends State<LabOrders> {
                               height: 4,
                             ),
                             Text(
-                              testModel.datetime,
+                              testModel.datetime!,
                             ),
                             const SizedBox(
                               height: 4,
                             ),
-                            AutoSizeText(testModel.status,
+                            AutoSizeText(testModel.status!,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: testModel.getColor()))
@@ -184,8 +184,8 @@ class _LabOrdersState extends State<LabOrders> {
       bool isAdded = false;
       for (var item in ordersModel) {
         if (item.testList != null) {
-          for (var element in item.testList) {
-            String name = element.testName.toLowerCase();
+          for (var element in item.testList!) {
+            String name = element.testName!.toLowerCase();
 
             if (name.contains(query.toLowerCase()) && !isAdded) {
               isAdded = true;

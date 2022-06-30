@@ -6,7 +6,7 @@ String categoryToJson(CategoryJsonResponse data) => json.encode(data.toJson());
 
 
 class CategoryJsonResponse {
-  CategoryList response;
+  CategoryList? response;
 
   CategoryJsonResponse({
     this.response,
@@ -17,12 +17,12 @@ class CategoryJsonResponse {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": response.toJson(),
+    "Response": response!.toJson(),
   };
 }
 
 class CategoryList {
-  List<Category> categoryList;
+  List<Category>? categoryList;
 
   CategoryList({
     this.categoryList,
@@ -33,19 +33,19 @@ class CategoryList {
   );
 
   Map<String, dynamic> toJson() => {
-    "Response": List<dynamic>.from(categoryList.map((x) => x.toJson())),
+    "Response": List<dynamic>.from(categoryList!.map((x) => x.toJson())),
   };
 }
 
 class Category {
 
-  int id;
-  String totalConsultants;
-  String name;
-  String tag;
-  String popularity;
-  String imagePath;
-  String about;
+  int? id;
+  String? totalConsultants;
+  String? name;
+  String? tag;
+  String? popularity;
+  String? imagePath;
+  String? about;
 
 
   Category({this.id, this.totalConsultants, this.name, this.tag, this.popularity,

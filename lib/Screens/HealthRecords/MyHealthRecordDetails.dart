@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 class MyHealthRecordDetails extends StatelessWidget {
   final HealthRecord record;
 
-  const MyHealthRecordDetails(this.record, {Key key}) : super(key: key);
+  const MyHealthRecordDetails(this.record, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(record.fileName),
+          title: Text(record.fileName!),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -50,7 +50,7 @@ class MyHealthRecordDetails extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text(record.fileName),
+                      child: Text(record.fileName!),
                     )
                   ],
                 ),
@@ -66,7 +66,7 @@ class MyHealthRecordDetails extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text(record.recordType),
+                      child: Text(record.recordType!),
                     )
                   ],
                 ),
