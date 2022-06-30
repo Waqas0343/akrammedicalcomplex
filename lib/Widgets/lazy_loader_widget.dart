@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class LazyLoader extends StatelessWidget {
+  const LazyLoader({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     Size size =MediaQuery.of(context).size;
@@ -8,7 +10,7 @@ class LazyLoader extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: size.width*0.2, vertical: 24),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: [
+        children: const [
           SizedBox(
             height: 26.0,
             width: 26.0,

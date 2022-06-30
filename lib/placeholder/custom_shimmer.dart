@@ -1,27 +1,28 @@
 import 'package:amc/Styles/MyColors.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:shimmer/shimmer.dart';
 
 class LoadingDoctorsList extends StatelessWidget {
+  const LoadingDoctorsList({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
       itemCount: 3,
       itemBuilder: (BuildContext context, int index) => Card(
         elevation: 4.0,
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Shimmer.fromColors(
           baseColor: MyColors.divider,
           highlightColor: MyColors.highLight,
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.symmetric(vertical: 6),
+                padding: const EdgeInsets.symmetric(vertical: 6),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -29,8 +30,8 @@ class LoadingDoctorsList extends StatelessWidget {
                       child: Row(
                         children: [
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16),
-                            child: ClipRRect(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            child: const ClipRRect(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(50)),
                               child: MyShimmer(
@@ -45,7 +46,7 @@ class LoadingDoctorsList extends StatelessWidget {
                                   top: 8, bottom: 8, right: 16),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
+                                children: const <Widget>[
                                   MyShimmer(
                                     width: 70,
                                     height: 14,
@@ -74,10 +75,10 @@ class LoadingDoctorsList extends StatelessWidget {
                   ],
                 ),
               ),
-              Align(
+              const Align(
                 alignment: Alignment.centerRight,
                 child: Padding(
-                  padding: const EdgeInsets.only(
+                  padding: EdgeInsets.only(
                     bottom: 12,
                     right: 12,
                     left: 12,
@@ -98,23 +99,25 @@ class LoadingDoctorsList extends StatelessWidget {
 }
 
 class LoadingServicesList extends StatelessWidget {
+  const LoadingServicesList({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 elevation: 4,
-                margin: EdgeInsets.symmetric(vertical: 4),
+                margin: const EdgeInsets.symmetric(vertical: 4),
                 child: Shimmer.fromColors(
                   baseColor: MyColors.divider,
                   highlightColor: MyColors.highLight,
-                  child: CheckboxListTile(
+                  child: const CheckboxListTile(
                     title: MyShimmer(
                       width: 40,
                       height: 14,
@@ -139,6 +142,8 @@ class LoadingServicesList extends StatelessWidget {
 }
 
 class MyServicesLoading extends StatelessWidget {
+  const MyServicesLoading({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -146,17 +151,17 @@ class MyServicesLoading extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             itemBuilder: (BuildContext context, int index) {
               return Card(
-                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                 elevation: 4,
                 child: Shimmer.fromColors(
                   baseColor: MyColors.divider,
                   highlightColor: MyColors.highLight,
                   child: Column(
-                    children: [
+                    children: const [
                       ListTile(
                         title: MyShimmer(
                           width: 60,
@@ -185,6 +190,8 @@ class MyServicesLoading extends StatelessWidget {
 }
 
 class DoctorDetailLoading extends StatelessWidget {
+  const DoctorDetailLoading({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -208,7 +215,7 @@ class DoctorDetailLoading extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Column(
-                              children: [
+                              children: const [
                                 ClipRRect(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(50)),
@@ -227,7 +234,7 @@ class DoctorDetailLoading extends StatelessWidget {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
+                                  children: const <Widget>[
                                     SizedBox(
                                       height: 2,
                                     ),
@@ -257,7 +264,7 @@ class DoctorDetailLoading extends StatelessWidget {
                         ),
                       ),
                     ),
-                    ListTile(
+                    const ListTile(
                       leading: MyShimmer(
                         height: 24,
                         width: 24,
@@ -267,9 +274,9 @@ class DoctorDetailLoading extends StatelessWidget {
                         height: 14,
                       ),
                     ),
-                    Divider(),
+                    const Divider(),
                     Row(
-                      children: <Widget>[
+                      children: const <Widget>[
                         Expanded(
                           flex: 1,
                           child: ListTile(
@@ -298,21 +305,21 @@ class DoctorDetailLoading extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Divider(),
+                    const Divider(),
                     ListTile(
-                      leading: MyShimmer(
+                      leading: const MyShimmer(
                         width: 24,
                         height: 24,
                       ),
-                      title: MyShimmer(width: 40, height: 14),
+                      title: const MyShimmer(width: 40, height: 14),
                       subtitle: Column(
                         children: <Widget>[
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                            children: const <Widget>[
                               MyShimmer(
                                 width: 40,
                                 height: 12,
@@ -323,12 +330,12 @@ class DoctorDetailLoading extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                            children: const <Widget>[
                               MyShimmer(
                                 width: 40,
                                 height: 12,
@@ -339,12 +346,12 @@ class DoctorDetailLoading extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                            children: const <Widget>[
                               MyShimmer(
                                 width: 40,
                                 height: 12,
@@ -355,12 +362,12 @@ class DoctorDetailLoading extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                            children: const <Widget>[
                               MyShimmer(
                                 width: 40,
                                 height: 12,
@@ -371,12 +378,12 @@ class DoctorDetailLoading extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                            children: const <Widget>[
                               MyShimmer(
                                 width: 40,
                                 height: 12,
@@ -387,12 +394,12 @@ class DoctorDetailLoading extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                            children: const <Widget>[
                               MyShimmer(
                                 width: 40,
                                 height: 12,
@@ -403,12 +410,12 @@ class DoctorDetailLoading extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 4,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
+                            children: const <Widget>[
                               MyShimmer(
                                 width: 40,
                                 height: 12,
@@ -422,21 +429,21 @@ class DoctorDetailLoading extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Divider(),
+                    const Divider(),
                     ListTile(
-                      leading: MyShimmer(
+                      leading: const MyShimmer(
                         width: 24,
                         height: 24,
                       ),
-                      title: MyShimmer(width: 40, height: 14),
+                      title: const MyShimmer(width: 40, height: 14),
                       subtitle: ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Row(
-                              children: <Widget>[
+                              children: const <Widget>[
                                 MyShimmer(
                                   width: 18,
                                   height: 18,
@@ -454,23 +461,23 @@ class DoctorDetailLoading extends StatelessWidget {
                         itemCount: 1,
                       ),
                     ),
-                    Divider(),
+                    const Divider(),
                     ListTile(
-                      leading: MyShimmer(
+                      leading: const MyShimmer(
                         width: 24,
                         height: 24,
                       ),
-                      title: MyShimmer(width: 40, height: 14),
+                      title: const MyShimmer(width: 40, height: 14),
                       subtitle: ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                ClipRRect(
+                                const ClipRRect(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(30)),
                                   child: MyShimmer(
@@ -478,14 +485,14 @@ class DoctorDetailLoading extends StatelessWidget {
                                     height: 30,
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
                                 Flexible(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: <Widget>[
+                                    children: const <Widget>[
                                       MyShimmer(width: 40, height: 12),
                                       MyShimmer(width: 40, height: 12),
                                     ],
@@ -517,6 +524,8 @@ class DoctorDetailLoading extends StatelessWidget {
 }
 
 class AppointmentShimmer extends StatelessWidget {
+  const AppointmentShimmer({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
@@ -526,18 +535,18 @@ class AppointmentShimmer extends StatelessWidget {
               height: 65.0,
               margin: const EdgeInsets.only(bottom: 16),
               child: ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(left: 12),
+                physics: const NeverScrollableScrollPhysics(),
+                padding: const EdgeInsets.only(left: 12),
                 itemBuilder: (BuildContext context, int index){
                   return Container(
-                    padding: EdgeInsets.only(right: 32),
+                    padding: const EdgeInsets.only(right: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(width: 65,height: 16,color: Colors.grey,),
-                        SizedBox(height: 12,),
+                        const SizedBox(height: 12,),
                         Container(width: 55, height: 12,color: Colors.grey,),
-                        SizedBox(height: 6,),
+                        const SizedBox(height: 6,),
                         Container(
                           width: 40,
                           color: Colors.grey,
@@ -553,7 +562,7 @@ class AppointmentShimmer extends StatelessWidget {
               child: GridView.count(
                   crossAxisCount: 4,
                   childAspectRatio: MediaQuery.of(context).size.height / 400,
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
@@ -572,6 +581,8 @@ class AppointmentShimmer extends StatelessWidget {
 }
 
 class BookAppointmentScreen extends StatelessWidget {
+  const BookAppointmentScreen({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
@@ -582,7 +593,7 @@ class BookAppointmentScreen extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
+              const ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 child: MyShimmer(
                   height: 100,
@@ -591,37 +602,37 @@ class BookAppointmentScreen extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MyShimmer(
+                      const MyShimmer(
                         width: 50,
                         height: 22,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 2,
                       ),
-                      MyShimmer(
+                      const MyShimmer(
                         width: 50,
                         height: 22,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
-                      MyShimmer(
+                      const MyShimmer(
                         width: 50,
                         height: 18,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 8,
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                         decoration: BoxDecoration(
                             color: MyColors.accent,
                             borderRadius: BorderRadius.circular(8)),
-                        child: MyShimmer(
+                        child: const MyShimmer(
                           width: 40,
                           height: 12,
                         ),
@@ -632,10 +643,10 @@ class BookAppointmentScreen extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
-          Container(
+          SizedBox(
             height: 65.0,
             child: ListView.builder(
               itemBuilder: (BuildContext context, int index) {
@@ -650,7 +661,7 @@ class BookAppointmentScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
+                          children: const [
                             MyShimmer(
                               width: 40,
                               height: 20,
@@ -662,7 +673,7 @@ class BookAppointmentScreen extends StatelessWidget {
                               width: 40,
                               height: 16,
                             ),
-                            Container(
+                            SizedBox(
                               width: 40,
                               child: Divider(
                                 color: MyColors.primary,
@@ -678,19 +689,19 @@ class BookAppointmentScreen extends StatelessWidget {
                 );
               },
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: 3,
               scrollDirection: Axis.horizontal,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Expanded(
             child: GridView.count(
                 crossAxisCount: 4,
                 childAspectRatio: MediaQuery.of(context).size.height / 400,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 crossAxisSpacing: 8,
                 mainAxisSpacing: 8,
@@ -701,11 +712,11 @@ class BookAppointmentScreen extends StatelessWidget {
                         color: Colors.white,
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
-                    child: new Center(
+                    child: const Center(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                             horizontal: 4, vertical: 8),
-                        child: const MyShimmer(
+                        child: MyShimmer(
                           width: 30,
                           height: 13,
                         ),
@@ -714,7 +725,7 @@ class BookAppointmentScreen extends StatelessWidget {
                   );
                 }).toList()),
           ),
-          CheckboxListTile(
+          const CheckboxListTile(
             controlAffinity: ListTileControlAffinity.leading,
             value: false,
             onChanged: null,
@@ -730,6 +741,8 @@ class BookAppointmentScreen extends StatelessWidget {
 }
 
 class MyLabOrderIsLoading extends StatelessWidget {
+  const MyLabOrderIsLoading({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -737,23 +750,23 @@ class MyLabOrderIsLoading extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(vertical: 4),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             itemBuilder: (BuildContext context, int index) {
               return Card(
-                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 elevation: 4,
                 child: Shimmer.fromColors(
                   baseColor: MyColors.divider,
                   highlightColor: MyColors.highLight,
                   child: ListTile(
-                    title: MyShimmer(
+                    title: const MyShimmer(
                       width: 50,
                       height: 14,
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
                         SizedBox(
                           height: 4,
                         ),
@@ -770,7 +783,7 @@ class MyLabOrderIsLoading extends StatelessWidget {
                         )
                       ],
                     ),
-                    leading: MyShimmer(
+                    leading: const MyShimmer(
                       height: 90,
                       width: 70,
                     ),
@@ -787,28 +800,30 @@ class MyLabOrderIsLoading extends StatelessWidget {
 }
 
 class MyMedicineOrdersIsLoading extends StatelessWidget {
+  const MyMedicineOrdersIsLoading({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(vertical: 4),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             itemBuilder: (BuildContext context, int index) => Card(
               elevation: 4,
-              margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Shimmer.fromColors(
                 baseColor: MyColors.divider,
                 highlightColor: MyColors.highLight,
                 child: ListTile(
-                  title: MyShimmer(
+                  title: const MyShimmer(
                     width: 50,
                     height: 14,
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                    children: const <Widget>[
                       SizedBox(
                         height: 4,
                       ),
@@ -825,7 +840,7 @@ class MyMedicineOrdersIsLoading extends StatelessWidget {
                       ),
                     ],
                   ),
-                  leading: MyShimmer(
+                  leading: const MyShimmer(
                     height: 90,
                     width: 70,
                     // height: MediaQuery.of(context).size.height,
@@ -843,6 +858,8 @@ class MyMedicineOrdersIsLoading extends StatelessWidget {
 }
 
 class LoadingMyAppointmentList extends StatelessWidget {
+  const LoadingMyAppointmentList({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -850,30 +867,30 @@ class LoadingMyAppointmentList extends StatelessWidget {
         Expanded(
           child: ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             itemBuilder: (BuildContext context, int index) {
               return Card(
-                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                 elevation: 4,
                 child: Shimmer.fromColors(
                   baseColor: MyColors.divider,
                   highlightColor: MyColors.highLight,
                   child: ListTile(
-                    leading: ClipRRect(
+                    leading: const ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       child: MyShimmer(
                         width: 60,
                         height: 60,
                       ),
                     ),
-                    title: MyShimmer(
+                    title: const MyShimmer(
                       width: 60,
                       height: 14,
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: const [
                         SizedBox(
                           height: 4,
                         ),
@@ -903,6 +920,8 @@ class LoadingMyAppointmentList extends StatelessWidget {
 }
 
 class LoadingMyPrescription extends StatelessWidget {
+  const LoadingMyPrescription({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -911,7 +930,7 @@ class LoadingMyPrescription extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
             child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemBuilder: (context, index) => Card(
                 margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -920,17 +939,17 @@ class LoadingMyPrescription extends StatelessWidget {
                   baseColor: MyColors.divider,
                   highlightColor: MyColors.highLight,
                   child: ListTile(
-                    leading: MyShimmer(
+                    leading: const MyShimmer(
                       width: 38,
                       height: 38,
                     ),
-                    title: MyShimmer(
+                    title: const MyShimmer(
                       width: 40,
                       height: 14,
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      children: const <Widget>[
                         SizedBox(
                           height: 4,
                         ),
@@ -960,6 +979,8 @@ class LoadingMyPrescription extends StatelessWidget {
 }
 
 class LoadingHealthRecord extends StatelessWidget {
+  const LoadingHealthRecord({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -968,14 +989,14 @@ class LoadingHealthRecord extends StatelessWidget {
           child: ListView.builder(
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) => Card(
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               elevation: 4,
               child: Shimmer.fromColors(
                 baseColor: MyColors.divider,
                 highlightColor: MyColors.highLight,
-                child: ListTile(
+                child: const ListTile(
                   leading: MyShimmer(
                     width: 70,
                     height: 70,
@@ -1004,96 +1025,98 @@ class LoadingHealthRecord extends StatelessWidget {
 }
 
 class ProfileShimmer extends StatelessWidget {
+  const ProfileShimmer({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Shimmer.fromColors(
-        baseColor: MyColors.divider,
-        highlightColor: MyColors.highLight,
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: MyShimmer(width: MediaQuery.of(context).size.width * 0.7, height: 28,),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Container(
-                margin: EdgeInsets.only(top: 8, bottom: 16),
-                child: Badge(
-                  badgeContent: MyShimmer(width: 24, height: 24,),
-                  padding: EdgeInsets.all(1),
-                  badgeColor: Colors.white,
-                  elevation: 0,
-                  position:
-                  BadgePosition.bottomRight(bottom: 0, right: 0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    child: MyShimmer(width: 80, height: 80,),
-                  ),
-                ),),
-            SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 0,
-                  child: MyShimmer(width: 50, height: 30,),
+    return Shimmer.fromColors(
+      baseColor: MyColors.divider,
+      highlightColor: MyColors.highLight,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: MyShimmer(width: MediaQuery.of(context).size.width * 0.7, height: 28,),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Container(
+              margin: const EdgeInsets.only(top: 8, bottom: 16),
+              child: Badge(
+                badgeContent: const MyShimmer(width: 24, height: 24,),
+                padding: const EdgeInsets.all(1),
+                badgeColor: Colors.white,
+                elevation: 0,
+                position:
+                BadgePosition.bottomEnd(bottom: 0, end: 0),
+                child: const ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  child: MyShimmer(width: 80, height: 80,),
                 ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: MyShimmer(width: 60, height: 30,),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
-            SizedBox(
-              height: 8,
-            ),
-            MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
-            SizedBox(
-              height: 8,
-            ),
+              ),),
+          const SizedBox(
+            height: 4,
+          ),
+          Row(
+            children: const <Widget>[
+              Expanded(
+                flex: 0,
+                child: MyShimmer(width: 50, height: 30,),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                flex: 1,
+                child: MyShimmer(width: 60, height: 30,),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
+          const SizedBox(
+            height: 8,
+          ),
+          MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
+          const SizedBox(
+            height: 8,
+          ),
 
-            // email
-            MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
-            SizedBox(
-              height: 8,
-            ),
-            MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
-          ],
-        ),
+          // email
+          MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
+          const SizedBox(
+            height: 8,
+          ),
+          MyShimmer(width: MediaQuery.of(context).size.width, height: 30,),
+        ],
       ),
     );
   }
 }
 
 class MyLabReportsShimmer extends StatelessWidget {
+  const MyLabReportsShimmer({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.symmetric(vertical: 4),
             itemBuilder: (BuildContext context, int index) {
               return Card(
-                margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 elevation: 4,
                 child: Shimmer.fromColors(
                   baseColor: MyColors.divider,
                   highlightColor: MyColors.highLight,
                   child: Column(
                     children: [
-                      ListTile(
+                      const ListTile(
                         subtitle: MyShimmer(width: 50, height: 12,),
                         title: MyShimmer(width: 50, height: 14,),
                         trailing: MyShimmer(width: 20, height: 20,),
@@ -1101,19 +1124,19 @@ class MyLabReportsShimmer extends StatelessWidget {
                       Visibility(
                           visible: false,
                           child: ListTile(
-                            contentPadding: EdgeInsets.only(
+                            contentPadding: const EdgeInsets.only(
                                 bottom: 8,
                                 left: 16,
                                 right: 16,
                                 top: 8),
                             title: Container(
-                                margin: EdgeInsets.only(left: 8),
+                                margin: const EdgeInsets.only(left: 8),
                                 alignment: Alignment.centerLeft,
-                                child: MyShimmer(
+                                child: const MyShimmer(
                                   height: 50,
                                   width: 70,
                                 )),
-                            trailing: MyShimmer(
+                            trailing: const MyShimmer(
                               width: 18, height: 18,
                             ),
                           ))

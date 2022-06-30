@@ -1,13 +1,12 @@
 import 'dart:io';
 
-import 'package:amc/Database/Database.dart';
-import 'package:amc/Models/NotificationModel.dart';
+import 'package:amc/Database/database.dart';
+import 'package:amc/models/notification_model.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
-
 
 class Utilities{
 
@@ -15,8 +14,8 @@ class Utilities{
 
   static Future<bool> isOnline() async {
     try {
-      final result = await InternetAddress.lookup('google.com').timeout(Duration(seconds: 6),onTimeout: (){
-        return List<InternetAddress>();
+      final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 6),onTimeout: (){
+        return <InternetAddress>[];
       });
       print('connection checking...');
 
@@ -41,8 +40,7 @@ class Utilities{
   }
 
   static Future<String> httpPost(String url) async {
-    print(url);
-    Response response = await post(url);
+    Response response = await post(Uri.parse(url));
     int statusCode = response.statusCode;
     if (statusCode == 200){
       return response.body;
@@ -52,8 +50,7 @@ class Utilities{
   }
 
   static Future<String> httpGet(String url) async {
-    print(url);
-    Response response = await get(url);
+    Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     if (statusCode == 200){
       return response.body;
@@ -63,7 +60,7 @@ class Utilities{
   }
 
   static Widget emptyScreen(){
-    return Align(
+    return const Align(
       alignment: Alignment.center,
       child: Text(
           'No Record Found'
@@ -81,18 +78,18 @@ class Utilities{
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.wifi_off,size: 60,),
-                SizedBox(height: 16,),
-                Text('No Internet Connection', style: TextStyle(fontWeight: FontWeight.bold),),
-                SizedBox(height: 8,),
-                Text('Internet access is required \nto use this feature.', textAlign: TextAlign.center,),
-                SizedBox(height: 16,),
-                Container(
+                const Icon(Icons.wifi_off,size: 60,),
+                const SizedBox(height: 16,),
+                const Text('No Internet Connection', style: TextStyle(fontWeight: FontWeight.bold),),
+                const SizedBox(height: 8,),
+                const Text('Internet access is required \nto use this feature.', textAlign: TextAlign.center,),
+                const SizedBox(height: 16,),
+                SizedBox(
                   width: 120,
                   child: OutlinedButton(onPressed: (){
                     Navigator.pop(context);
 
-                  }, child: Text("Cancel")),
+                  }, child: const Text("Cancel")),
                 )
               ],
             ),
@@ -106,7 +103,7 @@ class Utilities{
 
   static bool numberHasValid(String value) {
     String  pattern = r"^[0][3][0-5]\d{8}$";
-    RegExp regExp = new RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(value);
   }
 
@@ -120,7 +117,7 @@ class Utilities{
 
   static bool validateStructure(String value){
     String  pattern = r'^(?=.*?[A-Za-z])(?=.*?[0-9]).{8,}$';
-    RegExp regExp = new RegExp(pattern);
+    RegExp regExp = RegExp(pattern);
     return regExp.hasMatch(value);
   }
 

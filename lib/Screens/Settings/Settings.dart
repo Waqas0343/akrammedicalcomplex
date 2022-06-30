@@ -1,4 +1,4 @@
-import 'package:amc/Models/ProfileModel.dart';
+import 'package:amc/models/profile_model.dart';
 import 'package:amc/Screens/Settings/NewProfileSettings.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -6,12 +6,12 @@ import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// import 'AccountSettings.dart';
-// import 'ProfileSettings.dart';
-
 class Settings extends StatefulWidget {
+  const Settings({Key key}) : super(key: key);
+
   @override
   _SettingsState createState() => _SettingsState();
 }
@@ -26,17 +26,16 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        brightness: Brightness.light,
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black,
         ),
         title: Image.asset(
           MyImages.logo,
           height: 50,
-        ),
+        ), systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
         color: Colors.white,
@@ -47,7 +46,7 @@ class _SettingsState extends State<Settings> {
                   profile: profile,
                   cities: cities,
                 )
-              : isLoading ? ProfileShimmer() : Center(
+              : isLoading ? ProfileShimmer() : const Center(
                   child: Text("Profile Not found"),
                 ),
         ),

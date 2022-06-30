@@ -1,4 +1,4 @@
-import 'package:amc/Models/PrescriptionModel.dart';
+import 'package:amc/models/prescription_model.dart';
 import 'package:amc/Screens/Prescription/PrescriptionWebView.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Server/ServerConfig.dart';
@@ -12,13 +12,15 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyPrescriptions extends StatefulWidget {
+  const MyPrescriptions({Key key}) : super(key: key);
+
   @override
   _PrescriptionState createState() => _PrescriptionState();
 }
 
 class _PrescriptionState extends State<MyPrescriptions> {
   List<Prescription> prescriptions = [];
-  List<Prescription> prescriptionModels;
+  List<Prescription> prescriptionmodels;
   bool isLoading = true;
   final textController = TextEditingController();
 
@@ -27,11 +29,11 @@ class _PrescriptionState extends State<MyPrescriptions> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("My Prescriptions"),
+        title: const Text("My Prescriptions"),
       ),
-      body: prescriptionModels.isNotEmpty
+      body: prescriptionmodels.isNotEmpty
           ? prescriptionView()
-          : prescriptionModels.isEmpty && !isLoading ? Center(
+          : prescriptionmodels.isEmpty && !isLoading ? const Center(
               child: Text(
                 "No Prescriptions",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -49,24 +51,24 @@ class _PrescriptionState extends State<MyPrescriptions> {
       elevation: 4,
       child: ListTile(
         isThreeLine: true,
-        leading: Icon(
+        leading: const Icon(
           MdiIcons.prescription,
           color: MyColors.primary,
           size: 38,
         ),
         title: Text(
           prescription.title ?? "",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
               prescription.doctorName,
-              style: TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 12),
               softWrap: false,
             ),
-            SizedBox(height: 4,),
+            const SizedBox(height: 4,),
             Text('${dateTime.day}-${dateTime.month}-${dateTime.year}'),
           ],
         ),
@@ -84,7 +86,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
   @override
   void initState() {
     super.initState();
-    prescriptionModels = [];
+    prescriptionmodels = [];
     updateUi();
   }
 
@@ -92,12 +94,12 @@ class _PrescriptionState extends State<MyPrescriptions> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String username = preferences.getString(Keys.USERNAME);
     String response = await Utilities.httpGet(
-        ServerConfig.PRESCRIPTION + "&Username=$username");
+        ServerConfig.prescriptions + "&Username=$username");
     if (response != "404") {
       setState(() {
-        prescriptionModels
+        prescriptionmodels
             .addAll(prescriptionModelFromJson(response).response.prescriptions);
-        prescriptions.addAll(prescriptionModels);
+        prescriptions.addAll(prescriptionmodels);
       });
     } else {
       Utilities.showToast("Something went wrong");
@@ -107,8 +109,8 @@ class _PrescriptionState extends State<MyPrescriptions> {
 
   void filter(String query) {
     if (query.isNotEmpty) {
-      List<Prescription> dummyListData = List<Prescription>();
-      prescriptionModels.forEach((item) {
+      List<Prescription> dummyListData = <Prescription>[];
+      for (var item in prescriptionmodels) {
         String title = item.title != null ? item.title.toLowerCase() : "";
         String drName = item.doctorName.toLowerCase();
         String date = item.timeStamp.toLowerCase();
@@ -117,7 +119,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
             title.contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
-      });
+      }
       setState(() {
         prescriptions.clear();
         prescriptions.addAll(dummyListData);
@@ -126,7 +128,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
     } else {
       setState(() {
         prescriptions.clear();
-        prescriptions.addAll(prescriptionModels);
+        prescriptions.addAll(prescriptionmodels);
       });
     }
   }
@@ -146,14 +148,14 @@ class _PrescriptionState extends State<MyPrescriptions> {
               filled: false,
               hintText: "Search by Dr Name",
               counterText: "",
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               suffixIcon: GestureDetector(
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   textController.clear();
                   filter("");
                 },
-                child: Icon(Icons.close),
+                child: const Icon(Icons.close),
               ),
             ),
           ),
@@ -164,7 +166,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                   child: ListView.builder(
-                    physics: ScrollPhysics(),
+                    physics: const ScrollPhysics(),
                     itemBuilder: (context, index) =>
                         prescriptionListView(context, index),
                     itemCount: prescriptions.length,
@@ -172,8 +174,8 @@ class _PrescriptionState extends State<MyPrescriptions> {
                 ),
               )
             : Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Text(
                   "No Prescription Found",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,

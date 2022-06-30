@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:amc/Models/ProfileModel.dart';
-import 'package:amc/Screens/AccountCreation/LocationGettingScreen.dart';
+import 'package:amc/models/profile_model.dart';
+import 'package:amc/Screens/account_creation/LocationGettingScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -13,7 +13,6 @@ import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +24,7 @@ class ProfileSettings extends StatefulWidget {
   const ProfileSettings({Key key, this.profile, this.cities}) : super(key: key);
 
   @override
-  _ProfileSettingsState createState() => _ProfileSettingsState(this.profile);
+  _ProfileSettingsState createState() => _ProfileSettingsState(profile);
 }
 
 class _ProfileSettingsState extends State<ProfileSettings> {
@@ -39,14 +38,14 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   final FocusNode phoneFocus = FocusNode();
   final FocusNode emailFocus = FocusNode();
 
-  final nameController = new TextEditingController();
-  final usernameController = new TextEditingController();
-  final phoneController = new TextEditingController();
-  final passwordController = new TextEditingController();
-  final emailController = new TextEditingController();
-  final areaController = new TextEditingController();
-  final cityController = new TextEditingController();
-  final addressController = new TextEditingController();
+  final nameController = TextEditingController();
+  final usernameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final areaController = TextEditingController();
+  final cityController = TextEditingController();
+  final addressController = TextEditingController();
   var isTitleEmpty = true;
   var isNameEmpty = false;
   var isUsernameEmpty = false;
@@ -67,249 +66,245 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   Widget build(BuildContext context) {
     return profile != null
         ? SingleChildScrollView(
-            child: Container(
-              // height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Basic Information",
-                      style: TextStyle(
-                        height: 1.5,
-                        fontWeight: FontWeight.bold,
-                        color: MyColors.primary,
-                        fontSize: 28.0,
-                      ),
+            child: Column(
+              children: [
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Basic Information",
+                    style: TextStyle(
+                      height: 1.5,
+                      fontWeight: FontWeight.bold,
+                      color: MyColors.primary,
+                      fontSize: 28.0,
                     ),
                   ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      chooseAction();
-                    },
-                    child: Container(
-                        margin: EdgeInsets.only(top: 8, bottom: 16),
-                        child: Badge(
-                          badgeContent: Icon(
-                            Icons.camera,
-                            size: 24,
-                            color: MyColors.primary,
-                          ),
-                          padding: EdgeInsets.all(1),
-                          badgeColor: Colors.white,
-                          elevation: 0,
-                          position:
-                              BadgePosition.bottomRight(bottom: 0, right: 0),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                            child: NetWorkImage(
-                              placeHolder: MyImages.user,
-                              imagePath: imagePath,
-                              height: 80,
-                              width: 80,
-                            ),
-                          ),
-                        )),
-                  ),
-                  isLoading
-                      ? Container(
-                          margin: EdgeInsets.only(bottom: 8),
-                          child: LinearPercentIndicator(
-                            lineHeight: 18.0,
-                            percent: uploadingValue,
-                            center: Text(
-                              "${(uploadingValue * 100).toInt()} %",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 12),
-                            ),
-                            linearStrokeCap: LinearStrokeCap.roundAll,
-                            progressColor: MyColors.primary,
-                          ),
-                        )
-                      : SizedBox(
-                          height: 4,
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    chooseAction();
+                  },
+                  child: Container(
+                      margin: const EdgeInsets.only(top: 8, bottom: 16),
+                      child: Badge(
+                        badgeContent: const Icon(
+                          Icons.camera,
+                          size: 24,
+                          color: MyColors.primary,
                         ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: new LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                                stops: [0.01, 0.01],
-                                colors: [Color(0XFF17145A), Colors.white]),
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: ButtonTheme(
-                              alignedDropdown: true,
-                              child: DropdownButton(
-                                autofocus: isTitleEmpty,
-                                value: title,
-                                hint: Text(
-                                  "Title",
-                                  maxLines: 1,
-                                ),
-                                onChanged: (String value) {
-                                  setState(() {
-                                    title = value;
-                                    isTitleEmpty = false;
-                                  });
-                                },
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontFamily: "Light",
-                                  color: Colors.black,
-                                ),
-                                items: Keys.titleList
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value,
-                                      maxLines: 1,
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            ),
+                        padding: const EdgeInsets.all(1),
+                        badgeColor: Colors.white,
+                        elevation: 0,
+                        position:
+                            BadgePosition.bottomEnd(bottom: 0, end: 0),
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(50)),
+                          child: NetWorkImage(
+                            placeHolder: MyImages.user,
+                            imagePath: imagePath,
+                            height: 80,
+                            width: 80,
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: TextField(
-                          maxLength: 35,
-                          textInputAction: TextInputAction.next,
-                          focusNode: nameFocus,
-                          inputFormatters: [Utilities.onlyTextFormat()],
-                          onSubmitted: (text) {
-                            this.nameFocus.unfocus();
-                            FocusScope.of(context).requestFocus(phoneFocus);
-                          },
-                          onChanged: (name) {
-                            if (name.toString().trim().isNotEmpty) {
-                              setState(() {
-                                isNameEmpty = false;
-                              });
-                            }
-                          },
-                          textCapitalization: TextCapitalization.words,
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            counterText: "",
-                            filled: false,
-                            hintText: "Full Name",
-                            errorText:
-                                isNameEmpty ? "Name can't be Empty" : null,
+                      )),
+                ),
+                isLoading
+                    ? Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        child: LinearPercentIndicator(
+                          lineHeight: 18.0,
+                          percent: uploadingValue,
+                          center: Text(
+                            "${(uploadingValue * 100).toInt()} %",
+                            style:
+                                const TextStyle(color: Colors.white, fontSize: 12),
                           ),
+                          barRadius: const Radius.circular(8),
+                          progressColor: MyColors.primary,
                         ),
                       )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    focusNode: usernameFocus,
-                    controller: usernameController,
-                    decoration: InputDecoration(
-                        filled: false,
-                        enabled: false,
-                        fillColor: Colors.white,
-                        hintText: "Login ID",
-                        disabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey))),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    focusNode: phoneFocus,
-                    inputFormatters: [Utilities.onlyNumberFormat(),],
-                    keyboardType: TextInputType.phone,
-                    maxLength: 11,
-                    onSubmitted: (text) {
-                      this.phoneFocus.unfocus();
-                      FocusScope.of(context).nextFocus();
-                    },
-                    onChanged: (phone) {
-                      if (phone.toString().trim().isNotEmpty) {
-                        if (Utilities.numberHasValid(phone)) {
-                          setState(() {
-                            isPhoneEmpty = false;
-                          });
-                        }
-                      }
-                    },
-                    controller: phoneController,
-                    decoration: InputDecoration(
-                      filled: false,
-                      fillColor: Colors.white,
-                      hintText: "Phone",
-                      counterText: "",
-                      errorText: isPhoneEmpty ? phoneError : null,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-
-                  // email
-                  TextField(
-                    textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.emailAddress,
-                    controller: emailController,
-                    onSubmitted: (text) {
-                      emailFocus.unfocus();
-                      FocusScope.of(context).nextFocus();
-                    },
-                    onChanged: (text) {
-                      if (text.trim().isNotEmpty) {
-                        bool validate = EmailValidator.validate(text);
-                        if (validate) {
-                          setState(() {
-                            emailValidate = false;
-                          });
-                        }
-                      }
-                    },
-                    focusNode: emailFocus,
-                    decoration: InputDecoration(
-                      filled: false,
-                      fillColor: Colors.white,
-                      hintText: "Email",
-                      errorText: emailValidate ? emailErrorMessage : null,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: RaisedButton(
-                      onPressed: isTaped ? () => updateInfoTask() : null,
-                      child: Text(
-                        buttonText,
+                    : const SizedBox(
+                        height: 4,
                       ),
-                      textColor: Colors.white,
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 0,
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              stops: [0.01, 0.01],
+                              colors: [Color(0XFF17145A), Colors.white]),
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: ButtonTheme(
+                            alignedDropdown: true,
+                            child: DropdownButton(
+                              autofocus: isTitleEmpty,
+                              value: title,
+                              hint: const Text(
+                                "Title",
+                                maxLines: 1,
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  title = value;
+                                  isTitleEmpty = false;
+                                });
+                              },
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: "Light",
+                                color: Colors.black,
+                              ),
+                              items: Keys.titleList
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    maxLines: 1,
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: TextField(
+                        maxLength: 35,
+                        textInputAction: TextInputAction.next,
+                        focusNode: nameFocus,
+                        inputFormatters: [Utilities.onlyTextFormat()],
+                        onSubmitted: (text) {
+                          nameFocus.unfocus();
+                          FocusScope.of(context).requestFocus(phoneFocus);
+                        },
+                        onChanged: (name) {
+                          if (name.toString().trim().isNotEmpty) {
+                            setState(() {
+                              isNameEmpty = false;
+                            });
+                          }
+                        },
+                        textCapitalization: TextCapitalization.words,
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          counterText: "",
+                          filled: false,
+                          hintText: "Full Name",
+                          errorText:
+                              isNameEmpty ? "Name can't be Empty" : null,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                TextField(
+                  textInputAction: TextInputAction.next,
+                  focusNode: usernameFocus,
+                  controller: usernameController,
+                  decoration: const InputDecoration(
+                      filled: false,
+                      enabled: false,
+                      fillColor: Colors.white,
+                      hintText: "Login ID",
+                      disabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey))),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                TextField(
+                  textInputAction: TextInputAction.next,
+                  focusNode: phoneFocus,
+                  inputFormatters: [Utilities.onlyNumberFormat(),],
+                  keyboardType: TextInputType.phone,
+                  maxLength: 11,
+                  onSubmitted: (text) {
+                    phoneFocus.unfocus();
+                    FocusScope.of(context).nextFocus();
+                  },
+                  onChanged: (phone) {
+                    if (phone.toString().trim().isNotEmpty) {
+                      if (Utilities.numberHasValid(phone)) {
+                        setState(() {
+                          isPhoneEmpty = false;
+                        });
+                      }
+                    }
+                  },
+                  controller: phoneController,
+                  decoration: InputDecoration(
+                    filled: false,
+                    fillColor: Colors.white,
+                    hintText: "Phone",
+                    counterText: "",
+                    errorText: isPhoneEmpty ? phoneError : null,
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+
+                // email
+                TextField(
+                  textInputAction: TextInputAction.next,
+                  keyboardType: TextInputType.emailAddress,
+                  controller: emailController,
+                  onSubmitted: (text) {
+                    emailFocus.unfocus();
+                    FocusScope.of(context).nextFocus();
+                  },
+                  onChanged: (text) {
+                    if (text.trim().isNotEmpty) {
+                      bool validate = EmailValidator.validate(text);
+                      if (validate) {
+                        setState(() {
+                          emailValidate = false;
+                        });
+                      }
+                    }
+                  },
+                  focusNode: emailFocus,
+                  decoration: InputDecoration(
+                    filled: false,
+                    fillColor: Colors.white,
+                    hintText: "Email",
+                    errorText: emailValidate ? emailErrorMessage : null,
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    onPressed: isTaped ? () => updateInfoTask() : null,
+                    child: Text(
+                      buttonText,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 
   void updateUi() {
@@ -359,12 +354,12 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                       Expanded(
                         flex: 1,
                         child: Card(
-                          margin: EdgeInsets.all(0),
+                          margin: const EdgeInsets.all(0),
                           elevation: 0,
                           color: Colors.grey.shade200,
                           child: InkWell(
                             onTap: () async {
-                              var image = await _picker.getImage(
+                              var image = await _picker.pickImage(
                                   source: ImageSource.camera);
                               if (image != null) {
                                 Navigator.pop(context);
@@ -377,7 +372,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Icon(
                                     Icons.camera,
                                     size: 38,
@@ -393,18 +388,18 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       Expanded(
                         flex: 1,
                         child: Card(
                           elevation: 0,
-                          margin: EdgeInsets.all(0),
+                          margin: const EdgeInsets.all(0),
                           color: Colors.grey.shade200,
                           child: InkWell(
                             onTap: () async {
-                              var image = await _picker.getImage(
+                              var image = await _picker.pickImage(
                                   source: ImageSource.gallery);
                               if (image != null) {
                                 Navigator.pop(context);
@@ -417,7 +412,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
-                                children: <Widget>[
+                                children: const <Widget>[
                                   Icon(
                                     Icons.image,
                                     size: 38,
@@ -438,12 +433,11 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 ],
               ),
               actions: <Widget>[
-                FlatButton(
-                    textColor: MyColors.primary,
+                TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text("Dismiss"))
+                    child: const Text("Dismiss"))
               ],
             ));
   }
@@ -561,14 +555,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
     Loading.build(context, true);
 
-    String values = "&Username=$username" +
-        "&Title=$title" +
-        "&Name=$name" +
-        "&Phone=$phone" +
-        "&Email=$email" +
-        "&City=$city" +
-        "&Area=$area" +
-        "&Location=$address" +
+    String values = "&Username=$username" "&Title=$title" "&Name=$name" "&Phone=$phone" "&Email=$email"
+        "&City=$city"
+        "&Area=$area"
+        "&Location=$address"
         "&ImagePath=$imagePath";
 
     String response =
@@ -587,7 +577,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => LocationGettingScreen(true),
+                builder: (context) => const LocationGettingScreen(true),
               ),
             );
       Utilities.showToast("Update successfully");

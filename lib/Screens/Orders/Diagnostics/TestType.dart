@@ -7,21 +7,23 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'BookLabTest.dart';
 
 class LabTestType extends StatelessWidget {
+  const LabTestType({Key key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("Order Type"),
+        title: const Text("Order Type"),
       ),
       body: Column(
         children: <Widget>[
           Card(
-            margin: EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 4),
+            margin: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 4),
             elevation: 4,
             child: InkWell(
               onTap: (){
-                Route route = MaterialPageRoute(builder: (_) => BookLabTest(false));
+                Route route = MaterialPageRoute(builder: (_) => const BookLabTest(false));
                 Navigator.push(context, route);
               },
               borderRadius: BorderRadius.circular(4),
@@ -29,23 +31,23 @@ class LabTestType extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ListTile(
                   leading: SvgPicture.asset(MyIcons.icTubeAdd, height: 38, width: 38,color: MyColors.accent,),
-                  title: Text("Select Test(s)"),
-                  trailing: Icon(Icons.arrow_forward_ios, size: 18,),
+                  title: const Text("Select Test(s)"),
+                  trailing: const Icon(Icons.arrow_forward_ios, size: 18,),
                 ),
               ),
             ),
           ),
           Card(
-            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             elevation: 4,
             child: InkWell(
               onTap: (){
-                Route route = MaterialPageRoute(builder: (_) => BookLabTest(true));
+                Route route = MaterialPageRoute(builder: (_) => const BookLabTest(true));
                 Navigator.push(context, route);
               },
               borderRadius: BorderRadius.circular(4),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
                 child: ListTile(
                   leading: Icon(MdiIcons.upload, color: MyColors.accent, size: 38,),
                   title: Text("Upload Prescription"),

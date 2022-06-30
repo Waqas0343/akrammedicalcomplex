@@ -3,8 +3,8 @@ import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Models/ServicesModel.dart';
-import 'package:amc/Models/TreatmentModel.dart';
+import 'package:amc/models/service_model.dart';
+import 'package:amc/models/treatment_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,13 +27,13 @@ class _MyTreatmentsState extends State<MyTreatments> {
     return Scaffold(
         backgroundColor: Colors.grey.shade200,
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             "My Home Services",
           ),
         ),
         body: treatmentsModel.isNotEmpty
             ? treatmentsView()
-            : !treatmentLoading && treatmentsModel.isEmpty ? Center(
+            : !treatmentLoading && treatmentsModel.isEmpty ? const Center(
                 child: Text(
                   "No Service Found",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -59,31 +59,31 @@ class _MyTreatmentsState extends State<MyTreatments> {
                 filled: false,
                 hintText: "Search by Service Name",
                 counterText: "",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       nameController.clear();
                       filterSearchResults("");
                     },
-                    child: Icon(Icons.close))),
+                    child: const Icon(Icons.close))),
           ),
         ),
         treatments.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   itemBuilder: (BuildContext context, int index) {
                     TreatmentData treatmentData = treatments[index];
                     return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                       elevation: 4,
                       child: Column(
                         children: [
                           ListTile(
                             title: AutoSizeText(
                               "Order Id # " + treatmentData.id,
-                              style: TextStyle(fontWeight: FontWeight.bold,),
+                              style: const TextStyle(fontWeight: FontWeight.bold,),
                               maxLines: 1,
                             ),
                             subtitle: Text(
@@ -106,7 +106,7 @@ class _MyTreatmentsState extends State<MyTreatments> {
                               visible: treatmentData.isExpanded,
                               child: ListView.builder(
                                 padding: EdgeInsets.zero,
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (BuildContext context, int index) {
                                   ServiceModel model =
@@ -127,8 +127,8 @@ class _MyTreatmentsState extends State<MyTreatments> {
                 ),
               )
             : Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Text(
                   "No Service Found",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -142,12 +142,12 @@ class _MyTreatmentsState extends State<MyTreatments> {
 
   void filterSearchResults(String query) {
     if (query.isNotEmpty) {
-      List<TreatmentData> dummyListData = List<TreatmentData>();
+      List<TreatmentData> dummyListData = <TreatmentData>[];
 
       bool isAdded = false;
-      treatmentsModel.forEach((item) {
+      for (var item in treatmentsModel) {
         if (item.details != null) {
-          item.details.forEach((element) {
+          for (var element in item.details) {
             String name = element.name.toLowerCase();
 
             if (name.contains(query.toLowerCase()) && !isAdded) {
@@ -155,10 +155,10 @@ class _MyTreatmentsState extends State<MyTreatments> {
               isAdded = true;
               return;
             }
-          });
+          }
         }
         isAdded = false;
-      });
+      }
       setState(() {
         treatments.clear();
         treatments.addAll(dummyListData);
@@ -177,7 +177,7 @@ class _MyTreatmentsState extends State<MyTreatments> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String username = preferences.getString(Keys.username);
     if (!await Utilities.isOnline()) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         Utilities.internetNotAvailable(context);
       });
       setState(() => treatmentLoading = false);
@@ -201,7 +201,7 @@ class _MyTreatmentsState extends State<MyTreatments> {
 
   @override
   void initState() {
-    treatments = new List<TreatmentData>();
+    treatments = <TreatmentData>[];
     getTreatments();
     super.initState();
   }

@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:amc/Styles/MyImages.dart';
+import 'package:amc/app/debug.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Styles/Keys.dart';
 
 class Splash extends StatefulWidget {
+  const Splash({Key key}) : super(key: key);
+
   @override
   _SplashState createState() => _SplashState();
 }
@@ -16,20 +19,20 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Container(
+      body: SizedBox(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(flex: 1, child: SizedBox.shrink()),
+            const Expanded(flex: 1, child: SizedBox.shrink()),
             Expanded(flex: 1, child: Image.asset(MyImages.logo,)),
             Expanded(flex: 1, child: Container(
               margin: const EdgeInsets.only(bottom: 36.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text("Smart Hospital App by ", style: TextStyle(fontSize: 16.0),),
+                  const Text("Smart Hospital App by ", style: TextStyle(fontSize: 16.0),),
                   Image.asset(MyImages.instaLogoBlue, height: 36.0,),
                 ],
               ),
@@ -62,7 +65,7 @@ class _SplashState extends State<Splash> {
 
 
   startTime() async {
-    var _duration = new Duration(seconds: 1);
-    return new Timer(_duration, navigationPage);
+    var _duration = const Duration(seconds: 1);
+    return Timer(_duration, navigationPage);
   }
 }

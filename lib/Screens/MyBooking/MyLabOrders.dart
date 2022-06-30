@@ -1,6 +1,6 @@
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Models/TestOrderResponseModel.dart';
+import 'package:amc/models/test_order_model.dart';
 import 'package:amc/Screens/MyBooking/LabOrderDetails.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -34,7 +34,7 @@ class _LabOrdersState extends State<LabOrders> {
       backgroundColor: Colors.grey.shade200,
       body: ordersModel.isNotEmpty
           ? view()
-          :  Center(
+          :  const Center(
               child: Text(
                 "No Tests",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -61,7 +61,7 @@ class _LabOrdersState extends State<LabOrders> {
   void getOrders() async {
     Loading.build(context, true);
     if (!await Utilities.isOnline()) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         Loading.dismiss();
       });
       return;
@@ -75,11 +75,11 @@ class _LabOrdersState extends State<LabOrders> {
     if (response != "404") {
       var list = testOrderResponseModelFromJson(response).response.response;
 
-      list.forEach((element) {
+      for (var element in list) {
         if (element.attachmentsResults != null) {
           orders.add(element);
         }
-      });
+      }
       ordersModel.addAll(orders);
       setState(() {});
     }
@@ -101,41 +101,41 @@ class _LabOrdersState extends State<LabOrders> {
                 filled: false,
                 hintText: "Search by Test Name",
                 counterText: "",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       nameController.clear();
                       filterSearchResults("");
                     },
-                    child: Icon(Icons.close))),
+                    child: const Icon(Icons.close))),
           ),
         ),
         orders.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   itemBuilder: (BuildContext context, int index) {
                     TestModel testModel = orders[index];
                     return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       elevation: 4,
                       child: ListTile(
                         isThreeLine: true,
                         title: Text(
                           "Order ID # ${testModel.orderId}",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             Text(
                               testModel.datetime,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 4,
                             ),
                             AutoSizeText(testModel.status,
@@ -152,7 +152,7 @@ class _LabOrdersState extends State<LabOrders> {
                           width: 70,
                         ),
                         onTap: () {
-                          Route route = new MaterialPageRoute(
+                          Route route = MaterialPageRoute(
                               builder: (_) => LabOrderDetails(
                                     testModel: testModel,
                                   ));
@@ -165,8 +165,8 @@ class _LabOrdersState extends State<LabOrders> {
                 ),
               )
             : Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Text(
                   "No Test Found",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -180,11 +180,11 @@ class _LabOrdersState extends State<LabOrders> {
 
   void filterSearchResults(String query) {
     if (query.isNotEmpty) {
-      List<TestModel> dummyListData = List<TestModel>();
+      List<TestModel> dummyListData = <TestModel>[];
       bool isAdded = false;
-      ordersModel.forEach((item) {
+      for (var item in ordersModel) {
         if (item.testList != null) {
-          item.testList.forEach((element) {
+          for (var element in item.testList) {
             String name = element.testName.toLowerCase();
 
             if (name.contains(query.toLowerCase()) && !isAdded) {
@@ -192,10 +192,10 @@ class _LabOrdersState extends State<LabOrders> {
               dummyListData.add(item);
               return;
             }
-          });
+          }
         }
         isAdded = false;
-      });
+      }
       setState(() {
         orders.clear();
         orders.addAll(dummyListData);

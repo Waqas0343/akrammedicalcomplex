@@ -1,4 +1,4 @@
-import 'package:amc/Models/MedicineOrderModel.dart';
+import 'package:amc/models/medicine_order_model.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Styles/MyImages.dart';
@@ -31,7 +31,7 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
       backgroundColor: Colors.grey.shade200,
       body: ordersModel.isNotEmpty
           ? view()
-          : Center(
+          : const Center(
               child: Text(
                 "No Medicines",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -72,14 +72,14 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
               filled: false,
               hintText: "Search by Medicine Name",
               counterText: "",
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
               suffixIcon: GestureDetector(
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                   nameController.clear();
                   // filterSearchResults("");
                 },
-                child: Icon(Icons.close),
+                child: const Icon(Icons.close),
               ),
             ),
           ),
@@ -87,7 +87,7 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
         orders.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   itemBuilder: (BuildContext context, int index) =>
                       makeOrdersList(context, index),
                   itemCount: orders.length,
@@ -103,7 +103,7 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
     Order order = orders[index];
     return Card(
       elevation: 4,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
         onTap: () {
@@ -115,18 +115,18 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
           isThreeLine: true,
           title: Text(
             "Order ID # " + order.orderId,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               Text(
                 order.orderDate,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 4,
               ),
               AutoSizeText(
@@ -153,11 +153,11 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
 
   void filterSearchResults(String query) {
     if (query.isNotEmpty) {
-      List<Order> dummyListData = List<Order>();
+      List<Order> dummyListData = <Order>[];
       bool isAdded = false;
-      ordersModel.forEach((item) {
+      for (var item in ordersModel) {
         if (item.medicines != null) {
-          item.medicines.forEach((element) {
+          for (var element in item.medicines) {
             String name = element.productName.toString().toLowerCase();
             if (name == null) {
               return;
@@ -167,10 +167,10 @@ class _MyMedicineOrdersState extends State<MyMedicineOrders> {
               dummyListData.add(item);
               return;
             }
-          });
+          }
         }
         isAdded = false;
-      });
+      }
       setState(() {
         orders.clear();
         orders.addAll(dummyListData);

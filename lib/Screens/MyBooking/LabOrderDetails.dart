@@ -1,7 +1,7 @@
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Models/SearchTeshModel.dart';
-import 'package:amc/Models/TestOrderResponseModel.dart';
+import 'package:amc/models/test_search_model.dart';
+import 'package:amc/models/test_order_model.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:flutter/material.dart';
 
@@ -30,9 +30,9 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
         child: Column(
           children: <Widget>[
             orderDetails(),
-            widget.testModel.testList == null ? SizedBox.shrink() : testCard(),
+            widget.testModel.testList == null ? const SizedBox.shrink() : testCard(),
             widget.testModel.attachmentsResults == null
-                ? SizedBox.shrink()
+                ? const SizedBox.shrink()
                 : viewReport(),
           ],
         ),
@@ -43,19 +43,19 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
   Widget makeList(BuildContext context, int index) {
     Test test = widget.testModel.testList[index];
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       title: AutoSizeText(
         test.testName,
         maxLines: 1,
       ),
       subtitle: Text(test.fee.replaceAll("Rs/-", "PKR/-")),
-      leading: Container(
+      leading: SizedBox(
           width: 30,
           child: Align(
               alignment: Alignment.centerRight,
               child: Text(
                 '${index + 1}',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ))),
       dense: true,
     );
@@ -63,13 +63,13 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
 
   Widget testCard() {
     return Card(
-      margin: EdgeInsets.only(left: 8, right: 8, bottom: 8),
+      margin: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
       elevation: 4,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            title: Text(
+            title: const Text(
               "Test(s)",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
@@ -88,7 +88,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
               padding: const EdgeInsets.only(bottom: 8, right: 8),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: ScrollPhysics(),
+                physics: const ScrollPhysics(),
                 itemBuilder: (BuildContext context, int index) =>
                     makeList(context, index),
                 itemCount: widget.testModel.testList.length,
@@ -102,7 +102,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
 
   Widget orderDetails() {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -135,15 +135,15 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                       ),
                     ),
                   )
-                : SizedBox.shrink(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                : const SizedBox.shrink(),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 6),
               child: Text(
                 "Order Details",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
             Padding(
@@ -151,7 +151,7 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                   const EdgeInsets.only(top: 8, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Order Status"),
                   ),
@@ -159,19 +159,19 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                     flex: 1,
                     child: Text(
                       widget.testModel.status,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   )
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding:
                   const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Name"),
                   ),
@@ -182,13 +182,13 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding:
                   const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Phone"),
                   ),
@@ -199,13 +199,13 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding:
                   const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Address"),
                   ),
@@ -225,15 +225,15 @@ class _LabOrderDetailsState extends State<LabOrderDetails> {
   Widget viewReport() {
     return Card(
       elevation: 4,
-      margin: EdgeInsets.only(left: 8, right: 8, bottom: 16, top: 4),
+      margin: const EdgeInsets.only(left: 8, right: 8, bottom: 16, top: 4),
       child: ListTile(
-        title: Text("View Report"),
-        trailing: Icon(
+        title: const Text("View Report"),
+        trailing: const Icon(
           Icons.arrow_forward_ios,
           size: 18,
         ),
         onTap: () {
-          Route route = new MaterialPageRoute(
+          Route route = MaterialPageRoute(
               builder: (_) => ViewReport(
                     path: widget.testModel.attachmentsResults,
                     name: widget.testModel.orderId,

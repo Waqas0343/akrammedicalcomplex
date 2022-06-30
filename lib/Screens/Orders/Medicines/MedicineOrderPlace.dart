@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amc/Models/MedicineOrderModel.dart';
-import 'package:amc/Models/OTCMedicines.dart';
+import 'package:amc/models/medicine_order_model.dart';
+import 'package:amc/models/otc_medicine_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Server/ServerConfig.dart';
@@ -21,7 +21,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class MedicineOrderPlace extends StatefulWidget {
   final bool isPrescription;
 
-  MedicineOrderPlace(this.isPrescription);
+  const MedicineOrderPlace(this.isPrescription,{Key key}) : super(key: key);
+
 
   @override
   _MedicineOrderPlaceState createState() => _MedicineOrderPlaceState();
@@ -57,7 +58,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("Order Details"),
+        title: const Text("Order Details"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -69,15 +70,13 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
               imageViewLayout(),
               uploadPrescriptionActions(),
               bookingDetails(),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: RaisedButton(
-                  elevation: 4,
+                child: ElevatedButton(
                   onPressed: isTaped ? () => placeOrder() : null,
                   child: Text(
                     buttonText,
                   ),
-                  textColor: Colors.white,
                 ),
               )
             ],
@@ -89,7 +88,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
 
   Widget imageViewLayout() {
     return file != null
-        ? Container(
+        ? SizedBox(
             height: 200,
             child: Stack(
               children: <Widget>[
@@ -114,9 +113,9 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                   child: IconButton(
                     splashColor: Colors.transparent,
                     highlightColor: Colors.transparent,
-                    padding: EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                     alignment: Alignment.topRight,
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.close,
                       size: 24,
                     ),
@@ -137,112 +136,110 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                           percent: uploadingValue,
                           center: Text(
                             "${(uploadingValue * 100).toInt()} %",
-                            style: TextStyle(color: Colors.white, fontSize: 12),
+                            style: const TextStyle(color: Colors.white, fontSize: 12),
                           ),
-                          linearStrokeCap: LinearStrokeCap.roundAll,
+                          barRadius: const Radius.circular(8),
                           progressColor: MyColors.primary,
                         ),
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
               ],
             ),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 
   Widget uploadPrescriptionActions() {
     return widget.isPrescription && file == null
-        ? Container(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Card(
-                    margin: EdgeInsets.all(0),
-                    elevation: 2,
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () async {
-                        var image =
-                            await _picker.getImage(source: ImageSource.camera);
-                        if (image != null) {
-                          setState(() {
-                            file = File(image.path);
-                          });
-                          uploadImage(file);
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            Icon(
-                              Icons.camera,
-                              size: 38,
-                              color: MyColors.primary,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text("Camera"),
-                          ],
+        ? Row(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Card(
+                margin: const EdgeInsets.all(0),
+                elevation: 2,
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () async {
+                    var image =
+                        await _picker.pickImage(source: ImageSource.camera);
+                    if (image != null) {
+                      setState(() {
+                        file = File(image.path);
+                      });
+                      uploadImage(file);
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: const <Widget>[
+                        Icon(
+                          Icons.camera,
+                          size: 38,
+                          color: MyColors.primary,
                         ),
-                      ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text("Camera"),
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 8,
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Card(
-                    elevation: 2,
-                    margin: EdgeInsets.all(0),
-                    color: Colors.white,
-                    child: InkWell(
-                      onTap: () async {
-                        var image =
-                            await _picker.getImage(source: ImageSource.gallery);
-                        if (image != null) {
-                          setState(() {
-                            file = File(image.path);
-                          });
-                          uploadImage(file);
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            Icon(
-                              Icons.image,
-                              size: 38,
-                              color: MyColors.primary,
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            Text("Gallery"),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          )
-        : SizedBox.shrink();
+            const SizedBox(
+              width: 8,
+            ),
+            Expanded(
+              flex: 1,
+              child: Card(
+                elevation: 2,
+                margin: const EdgeInsets.all(0),
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () async {
+                    var image =
+                        await _picker.pickImage(source: ImageSource.gallery);
+                    if (image != null) {
+                      setState(() {
+                        file = File(image.path);
+                      });
+                      uploadImage(file);
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: const <Widget>[
+                        Icon(
+                          Icons.image,
+                          size: 38,
+                          color: MyColors.primary,
+                        ),
+                        SizedBox(
+                          height: 4,
+                        ),
+                        Text("Gallery"),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        )
+        : const SizedBox.shrink();
   }
 
   Widget bookingDetails() {
     return ListView(
       shrinkWrap: true,
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(14.0),
+        const Padding(
+          padding: EdgeInsets.all(14.0),
           child: Text(
             "Booking Details",
             textAlign: TextAlign.center,
@@ -273,7 +270,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             errorText: isNameEmpty ? "Required" : null,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         TextField(
@@ -304,7 +301,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             errorText: isPhoneEmpty ? phoneError : null,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         TextField(
@@ -333,7 +330,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             errorText: emailValidate ? "invalid email format" : null,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         TextField(
@@ -357,7 +354,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
             errorText: isLocationEmpty ? "Required" : null,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 4,
         ),
       ],
@@ -374,15 +371,15 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                 TypeAheadField(
                     textFieldConfiguration: TextFieldConfiguration(
                         controller: medicController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             contentPadding: EdgeInsets.all(8),
                             hintText: "Search Medicines")),
                     suggestionsCallback: (name) async {
                       return await otcMedicines(name);
                     },
                     noItemsFoundBuilder: (context) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(
                             horizontal: 12, vertical: 8),
                         child: Text(
                           "No Medicine Found!",
@@ -419,53 +416,53 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
               ],
             ),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 
   Widget medicineList() {
     return medicines.isNotEmpty
         ? Card(
-            margin: EdgeInsets.only(top: 8.0,),
+            margin: const EdgeInsets.only(top: 8.0,),
             child: ListView.builder(
               shrinkWrap: true,
-              physics: ScrollPhysics(),
+              physics: const ScrollPhysics(),
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   dense: true,
                   contentPadding:
-                      EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                   title: AutoSizeText(
                     medicines[index].productName,
                     maxLines: 1,
                   ),
                   subtitle: Text("PKR " + medicines[index].productPrice),
                   trailing: IconButton(
-                      icon: Icon(Icons.cancel),
+                      icon: const Icon(Icons.cancel),
                       onPressed: () {
                         setState(() {
                           medicines.removeAt(index);
                         });
                       }),
-                  leading: Container(
+                  leading: SizedBox(
                       width: 30,
                       child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
                             '${index + 1}',
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            style: const TextStyle(fontWeight: FontWeight.w600),
                           ))),
                 );
               },
               itemCount: medicines.length,
             ),
           )
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 
   Future<List<ProductDetail>> otcMedicines(String name) async {
     isOnline();
     String response =
-        await Utilities.httpGet(ServerConfig.OTC_MEDICINES + "&name=$name");
+        await Utilities.httpGet(ServerConfig.otcMedicines + "&name=$name");
     List<ProductDetail> list = [];
     if (response != "404") {
       list = otcMedicinesFromJson(response).response.otcMedicines;
@@ -555,7 +552,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
 
     Loading.build(context, false);
 
-    Dio dio = new Dio();
+    Dio dio = Dio();
 
     FormData data = FormData.fromMap({
       "OrderList": medicinesString,
@@ -564,11 +561,9 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
     Response response;
 
     String values =
-        "&FullName=$name&username=$username&address=$location&Phone=$phone" +
-        "&Email=$email&PaymentMethod=Cash On Delivery&Source=${Keys.source}&attachment=$prescriptionPath" +
-        "&ReferanceBy=${Keys.locationId}";
+        "&FullName=$name&username=$username&address=$location&Phone=$phone" "&Email=$email&PaymentMethod=Cash On Delivery&Source=${Keys.source}&attachment=$prescriptionPath" "&ReferanceBy=${Keys.locationId}";
     try {
-      response = await dio.post(ServerConfig.MEDICINE_ORDER_PLACE + values,
+      response = await dio.post(ServerConfig.medicineOrderPlace + values,
           data: data);
     } catch (e) {
       print(e);
@@ -582,7 +577,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
     }
 
     if (response.statusCode == 200) {
-      Route route = MaterialPageRoute(builder: (_) => ThankYouScreen());
+      Route route = MaterialPageRoute(builder: (_) => const ThankYouScreen());
       Navigator.push(context, route);
     } else {
       Utilities.showToast("Unable to Place Order, try again later");
@@ -612,7 +607,6 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
           setState(() {
             uploadingValue = (sent / total);
           });
-          print('progress: $uploadingValue');
         },
       );
     } catch (e) {

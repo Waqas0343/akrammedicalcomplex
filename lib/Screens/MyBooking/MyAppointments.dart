@@ -1,8 +1,7 @@
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Models/AppointmentModel.dart';
+import 'package:amc/models/appointment_model.dart';
 import 'package:amc/Styles/MyImages.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -13,7 +12,7 @@ class MyAppointments extends StatefulWidget {
   const MyAppointments({Key key, this.appointments}) : super(key: key);
 
   @override
-  _MyAppointmentsState createState() => _MyAppointmentsState(this.appointments);
+  _MyAppointmentsState createState() => _MyAppointmentsState(appointments);
 }
 
 class _MyAppointmentsState extends State<MyAppointments> {
@@ -32,7 +31,7 @@ class _MyAppointmentsState extends State<MyAppointments> {
       backgroundColor: Colors.grey.shade200,
       body: appointmentsModel.isNotEmpty
           ? appointmentView()
-          : Center(child: Text("No Appointments", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),),
+          : const Center(child: Text("No Appointments", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),),
     );
   }
 
@@ -51,44 +50,44 @@ class _MyAppointmentsState extends State<MyAppointments> {
                 filled: false,
                 hintText: "Search by Doctor Name",
                 counterText: "",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       nameController.clear();
                       filterSearchResults("");
                     },
-                    child: Icon(Icons.close))),
+                    child: const Icon(Icons.close))),
           ),
         ),
         appointments.isNotEmpty ?
         Expanded(
           child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 4),
             itemBuilder: (BuildContext context, int index){
               Appointment appointment = appointments[index];
 
-              DateTime dateObj = new DateFormat("MM/dd/yyyy").parse(appointment.dateFormatted);
+              DateTime dateObj = DateFormat("MM/dd/yyyy").parse(appointment.dateFormatted);
               DateTime nowDateTime = DateTime(dateObj.year, dateObj.month, dateObj.day);
 
-              String day =  new DateFormat("EE").format(nowDateTime);
-              String finalDate =  new DateFormat("d MMM yy").format(dateObj);
+              String day =  DateFormat("EE").format(nowDateTime);
+              String finalDate =  DateFormat("d MMM yy").format(dateObj);
               return Card(
-                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                 elevation: 4,
                 child: ListTile(
-                  leading: ClipRRect(borderRadius: BorderRadius.all(Radius.circular(50)),
+                  leading: ClipRRect(borderRadius: const BorderRadius.all(Radius.circular(50)),
                     child: NetWorkImage(placeHolder: MyImages.doctorPlace,
                       imagePath: appointment.doctorImage,
                       width: 60,
                       height: 60,),
                   ),
-                  title: AutoSizeText('$day, $finalDate At ${appointment.time}',style: TextStyle(fontWeight: FontWeight.bold),maxLines: 1,),
+                  title: AutoSizeText('$day, $finalDate At ${appointment.time}',style: const TextStyle(fontWeight: FontWeight.bold),maxLines: 1,),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(appointment.doctorName, softWrap: false,),
-                      SizedBox(height: 8,),
+                      const SizedBox(height: 8,),
                       Text(appointment.status, softWrap: false,style: TextStyle(fontWeight: FontWeight.bold, color: appointment.getStatusColor())),
                     ],
                   ),
@@ -98,8 +97,8 @@ class _MyAppointmentsState extends State<MyAppointments> {
             },itemCount: appointments.length,
           ),
         ) : Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Text(
+          margin: const EdgeInsets.only(top: 20),
+          child: const Text(
             "No Appointment Found",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.grey),
           ),
@@ -110,8 +109,8 @@ class _MyAppointmentsState extends State<MyAppointments> {
 
   void filterSearchResults(String query) {
     if(query.isNotEmpty) {
-      List<Appointment> dummyListData = List<Appointment>();
-      appointmentsModel.forEach((item) {
+      List<Appointment> dummyListData = <Appointment>[];
+      for (var item in appointmentsModel) {
 
         String name = item.doctorName.toLowerCase();
         String status = item.status.toLowerCase();
@@ -121,7 +120,7 @@ class _MyAppointmentsState extends State<MyAppointments> {
 
         }
 
-      });
+      }
       setState(() {
         appointments.clear();
         appointments.addAll(dummyListData);

@@ -1,7 +1,6 @@
-import 'package:amc/Models/MedicalRecordModel.dart';
+import 'package:amc/models/medical_record_model.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
-import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/cache_image.dart';
@@ -14,6 +13,8 @@ import 'AddHealthRecord.dart';
 import 'MyHealthRecordDetails.dart';
 
 class MyHealthRecords extends StatefulWidget {
+  const MyHealthRecords({Key key}) : super(key: key);
+
   @override
   _MyHealthRecordsState createState() => _MyHealthRecordsState();
 }
@@ -29,11 +30,11 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("Medical Records"),
+        title: const Text("Medical Records"),
         actions: <Widget>[
           IconButton(
             tooltip: "Add New",
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
               openRoute();
             },
@@ -70,10 +71,10 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
           ),
           title: Text(
             record.fileName,
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(record.recordType),
-          trailing: Icon(
+          trailing: const Icon(
             Icons.arrow_forward_ios,
             size: 18,
           ),
@@ -91,17 +92,17 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
 
   void filter(String query) {
     if (query.isNotEmpty) {
-      List<HealthRecord> dummySearchList = List<HealthRecord>();
+      List<HealthRecord> dummySearchList = <HealthRecord>[];
       dummySearchList.addAll(recordModel);
-      List<HealthRecord> dummyListData = List<HealthRecord>();
-      dummySearchList.forEach((item) {
+      List<HealthRecord> dummyListData = <HealthRecord>[];
+      for (var item in dummySearchList) {
         String type = item.recordType.toLowerCase();
         String file = item.fileName.toLowerCase();
         if (type.contains(query.toLowerCase()) ||
             file.contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
-      });
+      }
       setState(() {
         healthRecords.clear();
         healthRecords.addAll(dummyListData);
@@ -142,9 +143,9 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
-              title: Text("Do you want to delete it?"),
+              title: const Text("Do you want to delete it?"),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   onPressed: () async {
                     Navigator.pop(context);
                     bool result = await deleteRecord(record.id);
@@ -157,14 +158,12 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
                       Utilities.showToast("Something went wrong");
                     }
                   },
-                  child: Text("Delete"),
-                  color: MyColors.primary,
-                  textColor: Colors.white,
+                  child: const Text("Delete"),
+
                 ),
-                FlatButton(
+                TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text("Cancel"),
-                  textColor: MyColors.primary,
+                  child: const Text("Cancel"),
                 )
               ],
             ));
@@ -184,7 +183,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
 
   void openRoute() async {
     Route route =
-        MaterialPageRoute<HealthRecord>(builder: (_) => AddHealthRecord());
+        MaterialPageRoute<HealthRecord>(builder: (_) => const AddHealthRecord());
     HealthRecord record = await Navigator.push(context, route);
 
     if (record != null) {
@@ -207,7 +206,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
                   onChanged: (text) {
                     filter(text);
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     fillColor: Colors.white,
                     filled: true,
                     hintText: "Search by File Name, File Type",
@@ -221,15 +220,15 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
                         shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 0, vertical: 4),
-                        physics: ScrollPhysics(),
+                        physics: const ScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) =>
                             medicalRecordListView(context, index),
                         itemCount: healthRecords.length,
                       ),
                     )
                   : Container(
-                      margin: EdgeInsets.only(top: 20),
-                      child: Text(
+                      margin: const EdgeInsets.only(top: 20),
+                      child: const Text(
                         "No Health Record Found",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -240,7 +239,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
             ],
           )
         : healthRecords.isEmpty && !isLoading
-            ? Center(
+            ? const Center(
                 child: Text(
                   "No Health Records",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

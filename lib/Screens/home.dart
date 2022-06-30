@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:amc/Screens/AppDrawer.dart';
@@ -19,7 +18,6 @@ import 'package:flutter_greetings/flutter_greetings.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
 import 'Bookings/BookTreatment.dart';
 import 'Bookings/SelectTestType.dart';
 import 'Doctors/FindDoctor.dart';
@@ -31,6 +29,8 @@ import 'Prescription/MyPrescriptions.dart';
 import 'Settings/Settings.dart';
 
 class Home extends StatefulWidget {
+  const Home({Key key}) : super(key: key);
+
   @override
   _HomeState createState() => _HomeState();
 }
@@ -40,8 +40,8 @@ class _HomeState extends State<Home> {
   SharedPreferences preferences;
   DateTime currentBackPressTime;
 
-  var rng = new Random();
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  var rng = Random();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
@@ -49,12 +49,14 @@ class _HomeState extends State<Home> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
-        onWillPop: () => onWillPop(),
+      onWillPop: () => onWillPop(),
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
           drawer: AppDrawer(
-            name: name, imagePath: imagePath, email: email,
+            name: name,
+            imagePath: imagePath,
+            email: email,
           ),
           body: ListView(
             children: [
@@ -65,7 +67,7 @@ class _HomeState extends State<Home> {
                   children: [
                     AppBar(
                       elevation: 0,
-                      title: Text(Keys.appName),
+                      title: const Text(Keys.appName),
                       actions: [
                         Container(
                           margin: const EdgeInsets.all(8.0),
@@ -79,11 +81,12 @@ class _HomeState extends State<Home> {
                             ],
                           ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            borderRadius: const BorderRadius.all(Radius.circular(40)),
                             child: NetWorkImage(
                               imagePath: imagePath,
                               placeHolder: MyImages.imageNotFound,
-                              width: 40, height: 30,
+                              width: 40,
+                              height: 30,
                             ),
                           ),
                         )
@@ -91,10 +94,14 @@ class _HomeState extends State<Home> {
                     ),
                     Container(
                       height: 40,
-                      margin: const EdgeInsets.only(top: 20,bottom: 20.0,left: 16.0,right: 16.0),
+                      margin: const EdgeInsets.only(
+                          top: 20, bottom: 20.0, left: 16.0, right: 16.0),
                       child: GestureDetector(
                         onTap: () {
-                          Route route = new MaterialPageRoute(builder: (_) => FindDoctor(isSearching: true,));
+                          Route route = MaterialPageRoute(
+                              builder: (_) => const FindDoctor(
+                                    isSearching: true,
+                                  ));
                           Navigator.push(context, route);
                         },
                         child: TextFormField(
@@ -102,15 +109,15 @@ class _HomeState extends State<Home> {
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(
                                 borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.all(Radius.circular(30)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
                                 gapPadding: 0.0,
                               ),
                               isDense: true,
                               isCollapsed: true,
-                              contentPadding: const EdgeInsets.only(top: 10.0),
+                              contentPadding: EdgeInsets.only(top: 10.0),
                               hintText: "Search Doctors",
-                              prefixIcon: Icon(Icons.search)
-                          ),
+                              prefixIcon: Icon(Icons.search)),
                         ),
                       ),
                     ),
@@ -120,20 +127,25 @@ class _HomeState extends State<Home> {
               Container(
                 width: size.width,
                 transform: Matrix4.translationValues(0.0, -45, 0.0),
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: 12,
                   right: 12,
                 ),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(32))
-                ),
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(32))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 16, bottom: 16, left: 4),
-                      child: Text('$greething!', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                      padding:
+                          const EdgeInsets.only(top: 16, bottom: 16, left: 4),
+                      child: Text(
+                        '$greething!',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,30 +154,37 @@ class _HomeState extends State<Home> {
                         HomeWidget(
                           title: "Book Home \nServices",
                           icon: MyIcons.icHomeService,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => BookTreatment());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const BookTreatment());
                             Navigator.push(context, route);
                           },
                         ),
                         HomeWidget(
                           title: "Find the Best \nSpecialist",
                           icon: MyIcons.icDoctorColored,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => FindDoctor(isSearching: false,));
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const FindDoctor(
+                                      isSearching: false,
+                                    ));
                             Navigator.push(context, route);
                           },
                         ),
                         HomeWidget(
                           title: "My Home \nServices",
                           icon: MyIcons.icHomeService,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => MyTreatments());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const MyTreatments());
                             Navigator.push(context, route);
                           },
                         ),
                       ],
                     ),
-                    SizedBox(height: 32,),
+                    const SizedBox(
+                      height: 32,
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -173,30 +192,35 @@ class _HomeState extends State<Home> {
                         HomeWidget(
                           title: "Diagnostics",
                           icon: MyIcons.icLabColored,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => TestType());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const TestType());
                             Navigator.push(context, route);
                           },
                         ),
                         HomeWidget(
                           title: "Medicines",
                           icon: MyIcons.icMedicineColored,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => MedicineOrderType());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const MedicineOrderType());
                             Navigator.push(context, route);
                           },
                         ),
                         HomeWidget(
                           title: "My Bookings",
                           icon: MyIcons.icPharmacyColored,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => MyBooking());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const MyBooking());
                             Navigator.push(context, route);
                           },
                         ),
                       ],
                     ),
-                    SizedBox(height: 32,),
+                    const SizedBox(
+                      height: 32,
+                    ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,24 +228,27 @@ class _HomeState extends State<Home> {
                         HomeWidget(
                           title: "My Prescriptions",
                           icon: MyIcons.icPrescriptionColored,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => MyPrescriptions());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const MyPrescriptions());
                             Navigator.push(context, route);
                           },
                         ),
                         HomeWidget(
                           title: "My Health \nRecords",
                           icon: MyIcons.icHealthRecordColored,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => MyHealthRecords());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const MyHealthRecords());
                             Navigator.push(context, route);
                           },
                         ),
                         HomeWidget(
                           title: "Settings",
                           icon: MyIcons.icSettingsColored,
-                          onTap: (){
-                            Route route = new MaterialPageRoute(builder: (_) => Settings());
+                          onTap: () {
+                            Route route = MaterialPageRoute(
+                                builder: (_) => const Settings());
                             Navigator.push(context, route);
                           },
                         ),
@@ -240,7 +267,7 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
+                const Text(
                   "Smart Hospital App by ",
                   style: TextStyle(fontSize: 14.0),
                 ),
@@ -275,14 +302,14 @@ class _HomeState extends State<Home> {
 
   void notificationSetup() async {
     var initializationSettingsAndroid =
-    AndroidInitializationSettings('mipmap/ic_launcher');
-    var initializationSettingsIOS = IOSInitializationSettings();
+        const AndroidInitializationSettings('mipmap/ic_launcher');
+    var initializationSettingsIOS = const IOSInitializationSettings();
     var initializationSettings = InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
 
-    _firebaseMessaging.configure(
+    /*_firebaseMessaging.configure(
       // foreground
       onMessage: (Map<String, dynamic> message) async {
         print("OnMessage::: $message");
@@ -303,7 +330,8 @@ class _HomeState extends State<Home> {
       onBackgroundMessage: Platform.isIOS ? null : myBackgroundMessageHandler,
       onLaunch: (Map<String, dynamic> message) async {
         print("OnLaunch::: $message");
-        print("Old Message Id::: ${preferences.getString(Keys.googleMessageId)}");
+        print(
+            "Old Message Id::: ${preferences.getString(Keys.googleMessageId)}");
         var data = message["data"] ?? message;
         if (!checkMessageId(data['google.message_id'])) {
           return;
@@ -323,19 +351,17 @@ class _HomeState extends State<Home> {
       },
     );
 
-
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(
             sound: true, badge: true, alert: true, provisional: false));
     _firebaseMessaging.onIosSettingsRegistered
         .listen((IosNotificationSettings settings) {
       print("Settings registered: $settings");
-    });
+    });*/
 
     _firebaseMessaging.getToken().then((String token) {
       assert(token != null);
       saveTokenTask(token: token);
-      print("Firebase Token::: $token");
     });
   }
 
@@ -343,7 +369,7 @@ class _HomeState extends State<Home> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String username = preferences.getString(Keys.username);
 
-    String response = await Utilities.httpPost(ServerConfig.SAVE_TOKEN +
+    String response = await Utilities.httpPost(ServerConfig.saveToken +
         '&deviceType=Flutter&username=$username&token=$token&ProjectId=${Keys.projectId}');
 
     if (response != '404') {
@@ -354,11 +380,11 @@ class _HomeState extends State<Home> {
   }
 
   showNotification({String title, String body}) async {
-    var android = AndroidNotificationDetails("Updates", "Updates", "",
-        importance: Importance.Default,
+    var android = const AndroidNotificationDetails("Updates", "Updates",
+        importance: Importance.defaultImportance,
         styleInformation: BigTextStyleInformation(""));
-    var ios = IOSNotificationDetails();
-    var platform = NotificationDetails(android, ios);
+    var ios = const IOSNotificationDetails();
+    var platform = NotificationDetails(android: android, iOS: ios);
 
     await flutterLocalNotificationsPlugin.show(
         rng.nextInt(100), title, body, platform);
@@ -366,31 +392,31 @@ class _HomeState extends State<Home> {
 
   void navigate(String type) {
     if (type == Keys.labOrders) {
-      Route route = new MaterialPageRoute(
-          builder: (_) => MyBooking(
-            initialIndex: 0,
-          ));
+      Route route = MaterialPageRoute(
+          builder: (_) => const MyBooking(
+                initialIndex: 0,
+              ));
       Navigator.push(context, route);
     } else if (type == Keys.appointment) {
-      Route route = new MaterialPageRoute(
-          builder: (_) => MyBooking(
-            initialIndex: 2,
-          ));
+      Route route = MaterialPageRoute(
+          builder: (_) => const MyBooking(
+                initialIndex: 2,
+              ));
       Navigator.push(context, route);
     } else if (type == Keys.medicines) {
-      Route route = new MaterialPageRoute(
-          builder: (_) => MyBooking(
-            initialIndex: 1,
-          ));
+      Route route = MaterialPageRoute(
+          builder: (_) => const MyBooking(
+                initialIndex: 1,
+              ));
       Navigator.push(context, route);
     } else if (type == Keys.labReport) {
-      Route route = new MaterialPageRoute(builder: (_) => LabReports());
+      Route route = MaterialPageRoute(builder: (_) => const LabReports());
       Navigator.push(context, route);
     } else if (type == Keys.treatments || type == Keys.homeServices) {
-      Route route = new MaterialPageRoute(builder: (_) => MyTreatments());
+      Route route = MaterialPageRoute(builder: (_) => const MyTreatments());
       Navigator.push(context, route);
     } else if (type == Keys.prescription) {
-      Route route = new MaterialPageRoute(builder: (_) => MyPrescriptions());
+      Route route = MaterialPageRoute(builder: (_) => const MyPrescriptions());
       Navigator.push(context, route);
     }
   }
@@ -405,31 +431,28 @@ class _HomeState extends State<Home> {
                 color: MyColors.primary,
                 child: Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
                   child: AutoSizeText(
                     title,
                     maxLines: 1,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                 )),
             content: Text(description),
             actions: [
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                   navigate(action);
                 },
-                child: Text("VIEW"),
-                color: MyColors.primary,
-                textColor: Colors.white,
+                child: const Text("VIEW"),
               ),
-              FlatButton(
+              TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: Text("DISMISS"),
-                textColor: MyColors.primary,
+                child: const Text("DISMISS"),
               ),
             ],
           );
@@ -439,7 +462,7 @@ class _HomeState extends State<Home> {
   Future<bool> onWillPop() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+        now.difference(currentBackPressTime) > const Duration(seconds: 2)) {
       currentBackPressTime = now;
       Utilities.showToast("Press back again to Exit.");
       return Future.value(false);
@@ -459,7 +482,7 @@ class _HomeState extends State<Home> {
 
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 }

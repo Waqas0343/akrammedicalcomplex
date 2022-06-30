@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:amc/Models/LoginModel.dart';
-import 'package:amc/Screens/AccountCreation/ActivationCode.dart';
+import 'package:amc/models/login_model.dart';
+import 'package:amc/Screens/account_creation/ActivationCode.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -14,6 +14,8 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
+  const SignUp({Key key}) : super(key: key);
+
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -25,10 +27,10 @@ class _SignUpState extends State<SignUp> {
   final FocusNode phoneFocus = FocusNode();
   final FocusNode passwordFocus = FocusNode();
 
-  final nameController = new TextEditingController();
-  final usernameController = new TextEditingController();
-  final phoneController = new TextEditingController();
-  final passwordController = new TextEditingController();
+  final nameController = TextEditingController();
+  final usernameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
 
   var isNameEmpty = false;
   var isUsernameEmpty = false;
@@ -52,30 +54,28 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                child: ClipOval(
-                  child: Image.asset(
-                    MyImages.logo,
-                    height: 160.0,
-                  ),
+              ClipOval(
+                child: Image.asset(
+                  MyImages.logo,
+                  height: 160.0,
                 ),
               ),
               Column(
                 children: [
                   Card(
                     elevation: 8,
-                    margin: EdgeInsets.symmetric(horizontal: 24),
+                    margin: const EdgeInsets.symmetric(horizontal: 24),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Register",
                             style: TextStyle(
                                 color: MyColors.primary,
@@ -84,7 +84,7 @@ class _SignUpState extends State<SignUp> {
                             textAlign: TextAlign.center,
                           ),
 
-                          SizedBox(
+                          const SizedBox(
                             height: 16,
                           ),
                           TextField(
@@ -107,10 +107,10 @@ class _SignUpState extends State<SignUp> {
                             decoration: InputDecoration(
                               filled: false,
                               hintText: "Full Name",
-                              errorText: isNameEmpty ? "Can\'t be Empty" : null,
+                              errorText: isNameEmpty ? "Can't be Empty" : null,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           TextField(
@@ -140,7 +140,7 @@ class _SignUpState extends State<SignUp> {
                               errorText: isPhoneEmpty ? phoneError : null,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           // Login ID
@@ -151,7 +151,7 @@ class _SignUpState extends State<SignUp> {
                             textInputAction: TextInputAction.next,
                             focusNode: usernameFocus,
                             onSubmitted: (text){
-                              this.usernameFocus.unfocus();
+                              usernameFocus.unfocus();
                               FocusScope.of(context).requestFocus(passwordFocus);
                             },
                             onChanged: (username){
@@ -196,10 +196,10 @@ class _SignUpState extends State<SignUp> {
                               filled: false,
                               errorMaxLines: 2,
                               errorText: isUsernameEmpty ? userNameError : null,
-                              suffix: isUsernameFind ? Container(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2,)) : SizedBox.shrink(),
+                              suffix: isUsernameFind ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2,)) : const SizedBox.shrink(),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 8,
                           ),
                           TextField(
@@ -209,7 +209,7 @@ class _SignUpState extends State<SignUp> {
                             focusNode: passwordFocus,
                             controller: passwordController,
                             onSubmitted: (text){
-                              this.passwordFocus.unfocus();
+                              passwordFocus.unfocus();
                             },
                             onChanged: (text){
                               setState(() {
@@ -228,7 +228,7 @@ class _SignUpState extends State<SignUp> {
                                       visible = !visible;
                                     });
                                   }),
-                              errorText: isPasswordEmpty ? "Can\'t be Empty" : null,
+                              errorText: isPasswordEmpty ? "Can't be Empty" : null,
                             ),
                           ),
                         ],
@@ -237,36 +237,31 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
-              SizedBox(height: 8,),
+              const SizedBox(height: 8,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      child: RaisedButton(
+                      child: ElevatedButton(
                         onPressed: isTaped ?() =>registerPatient():null,
                         child: Text(
                           buttonText,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
-                        padding: EdgeInsets.all(12),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8))),
-                        color: MyColors.primary,
-                        textColor: Colors.white,
                       ),
                     ),
-                    SizedBox(height: 8,),
+                    const SizedBox(height: 8,),
                     RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(text: "Already a member? ",
-                          style: TextStyle(color: Colors.black),
+                          style: const TextStyle(color: Colors.black),
                           children: [
                             TextSpan(text: "Login",
-                                style: TextStyle(fontWeight: FontWeight.w600, color: MyColors.primary),
+                                style: const TextStyle(fontWeight: FontWeight.w600, color: MyColors.primary),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.pushReplacementNamed(context, "/login");
@@ -282,7 +277,7 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("Smart Hospital App by ", style: TextStyle(fontSize: 16.0),),
+                    const Text("Smart Hospital App by ", style: TextStyle(fontSize: 16.0),),
                     Image.asset(MyImages.instaLogoBlue, height: 36.0,),
                   ],
                 ),
@@ -357,9 +352,7 @@ class _SignUpState extends State<SignUp> {
 
     Loading.build(context, false);
 
-    String values = "&DateOfBirth=&salutation=" +
-        "&Gender=&area=&city=&cnic=&Username=$username&height=&weight=" +
-        "&profession=&Password=$password&Type=Patient&Name=$name&Phone=$phone&Email=";
+    String values = "&DateOfBirth=&salutation=" "&Gender=&area=&city=&cnic=&Username=$username&height=&weight=" "&profession=&Password=$password&Type=Patient&Name=$name&Phone=$phone&Email=";
 
     String response = await Utilities.httpPost(ServerConfig.signUp + values);
     Loading.dismiss();
@@ -371,7 +364,7 @@ class _SignUpState extends State<SignUp> {
       preferences.setString(Keys.name, user.name);
 
 
-      Route route = new MaterialPageRoute(builder: (context) => AccountActivation(user.phone));
+      Route route = MaterialPageRoute(builder: (context) => AccountActivation(user.phone));
       Navigator.pushAndRemoveUntil(context, route, (route) => false);
 
     } else {
@@ -384,7 +377,7 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       isUsernameFind = true;
     });
-    String response = await Utilities.httpGet(ServerConfig.check_username + "&Username=$username");
+    String response = await Utilities.httpGet(ServerConfig.checkUsername + "&Username=$username");
     setState(() {
       isUsernameFind = false;
     });

@@ -1,11 +1,12 @@
-import 'package:amc/Models/MedicalRecordModel.dart';
+import 'package:amc/models/medical_record_model.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:flutter/material.dart';
 
 class MyHealthRecordDetails extends StatelessWidget {
   final HealthRecord record;
-  MyHealthRecordDetails(this.record);
+
+  const MyHealthRecordDetails(this.record, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class MyHealthRecordDetails extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8, bottom: 4, right: 8, left: 8),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
+                    const Expanded(
                       flex: 1,
                       child: Text("File Name"),
                     ),
@@ -54,12 +55,12 @@ class MyHealthRecordDetails extends StatelessWidget {
                   ],
                 ),
               ),
-              Divider(),
+              const Divider(),
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
+                    const Expanded(
                       flex: 1,
                       child: Text("File Type"),
                     ),
@@ -70,12 +71,12 @@ class MyHealthRecordDetails extends StatelessWidget {
                   ],
                 ),
               ),
-              Divider(),
+              const Divider(),
               Padding(
                 padding: const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
                 child: Row(
                   children: <Widget>[
-                    Expanded(
+                    const Expanded(
                       flex: 1,
                       child: Text("Description"),
                     ),
@@ -86,7 +87,7 @@ class MyHealthRecordDetails extends StatelessWidget {
                   ],
                 ),
               ),
-              Divider(),
+              const Divider(),
 
             ],
           ),

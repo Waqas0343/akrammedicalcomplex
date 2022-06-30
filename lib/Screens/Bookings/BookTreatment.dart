@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:amc/Models/ServicesModel.dart';
+import 'package:amc/models/service_model.dart';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -9,10 +9,12 @@ import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import "package:intl/intl.dart";
 
 class BookTreatment extends StatefulWidget {
+  const BookTreatment({Key key}) : super(key: key);
+
   @override
   _BookTreatmentState createState() => _BookTreatmentState();
 }
@@ -25,7 +27,6 @@ class _BookTreatmentState extends State<BookTreatment> {
 
   final nameController = TextEditingController();
 
-
   bool isLoading = true;
   SharedPreferences preferences;
 
@@ -37,13 +38,13 @@ class _BookTreatmentState extends State<BookTreatment> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text(Keys.homeServices),
+        title: const Text(Keys.homeServices),
       ),
       body: isLoading
           ? LoadingServicesList()
           : servicesModel.isNotEmpty
               ? view()
-              : Center(
+              : const Center(
                   child: Text(
                     "Services Not available",
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -53,25 +54,21 @@ class _BookTreatmentState extends State<BookTreatment> {
           ? FloatingActionButton.extended(
               backgroundColor: MyColors.primary,
               foregroundColor: Colors.white,
-
               splashColor: Colors.white.withOpacity(0.2),
               onPressed: isTaped ? () => confirmationDialog() : null,
-              icon: Icon(Icons.send),
+              icon: const Icon(Icons.send),
               label: Text(
-              buttonText,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                buttonText,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             )
-          : SizedBox.shrink(),
+          : const SizedBox.shrink(),
     );
   }
 
-
   void getTreatments() async {
-
-    if (!await Utilities.isOnline()){
-
-      Future.delayed(Duration(seconds: 1),(){
+    if (!await Utilities.isOnline()) {
+      Future.delayed(const Duration(seconds: 1), () {
         setState(() {
           isLoading = false;
         });
@@ -82,7 +79,6 @@ class _BookTreatmentState extends State<BookTreatment> {
     String response = await Utilities.httpGet(
         ServerConfig.getServices + "&searchParam=&location=${Keys.locationId}");
     if (response != "404") {
-
       if (!mounted) return;
       setState(() {
         servicesList.addAll(servicesModelFromJson(response).response.response);
@@ -109,7 +105,7 @@ class _BookTreatmentState extends State<BookTreatment> {
 
     String services =
         jsonEncode(List<dynamic>.from(selectedList.map((x) => x.toJson())))
-            .replaceAll("\'", "");
+            .replaceAll("'", "");
 
     DateTime dateTime = DateTime.now();
     String date = DateFormat("MM/dd/yyyy").format(dateTime).toString();
@@ -117,9 +113,7 @@ class _BookTreatmentState extends State<BookTreatment> {
 
     String newDate = date + " " + time.trim();
 
-    String values = "&DoctorUsername=" +
-        "&Location=${Keys.locationId}" +
-        "&patname=" +
+    String values = "&DoctorUsername=" "&Location=${Keys.locationId}" "&patname=" +
         name +
         "&PatientUsername=" +
         username +
@@ -143,7 +137,7 @@ class _BookTreatmentState extends State<BookTreatment> {
 
     if (response != "404") {
       enableButton();
-      Route route = new MaterialPageRoute(builder: (_)=>ThankYouScreen());
+      Route route = MaterialPageRoute(builder: (_) => ThankYouScreen());
       Navigator.push(context, route);
     } else {
       Utilities.showToast("Unable to ${Keys.homeServices}");
@@ -151,18 +145,31 @@ class _BookTreatmentState extends State<BookTreatment> {
     enableButton();
   }
 
-  void confirmationDialog(){
-    showDialog(context: context, builder: (context){
-      return AlertDialog(
-        content: Text("Do you really want to confirm your Services booking ?"),
-        actions: [
-          FlatButton(onPressed: (){
-            Navigator.pop(context);
-            }, child: Text("No", style: TextStyle(fontWeight: FontWeight.bold),)),
-          FlatButton(onPressed: isTaped ? () => bookTreatment() : null, child: Text("Yes",style: TextStyle(fontWeight: FontWeight.bold),)),
-        ],
-      );
-    });
+  void confirmationDialog() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: const Text(
+                "Do you really want to confirm your Services booking ?"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text(
+                    "No",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+              TextButton(
+                  onPressed: isTaped ? () => bookTreatment() : null,
+                  child: const Text(
+                    "Yes",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  )),
+            ],
+          );
+        });
   }
 
   @override
@@ -175,79 +182,81 @@ class _BookTreatmentState extends State<BookTreatment> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0, bottom: 4.0),
+          padding: const EdgeInsets.only(
+              left: 8.0, right: 8.0, top: 8.0, bottom: 4.0),
           child: TextField(
             controller: nameController,
             maxLength: 60,
-            onChanged: (text){
+            onChanged: (text) {
               filterSearchResults(text);
             },
             decoration: InputDecoration(
                 filled: false,
                 hintText: "Search by Service Name",
                 counterText: "",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       nameController.clear();
                       filterSearchResults("");
                     },
-                    child: Icon(Icons.close))),
+                    child: const Icon(Icons.close))),
           ),
         ),
-        servicesList.isNotEmpty?
-        Expanded(
-          child: ListView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            itemBuilder: (BuildContext context, int index) {
-              ServiceModel serviceModel = servicesList[index];
-              return Card(
-                elevation: 4,
-                margin: EdgeInsets.symmetric(vertical: 4),
-                child: CheckboxListTile(
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(serviceModel.name),
-                    subtitle: Text("PKR/- " + serviceModel.fee),
-                  value: serviceModel.isSelected,
-                        onChanged: (value) {
-                          if (value) {
-                            selectedList.add(serviceModel);
-                          } else {
-                            selectedList.remove(serviceModel);
-                          }
-                          setState(() {
-                            servicesList[index].isSelected = value;
-                          });
-                        }
+        servicesList.isNotEmpty
+            ? Expanded(
+                child: ListView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  itemBuilder: (BuildContext context, int index) {
+                    ServiceModel serviceModel = servicesList[index];
+                    return Card(
+                      elevation: 4,
+                      margin: const EdgeInsets.symmetric(vertical: 4),
+                      child: CheckboxListTile(
+                          controlAffinity: ListTileControlAffinity.leading,
+                          title: Text(serviceModel.name),
+                          subtitle: Text("PKR/- " + serviceModel.fee),
+                          value: serviceModel.isSelected,
+                          onChanged: (value) {
+                            if (value) {
+                              selectedList.add(serviceModel);
+                            } else {
+                              selectedList.remove(serviceModel);
+                            }
+                            setState(() {
+                              servicesList[index].isSelected = value;
+                            });
+                          }),
+                    );
+                  },
+                  itemCount: servicesList.length,
                 ),
-              );
-            },
-            itemCount: servicesList.length,
-          ),
-        ) : Container(
-          margin: EdgeInsets.only(top: 20),
-          child: Text(
-            "No Service Found",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16,color: Colors.grey),
-          ),
-        ),
+              )
+            : Container(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Text(
+                  "No Service Found",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.grey),
+                ),
+              ),
       ],
     );
   }
 
   void filterSearchResults(String query) {
-    if(query.isNotEmpty) {
-      List<ServiceModel> dummyListData = List<ServiceModel>();
-      servicesModel.forEach((item) {
-
-        if(item.name.toLowerCase().contains(query.toLowerCase())) {
+    if (query.isNotEmpty) {
+      List<ServiceModel> dummyListData = <ServiceModel>[];
+      for (var item in servicesModel) {
+        if (item.name.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
           return;
-
         }
-
-      });
+      }
       setState(() {
         servicesList.clear();
         servicesList.addAll(dummyListData);
@@ -260,7 +269,6 @@ class _BookTreatmentState extends State<BookTreatment> {
         servicesList.addAll(servicesModel);
       });
     }
-
   }
 
   void disableButton() {

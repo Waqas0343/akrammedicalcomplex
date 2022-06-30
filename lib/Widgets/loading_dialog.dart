@@ -6,12 +6,12 @@ class Loading {
   static ProgressDialog pr;
 
   static build(BuildContext context, bool isDismissible){
-    pr = new ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: isDismissible);
+    pr = ProgressDialog(context, type: ProgressDialogType.Normal, isDismissible: isDismissible);
     pr.style(
       message: 'Please Wait...',
       insetAnimCurve: Curves.easeOut,
-      progressWidget: Padding(
-        padding: const EdgeInsets.all(8.0),
+      progressWidget: const Padding(
+        padding: EdgeInsets.all(8.0),
         child: CircularProgressIndicator(),
       ),
     );

@@ -13,28 +13,26 @@ class NetWorkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: CachedNetworkImage(
-        imageUrl: imagePath ?? "",
-        imageBuilder: (context, builder) => Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5.0),
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 5,
-                spreadRadius: 0.5,
-                color: Colors.black.withOpacity(0.2),
-              ),
-            ],
-            image: DecorationImage(image: builder, fit: BoxFit.cover),
-          ),
+    return CachedNetworkImage(
+      imageUrl: imagePath ?? "",
+      imageBuilder: (context, builder) => Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5.0),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 5,
+              spreadRadius: 0.5,
+              color: Colors.black.withOpacity(0.2),
+            ),
+          ],
+          image: DecorationImage(image: builder, fit: BoxFit.cover),
         ),
-        width: width,
-        height: height,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => Image.asset(placeHolder),
-        errorWidget: (context, url, error) => Image.asset(placeHolder),
       ),
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      placeholder: (context, url) => Image.asset(placeHolder),
+      errorWidget: (context, url, error) => Image.asset(placeHolder),
     );
   }
 }

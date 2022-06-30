@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PrivacyPolicy extends StatefulWidget {
+  const PrivacyPolicy({Key key}) : super(key: key);
+
   @override
   _PrivacyPolicyState createState() => _PrivacyPolicyState();
 }
@@ -16,7 +18,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("About Us"),
+        title: const Text("About Us"),
       ),
       body: Stack(
         children: [
@@ -37,7 +39,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy> {
               });
             },
           ),
-          isLoading ? Center(child: CircularProgressIndicator()):SizedBox.shrink()
+          isLoading ? const Center(child: CircularProgressIndicator()):const SizedBox.shrink()
         ],
       ),
     );

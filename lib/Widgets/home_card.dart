@@ -13,7 +13,7 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 160,
       child: Card(
         margin: EdgeInsets.zero,
@@ -22,14 +22,14 @@ class HomeCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(4.0),
           onTap: onTap,
           child: Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 SvgPicture.asset(icon, color: MyColors.primary,height: 48,),
-                SizedBox(height: 16,),
-                AutoSizeText(title, style: TextStyle(fontFamily: "SemiBold", fontSize: 16),maxLines: 1,textAlign: TextAlign.center,),
-                SizedBox(height: 6,),
-                AutoSizeText(description,maxLines: 2, style: TextStyle(fontSize: 14, color: Colors.grey,),textAlign: TextAlign.center,),
+                const SizedBox(height: 16,),
+                AutoSizeText(title, style: const TextStyle(fontFamily: "SemiBold", fontSize: 16),maxLines: 1,textAlign: TextAlign.center,),
+                const SizedBox(height: 6,),
+                AutoSizeText(description,maxLines: 2, style: const TextStyle(fontSize: 14, color: Colors.grey,),textAlign: TextAlign.center,),
               ],
             ),
           ),

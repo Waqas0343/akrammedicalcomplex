@@ -13,7 +13,7 @@ class ServerConfig{
   static const signUp = baseTestUrl2 +
       "api/Accounts/PatientRegister?SystemKey=$systemKey&SourceUrl=${Keys.source}";
 
-  static const check_username = baseTestUrl +
+  static const checkUsername = baseTestUrl +
       "api/Accounts/CheckUserName?SystemKey=" + systemKey;
 
   static const cities = baseUrl +
@@ -34,13 +34,13 @@ class ServerConfig{
   static const medicalRecords = baseUrl +
       "api/Prescriptions/MyFiles?SystemKey=" + systemKey; //username
 
-  static const MEDICINE_ORDERS = baseTestUrl2 +
+  static const medicineOrders = baseTestUrl2 +
       "api/Payment/MedicineOrderList?SystemKey=" + systemKey; //username
 
-  static const OTC_MEDICINES = baseTestUrl2 +
+  static const otcMedicines = baseTestUrl2 +
       "api/otc/get?SystemKey=" + systemKey; //name=
 
-  static const MEDICINE_ORDER_PLACE = baseTestUrl2 +
+  static const medicineOrderPlace = baseTestUrl2 +
       "api/Payment/AddMedicineOrder?SystemKey="+systemKey;
 
   static const myTestOrders = baseTestUrl2 +
@@ -58,13 +58,13 @@ class ServerConfig{
   static const doctors = baseTestUrl2 +
       "api/Doctors/DoctorListShort?SystemKey=$systemKey&Medusername=${Keys.locationId}";
 
-  static const VERIFY_CODE = baseTestUrl2 +
+  static const verifyCode = baseTestUrl2 +
       "api/Accounts/Activate?SystemKey=$systemKey";
 
-  static const RESENT_CODE = baseTestUrl +
+  static const resentCode = baseTestUrl +
       "api/accounts/getactivationcode?SystemKey=$systemKey";
   
-  static const PRESCRIPTION = baseUrl +
+  static const prescriptions = baseUrl +
       "api/Prescriptions/MyPrescriptionsList?SystemKey=" + systemKey; //username
 
   static const timeSlots = baseTestUrl +
@@ -77,13 +77,13 @@ class ServerConfig{
   static const getServices = baseTestUrl +
       "api/ServicesApi/GetLocationServices?SystemKey=" + systemKey;
 
-  static const GET_LABS = baseUrl +
+  static const labs = baseUrl +
       "api/LabTest/ListOfLabsShort?SystemKey=" + systemKey;
 
   static const patientInfoUpdate = baseTestUrl2 +
       "api/PatientProfile/BasicInfo_Update?SystemKey=" + systemKey;
 
-  static const BOOK_LAB_TEST = baseTestUrl2 +
+  static const labTestBook = baseTestUrl2 +
       "api/LabTest/BookMobileLabTest?SystemKey=" + systemKey;
 
   static const getPatientInfo = baseTestUrl2 +
@@ -95,7 +95,7 @@ class ServerConfig{
   static const appointments = baseTestUrl2 +
       "api/CustomAppointments/GetList?SystemKey=" + systemKey; //patientusername
 
-  static const SAVE_TOKEN = baseTestUrl +
+  static const saveToken = baseTestUrl +
       "api/Accounts/SaveFirebaseToken?SystemKey=" + systemKey; //&username=&token=
 
   static const treatments = baseTestUrl +

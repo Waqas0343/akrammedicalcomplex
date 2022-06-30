@@ -1,7 +1,7 @@
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Models/DoctorResponseModel.dart';
+import 'package:amc/models/doctor_response_model.dart';
 import 'package:amc/Screens/BookAppointment/BookAppointment.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -9,7 +9,6 @@ import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyIcons.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -21,7 +20,7 @@ class DoctorProfile extends StatefulWidget {
   const DoctorProfile({Key key, this.username}) : super(key: key);
 
   @override
-  _DoctorProfileState createState() => _DoctorProfileState(this.username);
+  _DoctorProfileState createState() => _DoctorProfileState(username);
 }
 
 class _DoctorProfileState extends State<DoctorProfile> {
@@ -51,7 +50,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
     }
 
     return doctorProfile == null
-        ? Scaffold(
+        ? const Scaffold(
             body: DoctorDetailLoading(),
           )
         : SafeArea(
@@ -77,10 +76,10 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 Column(
                                   children: [
                                     Container(
-                                        margin: EdgeInsets.only(
+                                        margin: const EdgeInsets.only(
                                             right: 0, bottom: 4),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.all(
+                                          borderRadius: const BorderRadius.all(
                                               Radius.circular(50)),
                                           child: NetWorkImage(
                                             imagePath:
@@ -124,25 +123,25 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                         AutoSizeText(
                                           doctorProfile.name,
                                           maxLines: 1,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 18.0,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 2,
                                         ),
                                         AutoSizeText(
                                           doctorProfile.speciality.name,
-                                          style: TextStyle(color: Colors.white),
+                                          style: const TextStyle(color: Colors.white),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 2,
                                         ),
                                         AutoSizeText(
                                           qualification ?? "",
                                           maxLines: 2,
-                                          style: TextStyle(color: Colors.white),
+                                          style: const TextStyle(color: Colors.white),
                                         ),
                                       ],
                                     ),
@@ -162,7 +161,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                           title: Text(
                               "PKR ${doctorProfile.assosiations[0].regularCharges ?? "N/A"}"),
                         ),
-                        Divider(),
+                        const Divider(),
                         Row(
                           children: <Widget>[
                             Expanded(
@@ -199,7 +198,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             ),
                           ],
                         ),
-                        Divider(),
+                        const Divider(),
                         // ListTile(
                         //   leading: SvgPicture.asset(
                         //     MyIcons.icMap,
@@ -222,14 +221,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             height: 24,
                             color: Colors.grey,
                           ),
-                          title: Text("Timings"),
+                          title: const Text("Timings"),
                           subtitle: Column(
                             children: <Widget>[
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text("Monday"),
+                                  const Text("Monday"),
                                   Text(mon ?? ""),
                                 ],
                               ),
@@ -237,7 +236,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text("Tuesday"),
+                                  const Text("Tuesday"),
                                   Text(tues ?? ""),
                                 ],
                               ),
@@ -245,7 +244,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text("Wednesday"),
+                                  const Text("Wednesday"),
                                   Text(wed ?? ""),
                                 ],
                               ),
@@ -253,7 +252,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text("Thursday"),
+                                  const Text("Thursday"),
                                   Text(thur ?? ""),
                                 ],
                               ),
@@ -261,7 +260,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text("Friday"),
+                                  const Text("Friday"),
                                   Text(fri ?? ""),
                                 ],
                               ),
@@ -269,7 +268,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text("Saturday"),
+                                  const Text("Saturday"),
                                   Text(sat ?? ""),
                                 ],
                               ),
@@ -277,14 +276,14 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text("Sunday"),
+                                  const Text("Sunday"),
                                   Text(sun ?? ""),
                                 ],
                               ),
                             ],
                           ),
                         ),
-                        Divider(),
+                        const Divider(),
                         ListTile(
                           leading: SvgPicture.asset(
                             MyIcons.icService,
@@ -292,22 +291,22 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             height: 24,
                             color: Colors.grey,
                           ),
-                          title: Text("Services"),
+                          title: const Text("Services"),
                           subtitle: doctorProfile.services.isNotEmpty
                               ? ListView.builder(
                                   shrinkWrap: true,
-                                  physics: ScrollPhysics(),
+                                  physics: const ScrollPhysics(),
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Padding(
                                       padding: const EdgeInsets.all(4.0),
                                       child: Row(
                                         children: <Widget>[
-                                          Icon(
+                                          const Icon(
                                             MdiIcons.circleSmall,
                                             size: 18,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 8,
                                           ),
                                           Flexible(
@@ -322,9 +321,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   },
                                   itemCount: doctorProfile.services.length,
                                 )
-                              : Text("N/A"),
+                              : const Text("N/A"),
                         ),
-                        Divider(),
+                        const Divider(),
                         ListTile(
                           leading: SvgPicture.asset(
                             MyIcons.icReview,
@@ -332,11 +331,11 @@ class _DoctorProfileState extends State<DoctorProfile> {
                             height: 24,
                             color: Colors.grey,
                           ),
-                          title: Text("Reviews"),
+                          title: const Text("Reviews"),
                           subtitle: doctorProfile.reviews.isNotEmpty
                               ? ListView.builder(
                                   shrinkWrap: true,
-                                  physics: ScrollPhysics(),
+                                  physics: const ScrollPhysics(),
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return Padding(
@@ -346,7 +345,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           ClipRRect(
-                                            borderRadius: BorderRadius.all(
+                                            borderRadius: const BorderRadius.all(
                                                 Radius.circular(30)),
                                             child: FadeInImage.assetNetwork(
                                               image: doctorProfile
@@ -354,11 +353,11 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                               fit: BoxFit.cover,
                                               placeholder: MyImages.user,
                                               fadeInDuration:
-                                                  Duration(milliseconds: 100),
+                                                  const Duration(milliseconds: 100),
                                               height: 30,
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 8,
                                           ),
                                           Flexible(
@@ -372,7 +371,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                                       "",
                                                   softWrap: false,
                                                   overflow: TextOverflow.fade,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -390,19 +389,18 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                   },
                                   itemCount: doctorProfile.reviews.length,
                                 )
-                              : Text("N/A"),
+                              : const Text("N/A"),
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     width: MediaQuery.of(context).size.width,
-                    child: RaisedButton(
-                      child: Text("Book Appointment"),
-                      textColor: Colors.white,
+                    child: ElevatedButton(
+                      child: const Text("Book Appointment"),
                       onPressed: () {
-                        Route route = new MaterialPageRoute(
+                        Route route = MaterialPageRoute(
                             builder: (_) => BookAppointment(
                                   drUsername: doctorProfile.username,
                                   drName: doctorProfile.name,

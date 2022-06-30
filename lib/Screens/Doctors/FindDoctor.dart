@@ -1,8 +1,8 @@
-import 'package:amc/Models/DoctorResponseModel.dart';
+import 'package:amc/models/doctor_response_model.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Models/CategoryModel.dart';
+import 'package:amc/models/category_model.dart';
 import 'package:amc/Screens/BookAppointment/BookAppointment.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Widgets/lazy_loader_widget.dart';
@@ -22,8 +22,8 @@ class FindDoctor extends StatefulWidget {
 }
 
 class _FindDoctorState extends State<FindDoctor> {
-  Icon cusIcon = Icon(Icons.search);
-  Widget cusSearchBar = Text("Find Doctor");
+  Icon cusIcon = const Icon(Icons.search);
+  Widget cusSearchBar = const Text("Find Doctor");
   bool isLoading = false, hasMore = true;
   int totalRecord = 0, pageNo = 0;
 
@@ -41,16 +41,16 @@ class _FindDoctorState extends State<FindDoctor> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Select Specialty"),
-          content: Container(
+          title: const Text("Select Specialty"),
+          content: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: DropdownButtonFormField(
                 isExpanded: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   filled: false,
                   hintText: "All",
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 16.0,
                 ),
@@ -81,7 +81,7 @@ class _FindDoctorState extends State<FindDoctor> {
                 }),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(null),
               child: Text(
                 "Cancel",
@@ -101,7 +101,7 @@ class _FindDoctorState extends State<FindDoctor> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: this.cusSearchBar,
+        title: cusSearchBar,
         actions: <Widget>[
           IconButton(
             onPressed: () {
@@ -111,7 +111,7 @@ class _FindDoctorState extends State<FindDoctor> {
           ),
           IconButton(
             onPressed: () => doctorSpecialtyDialogBox(),
-            icon: Icon(
+            icon: const Icon(
               Icons.filter_alt_sharp,
             ),
           ),
@@ -129,7 +129,7 @@ class _FindDoctorState extends State<FindDoctor> {
                         if (!isLoading) {
                           checkInternet();
                         }
-                        return LazyLoader();
+                        return const LazyLoader();
                       }
                       return doctorListView(context, index);
                     },
@@ -139,10 +139,10 @@ class _FindDoctorState extends State<FindDoctor> {
                 )
               : Expanded(
                   child: doctors.isEmpty && !isLoading
-                      ? Center(
+                      ? const Center(
                           child: Text("No Doctor Found"),
                         )
-                      : LoadingDoctorsList(),
+                      : const LoadingDoctorsList(),
                 ),
         ],
       ),
@@ -153,14 +153,14 @@ class _FindDoctorState extends State<FindDoctor> {
     ResponseDetail doctorModel = doctors[index];
     return Card(
       elevation: 4.0,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
+            padding: const EdgeInsets.symmetric(vertical: 6),
             child: InkWell(
               onTap: () {
-                Route route = new MaterialPageRoute(
+                Route route = MaterialPageRoute(
                     builder: (context) => DoctorProfile(
                           username: doctorModel.username,
                         ));
@@ -173,9 +173,9 @@ class _FindDoctorState extends State<FindDoctor> {
                     child: Row(
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            borderRadius: const BorderRadius.all(Radius.circular(50)),
                             child: NetWorkImage(
                               placeHolder: MyImages.doctorPlace,
                               imagePath: doctorModel.imagepath,
@@ -194,34 +194,34 @@ class _FindDoctorState extends State<FindDoctor> {
                                 Text(
                                   doctorModel.name,
                                   maxLines: 2,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.w700,
                                     fontSize: 14,
                                   ),
                                   softWrap: false,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 6,
                                 ),
                                 Text(
                                   doctorModel.speciality ?? "",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 12,
                                   ),
                                   overflow: TextOverflow.fade,
                                   softWrap: false,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 6,
                                 ),
                                 Text(
                                   doctorModel.fee ?? "0",
                                   overflow: TextOverflow.fade,
                                   softWrap: false,
-                                  style: TextStyle(fontSize: 12.0),
+                                  style: const TextStyle(fontSize: 12.0),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 6,
                                 ),
                               ],
@@ -246,7 +246,7 @@ class _FindDoctorState extends State<FindDoctor> {
               ),
               child: GestureDetector(
                 onTap: () {
-                  Route route = new MaterialPageRoute(
+                  Route route = MaterialPageRoute(
                       builder: (_) => BookAppointment(
                             drName: doctorModel.name,
                             drUsername: doctorModel.username,
@@ -272,11 +272,11 @@ class _FindDoctorState extends State<FindDoctor> {
 
   void setAppBarValue() {
     setState(() {
-      if (this.cusIcon.icon == Icons.search) {
-        this.cusIcon = Icon(Icons.cancel);
-        this.cusSearchBar = TextField(
+      if (cusIcon.icon == Icons.search) {
+        cusIcon = const Icon(Icons.cancel);
+        cusSearchBar = TextField(
           cursorColor: Colors.white,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
           focusNode: nameFocus,
@@ -293,7 +293,7 @@ class _FindDoctorState extends State<FindDoctor> {
           },
           textInputAction: TextInputAction.search,
           maxLength: 60,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             filled: false,
             hintText: 'Search by Name',
             hintStyle: TextStyle(
@@ -303,8 +303,8 @@ class _FindDoctorState extends State<FindDoctor> {
           ),
         );
       } else {
-        this.cusIcon = Icon(Icons.search);
-        this.cusSearchBar = Text("Find Doctor");
+        cusIcon = const Icon(Icons.search);
+        cusSearchBar = const Text("Find Doctor");
         nameController.clear();
         pageNo = 0;
         totalRecord = 0;
@@ -318,7 +318,7 @@ class _FindDoctorState extends State<FindDoctor> {
   void initState() {
     updateUi();
     if (widget.isSearching) {
-      this.cusIcon = Icon(Icons.search);
+      cusIcon = const Icon(Icons.search);
       setAppBarValue();
     }
     doctors = [];
@@ -336,7 +336,6 @@ class _FindDoctorState extends State<FindDoctor> {
           "&PageNumber=$pageNo&SearchPramas=$name&PageSize=10&Speciality=${category == null ? "0" : category.id}");
     } catch (e) {
       response = "404";
-      print(e);
     }
 
     if (response != "404") {

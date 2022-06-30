@@ -39,14 +39,14 @@ class DrawerList extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           title,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16.0,
                             color: Colors.black,),
                         ),
                       )
                     ],
                   ),
-                  Icon(
+                  const Icon(
                     Icons.keyboard_arrow_right,
                     color: Colors.grey,
                   )

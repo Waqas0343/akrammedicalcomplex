@@ -3,6 +3,8 @@ import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:flutter/material.dart';
 
 class MyLabTestReports extends StatefulWidget {
+  const MyLabTestReports({Key key}) : super(key: key);
+
   @override
   _MyLabTestReportsState createState() => _MyLabTestReportsState();
 }
@@ -10,7 +12,7 @@ class MyLabTestReports extends StatefulWidget {
 class _MyLabTestReportsState extends State<MyLabTestReports> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
   
   @override

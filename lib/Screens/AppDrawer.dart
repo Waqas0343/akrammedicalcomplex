@@ -44,12 +44,12 @@ class _AppDrawerState extends State<AppDrawer> {
                 GestureDetector(
                   onTap: () {
                     Route route =
-                        new MaterialPageRoute(builder: (_) => Settings());
+                        MaterialPageRoute(builder: (_) => const Settings());
                     Navigator.push(context, route);
                   },
                   child: DrawerHeader(
-                    padding:
-                        EdgeInsets.only(bottom: 16, top: 6, right: 8, left: 16),
+                    padding: const EdgeInsets.only(
+                        bottom: 16, top: 6, right: 8, left: 16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -65,25 +65,24 @@ class _AppDrawerState extends State<AppDrawer> {
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 65,
                                 width: 65,
                                 child: ClipRRect(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(50)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50)),
                                   child: NetWorkImage(
-                                    imagePath:
-                                        widget.imagePath,
+                                    imagePath: widget.imagePath,
                                     placeHolder: MyImages.imageNotFound,
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 16,
                               ),
                               Expanded(
                                 child: Container(
-                                  padding: EdgeInsets.only(right: 16),
+                                  padding: const EdgeInsets.only(right: 16),
                                   height: 65,
                                   child: Column(
                                     crossAxisAlignment:
@@ -95,13 +94,14 @@ class _AppDrawerState extends State<AppDrawer> {
                                         widget.name ?? "",
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
-                                        style: TextStyle(color: Colors.black),
+                                        style: const TextStyle(
+                                            color: Colors.black),
                                       ),
                                       AutoSizeText(widget.email ?? "",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          style:
-                                              TextStyle(color: Colors.black)),
+                                          style: const TextStyle(
+                                              color: Colors.black)),
                                     ],
                                   ),
                                 ),
@@ -128,8 +128,10 @@ class _AppDrawerState extends State<AppDrawer> {
                   isBottomBorder: true,
                   isDropdown: false,
                   onTap: () {
-                    Route route =
-                        new MaterialPageRoute(builder: (_) => FindDoctor(isSearching: false,));
+                    Route route = MaterialPageRoute(
+                        builder: (_) => const FindDoctor(
+                              isSearching: false,
+                            ));
                     Navigator.push(context, route);
                   },
                 ),
@@ -139,8 +141,8 @@ class _AppDrawerState extends State<AppDrawer> {
                   isBottomBorder: true,
                   isDropdown: false,
                   onTap: () {
-                    Route route =
-                        new MaterialPageRoute(builder: (_) => BookTreatment());
+                    Route route = MaterialPageRoute(
+                        builder: (_) => const BookTreatment());
                     Navigator.push(context, route);
                   },
                 ),
@@ -151,7 +153,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   isDropdown: false,
                   onTap: () {
                     Route route =
-                        new MaterialPageRoute(builder: (_) => TestType());
+                        MaterialPageRoute(builder: (_) => const TestType());
                     Navigator.push(context, route);
                   },
                 ),
@@ -161,8 +163,8 @@ class _AppDrawerState extends State<AppDrawer> {
                   isBottomBorder: true,
                   isDropdown: false,
                   onTap: () {
-                    Route route = new MaterialPageRoute(
-                        builder: (_) => MedicineOrderType());
+                    Route route = MaterialPageRoute(
+                        builder: (_) => const MedicineOrderType());
                     Navigator.push(context, route);
                   },
                 ),
@@ -172,8 +174,8 @@ class _AppDrawerState extends State<AppDrawer> {
                   isBottomBorder: true,
                   isDropdown: false,
                   onTap: () {
-                    Route route = new MaterialPageRoute(
-                        builder: (_) => MyPrescriptions());
+                    Route route = MaterialPageRoute(
+                        builder: (_) => const MyPrescriptions());
                     Navigator.push(context, route);
                   },
                 ),
@@ -184,7 +186,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   isDropdown: false,
                   onTap: () {
                     Route route =
-                        new MaterialPageRoute(builder: (_) => LabReports());
+                        MaterialPageRoute(builder: (_) => const LabReports());
                     Navigator.push(context, route);
                   },
                 ),
@@ -195,7 +197,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   isDropdown: false,
                   onTap: () {
                     Route route =
-                        new MaterialPageRoute(builder: (_) => MyBooking());
+                        MaterialPageRoute(builder: (_) => const MyBooking());
                     Navigator.push(context, route);
                   },
                 ),
@@ -205,7 +207,8 @@ class _AppDrawerState extends State<AppDrawer> {
                   isBottomBorder: true,
                   isDropdown: true,
                   onTap: () {
-                    Route route = new MaterialPageRoute(builder: (_) => Settings());
+                    Route route =
+                        MaterialPageRoute(builder: (_) => const Settings());
                     Navigator.push(context, route);
                   },
                 ),
@@ -215,7 +218,8 @@ class _AppDrawerState extends State<AppDrawer> {
                   isBottomBorder: true,
                   isDropdown: true,
                   onTap: () {
-                    Route route = new MaterialPageRoute(builder: (_) => AccountSettings());
+                    Route route = MaterialPageRoute(
+                        builder: (_) => const AccountSettings());
                     Navigator.push(context, route);
                   },
                 ),
@@ -238,7 +242,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   onTap: () {
                     preferences.setBool(Keys.status, false);
                     Route newRoute =
-                        new MaterialPageRoute(builder: (_) => Login());
+                        MaterialPageRoute(builder: (_) => const Login());
                     Navigator.pushAndRemoveUntil(
                         context, newRoute, (route) => false);
                   },
@@ -414,12 +418,16 @@ class _AppDrawerState extends State<AppDrawer> {
   }
 
   Widget subMenu() {
-    return DropdownButton(items: <String>["Change Password", "Profile Setting"].map<DropdownMenuItem<String>>((String value) {
-      return DropdownMenuItem<String>(
-        value: value,
-        child: Text(value),
-        onTap: (){},
-      );}).toList(), onChanged: null);
+    return DropdownButton(
+        items: <String>["Change Password", "Profile Setting"]
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+            onTap: () {},
+          );
+        }).toList(),
+        onChanged: null);
   }
 
   void updateUi() async {

@@ -1,4 +1,4 @@
-import 'package:amc/Models/LabTestOrdersModel.dart';
+import 'package:amc/models/lab_test_order_model.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Server/ServerConfig.dart';
@@ -13,6 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'LabTestOrderDetails.dart';
 
 class MyLabTestOrders extends StatefulWidget {
+  const MyLabTestOrders({Key key}) : super(key: key);
+
   @override
   _MyLabTestOrdersState createState() => _MyLabTestOrdersState();
 }
@@ -25,7 +27,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("My Orders"),
+        title: const Text("My Orders"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),
@@ -41,7 +43,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
   void initState() {
     super.initState();
 
-    orders = List<TestOrder>();
+    orders = <TestOrder>[];
     getOrders();
   }
 
@@ -77,7 +79,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
     TestOrder order = orders[index];
     return Card(
       elevation: 6,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: InkWell(
         borderRadius: BorderRadius.circular(4),
         onTap: (){
@@ -86,12 +88,12 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
 
         },
         child: ListTile(
-          title: Text("Order #: "+order.orderId, softWrap: false ,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+          title: Text("Order #: "+order.orderId, softWrap: false ,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
           subtitle: Row(
             children: <Widget>[
-              Flexible(child: Text(order.status, softWrap: false ,style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
-              Icon(MdiIcons.circleSmall, color: Colors.blue,),
-              Text(order.datetime, style: TextStyle(fontSize: 12),),
+              Flexible(child: Text(order.status, softWrap: false ,style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
+              const Icon(MdiIcons.circleSmall, color: Colors.blue,),
+              Text(order.datetime, style: const TextStyle(fontSize: 12),),
             ],
           ),
           leading: NetWorkImage(
@@ -100,7 +102,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
             width: 60,
             height: MediaQuery.of(context).size.height,
           ),
-          trailing: Icon(Icons.arrow_forward_ios, size: 18,),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 18,),
         ),
       ),
     );

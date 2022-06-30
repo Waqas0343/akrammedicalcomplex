@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amc/Models/ImagesModel.dart';
-import 'package:amc/Models/LabModel.dart';
+import 'package:amc/models/image_model.dart';
+import 'package:amc/models/lab_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Models/SearchTeshModel.dart';
+import 'package:amc/models/test_search_model.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -18,12 +18,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class BookLabTest extends StatefulWidget {
-
   final bool isPrescription;
 
-  BookLabTest(this.isPrescription);
+  const BookLabTest(this.isPrescription, {Key key}) : super(key: key);
 
 
   @override
@@ -31,7 +29,6 @@ class BookLabTest extends StatefulWidget {
 }
 
 class _BookLabTestState extends State<BookLabTest> {
-
   File file;
   String prescriptionPath, username;
 
@@ -47,7 +44,6 @@ class _BookLabTestState extends State<BookLabTest> {
   final locationController = TextEditingController();
   final medicController = TextEditingController();
 
-
   FocusNode nameFocus = FocusNode();
   FocusNode phoneFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
@@ -60,13 +56,12 @@ class _BookLabTestState extends State<BookLabTest> {
   bool isTaped = true;
   bool emailValidate = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("Order Details"),
+        title: const Text("Order Details"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -74,19 +69,19 @@ class _BookLabTestState extends State<BookLabTest> {
           child: Column(
             children: <Widget>[
               labView(),
-              SizedBox(height: 8,),
-              lab != null ? selectTest(): SizedBox.shrink(),
+              const SizedBox(
+                height: 8,
+              ),
+              lab != null ? selectTest() : const SizedBox.shrink(),
               testList(),
               imageViewLayout(),
               uploadPrescriptionActions(),
               bookingDetails(),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
-                child: RaisedButton(
-                  elevation: 4,
+                child: ElevatedButton(
                   onPressed: isTaped ? () => placeOrder() : null,
-                  child: Text("Place Order"),
-                  textColor: Colors.white,
+                  child: const Text("Place Order"),
                 ),
               )
             ],
@@ -96,161 +91,164 @@ class _BookLabTestState extends State<BookLabTest> {
     );
   }
 
-  Widget imageViewLayout (){
+  Widget imageViewLayout() {
     return file != null
-        ? Container(
-        height: 200,
-        child: Stack(
-          children: <Widget>[
-            Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 10
-                        )
-                      ]
-                  ),
+        ? SizedBox(
+            height: 200,
+            child: Stack(
+              children: <Widget>[
+                Center(
+                    child: Container(
+                  decoration: BoxDecoration(boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 10)
+                  ]),
                   padding: const EdgeInsets.only(bottom: 12),
                   child: Image.file(
                     file,
                   ),
                 )),
-            Align(
-              alignment: Alignment.topRight,
-              child: IconButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                padding: EdgeInsets.all(0),
-                alignment: Alignment.topRight,
-                icon: Icon(
-                  Icons.close,
-                  size: 24,
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    padding: const EdgeInsets.all(0),
+                    alignment: Alignment.topRight,
+                    icon: const Icon(
+                      Icons.close,
+                      size: 24,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        file = null;
+                        isLoading = true;
+                      });
+                    },
+                  ),
                 ),
-                onPressed: () {
-                  setState(() {
-                    file = null;
-                    isLoading = true;
-                  });
-                },
-              ),
-            ),
-
-            isLoading ? Align(alignment: Alignment.bottomCenter , child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 2),
-              child: LinearProgressIndicator(),
-            )) : SizedBox.shrink(),
-          ],
-        ))
-        : SizedBox.shrink();
+                isLoading
+                    ? const Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 2),
+                          child: LinearProgressIndicator(),
+                        ))
+                    : const SizedBox.shrink(),
+              ],
+            ))
+        : const SizedBox.shrink();
   }
 
-  Widget uploadPrescriptionActions(){
+  Widget uploadPrescriptionActions() {
     return widget.isPrescription && file == null
-        ? Container(
-        child: Row(
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Card(
-                margin: EdgeInsets.all(0),
-                elevation: 2,
-                color: Colors.white,
-                child: InkWell(
-                  onTap: () async {
-                    var image = await _picker.getImage(
-                        source: ImageSource.camera);
-                    if (image != null) {
-                      setState(() {
-                        file = File(image.path);
-                      });
-                      uploadImage(file);
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        Icon(
-                          Icons.camera,
-                          size: 38,
-                          color: MyColors.accent,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text("Camera")
-                      ],
-                    ),
+        ? Row(
+        children: <Widget>[
+          Expanded(
+            flex: 1,
+            child: Card(
+              margin: const EdgeInsets.all(0),
+              elevation: 2,
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  var image =
+                      await _picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    setState(() {
+                      file = File(image.path);
+                    });
+                    uploadImage(file);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: const <Widget>[
+                      Icon(
+                        Icons.camera,
+                        size: 38,
+                        color: MyColors.accent,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text("Camera")
+                    ],
                   ),
                 ),
               ),
             ),
-            SizedBox(
-              width: 8,
-            ),
-            Expanded(
-              flex: 1,
-              child: Card(
-                elevation: 2,
-                margin: EdgeInsets.all(0),
-                color: Colors.white,
-                child: InkWell(
-                  onTap: () async {
-                    var image = await _picker.getImage(
-                        source: ImageSource.gallery);
-                    if (image != null) {
-                      setState(() {
-                        file = File(image.path);
-                      });
-                      uploadImage(file);
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: <Widget>[
-                        Icon(
-                          Icons.image,
-                          size: 38,
-                          color: MyColors.accent,
-                        ),
-                        SizedBox(
-                          height: 4,
-                        ),
-                        Text("Gallery")
-                      ],
-                    ),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Expanded(
+            flex: 1,
+            child: Card(
+              elevation: 2,
+              margin: const EdgeInsets.all(0),
+              color: Colors.white,
+              child: InkWell(
+                onTap: () async {
+                  var image =
+                      await _picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    setState(() {
+                      file = File(image.path);
+                    });
+                    uploadImage(file);
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: const <Widget>[
+                      Icon(
+                        Icons.image,
+                        size: 38,
+                        color: MyColors.accent,
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Text("Gallery")
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ))
-        : SizedBox.shrink();
+          ),
+        ],
+          )
+        : const SizedBox.shrink();
   }
 
   Widget bookingDetails() {
     return ListView(
       shrinkWrap: true,
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: Text("Booking Details", textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),),
+        const Padding(
+          padding: EdgeInsets.all(14.0),
+          child: Text(
+            "Booking Details",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+          ),
         ),
         TextField(
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.text,
           controller: nameController,
-          onSubmitted: (text){
+          onSubmitted: (text) {
             nameFocus.unfocus();
             FocusScope.of(context).requestFocus(phoneFocus);
           },
-          onChanged: (text){
-            if (text.trim().isNotEmpty){
+          onChanged: (text) {
+            if (text.trim().isNotEmpty) {
               setState(() {
                 isNameEmpty = false;
               });
@@ -264,20 +262,24 @@ class _BookLabTestState extends State<BookLabTest> {
             errorText: isNameEmpty ? "Required" : null,
           ),
         ),
-        SizedBox(height: 8,),
+        const SizedBox(
+          height: 8,
+        ),
         TextField(
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.phone,
-          inputFormatters: [Utilities.onlyNumberFormat(),],
+          inputFormatters: [
+            Utilities.onlyNumberFormat(),
+          ],
           controller: phoneController,
           maxLength: 11,
-          onSubmitted: (text){
+          onSubmitted: (text) {
             phoneFocus.unfocus();
             FocusScope.of(context).requestFocus(emailFocus);
           },
           focusNode: phoneFocus,
-          onChanged: (text){
-            if (text.trim().isNotEmpty){
+          onChanged: (text) {
+            if (text.trim().isNotEmpty) {
               if (Utilities.numberHasValid(text)) {
                 setState(() {
                   isPhoneEmpty = false;
@@ -293,12 +295,14 @@ class _BookLabTestState extends State<BookLabTest> {
             errorText: isPhoneEmpty ? phoneError : null,
           ),
         ),
-        SizedBox(height: 8,),
+        const SizedBox(
+          height: 8,
+        ),
         TextField(
           textInputAction: TextInputAction.next,
           keyboardType: TextInputType.emailAddress,
           controller: emailController,
-          onSubmitted: (text){
+          onSubmitted: (text) {
             emailFocus.unfocus();
             FocusScope.of(context).requestFocus(locaFocus);
           },
@@ -313,21 +317,20 @@ class _BookLabTestState extends State<BookLabTest> {
             }
           },
           focusNode: emailFocus,
-          decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              hintText: "Email"
-          ),
+          decoration: const InputDecoration(
+              filled: true, fillColor: Colors.white, hintText: "Email"),
         ),
-        SizedBox(height: 8,),
+        const SizedBox(
+          height: 8,
+        ),
         TextField(
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.text,
           minLines: 3,
           maxLines: 5,
           controller: locationController,
-          onChanged: (text){
-            if (text.trim().isNotEmpty){
+          onChanged: (text) {
+            if (text.trim().isNotEmpty) {
               setState(() {
                 isLocationEmpty = false;
               });
@@ -341,99 +344,113 @@ class _BookLabTestState extends State<BookLabTest> {
             errorText: isLocationEmpty ? "Required" : null,
           ),
         ),
-        SizedBox(height: 4,),
+        const SizedBox(
+          height: 4,
+        ),
       ],
     );
   }
 
   Widget selectTest() {
-    return !widget.isPrescription ?
-    Card(
-      elevation: 2,
-      margin: EdgeInsets.all(0),
-      child: Column(
-        children: <Widget>[
-          TypeAheadField(
-              textFieldConfiguration: TextFieldConfiguration(
-                  controller: medicController,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(8),
-                      hintText: "Search LabTest"
-                  )
-
-              ),
-              suggestionsCallback: (name) async {
-                return await searchTest(name.isNotEmpty ? name:"a" );
-              },
-              noItemsFoundBuilder: (context){
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Text("No Test Found.", style: TextStyle(fontSize: 18, color: Colors.grey),),
-                );
-              },
-              itemBuilder: (context, Test suggestion){
-                return ListTile(
-                  dense: true,
-                  subtitle: Text(suggestion.fee),
-                  title: AutoSizeText(suggestion.testName, maxLines: 1,),
-                );
-              },
-              onSuggestionSelected: (Test suggestion){
-                setState(() {
-                  medicController.clear();
-                  chooseTest.add(suggestion);
-                });
-              }
-          ),
-        ],
-      ),
-    ) : SizedBox.shrink();
+    return !widget.isPrescription
+        ? Card(
+            elevation: 2,
+            margin: const EdgeInsets.all(0),
+            child: Column(
+              children: <Widget>[
+                TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                        controller: medicController,
+                        decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.all(8),
+                            hintText: "Search LabTest")),
+                    suggestionsCallback: (name) async {
+                      return await searchTest(name.isNotEmpty ? name : "a");
+                    },
+                    noItemsFoundBuilder: (context) {
+                      return const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        child: Text(
+                          "No Test Found.",
+                          style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                      );
+                    },
+                    itemBuilder: (context, Test suggestion) {
+                      return ListTile(
+                        dense: true,
+                        subtitle: Text(suggestion.fee),
+                        title: AutoSizeText(
+                          suggestion.testName,
+                          maxLines: 1,
+                        ),
+                      );
+                    },
+                    onSuggestionSelected: (Test suggestion) {
+                      setState(() {
+                        medicController.clear();
+                        chooseTest.add(suggestion);
+                      });
+                    }),
+              ],
+            ),
+          )
+        : const SizedBox.shrink();
   }
 
   Widget testList() {
-    return chooseTest.isNotEmpty ?
-    Card(
-      margin: EdgeInsets.only(top: 8),
-      child: ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        physics: ScrollPhysics(),
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            dense: true,
-            contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-            title: AutoSizeText(chooseTest[index].testName, maxLines: 1,),
-            subtitle: Text(chooseTest[index].fee),
-            trailing: IconButton(
-                icon: Icon(Icons.cancel),
-                onPressed: (){
-                  setState(() {
-                    chooseTest.removeAt(index);
-                  });
-                }
+    return chooseTest.isNotEmpty
+        ? Card(
+            margin: const EdgeInsets.only(top: 8),
+            child: ListView.builder(
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              physics: const ScrollPhysics(),
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  dense: true,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  title: AutoSizeText(
+                    chooseTest[index].testName,
+                    maxLines: 1,
+                  ),
+                  subtitle: Text(chooseTest[index].fee),
+                  trailing: IconButton(
+                      icon: const Icon(Icons.cancel),
+                      onPressed: () {
+                        setState(() {
+                          chooseTest.removeAt(index);
+                        });
+                      }),
+                  leading: SizedBox(
+                      width: 30,
+                      child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '${index + 1}',
+                            style: const TextStyle(fontWeight: FontWeight.w600),
+                          ))),
+                );
+              },
+              itemCount: chooseTest.length,
             ),
-            leading: Container(
-                width: 30,
-                child: Align(alignment: Alignment.centerRight, child: Text('${index+1}', style: TextStyle(fontWeight: FontWeight.w600),))),
-          );
-        },
-        itemCount: chooseTest.length,
-      ),
-    ) :
-    SizedBox.shrink();
+          )
+        : const SizedBox.shrink();
   }
 
   Future<List<Test>> searchTest(String name) async {
-    String response = await Utilities.httpGet(ServerConfig.searchTest + "&q=$name&pageLimit=15&page=0&labid=${lab.username}");
+    String response = await Utilities.httpGet(ServerConfig.searchTest +
+        "&q=$name&pageLimit=15&page=0&labid=${lab.username}");
     List<Test> list = [];
-    if (response != "404"){
+    if (response != "404") {
       list = searchLabTestModelFromJson(response).response.response.testsList;
     }
     return list;
   }
 
   void uploadImage(File file) async {
-
     setState(() {
       isLoading = true;
     });
@@ -442,14 +459,14 @@ class _BookLabTestState extends State<BookLabTest> {
 
     Dio dio = Dio();
 
-
     FormData imageFormData = FormData.fromMap({
-      "Systemkey" : ServerConfig.systemKey,
-      "userid" : username,
+      "Systemkey": ServerConfig.systemKey,
+      "userid": username,
       "file": await MultipartFile.fromFile(file.path, filename: 'file.jpg'),
     });
 
-    var response = await dio.post(ServerConfig.uploadImages, data: imageFormData);
+    var response =
+        await dio.post(ServerConfig.uploadImages, data: imageFormData);
 
     if (response.statusCode == 200) {
       prescriptionPath = imageModelFromJson(response.toString()).response.path;
@@ -460,7 +477,6 @@ class _BookLabTestState extends State<BookLabTest> {
     setState(() {
       isLoading = false;
     });
-
   }
 
   void getPrefrences() async {
@@ -472,49 +488,55 @@ class _BookLabTestState extends State<BookLabTest> {
     locationController.text = preferences.getString(Keys.address);
   }
 
-  Widget labView(){
+  Widget labView() {
     return labs.isNotEmpty
         ? Container(
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            stops: [0.01, 0.01],
-            colors: [MyColors.primary, Colors.white]),
-      ),
-      child: Padding(
-        padding:
-        const EdgeInsets.only(left: 8, right: 8, top: 0, bottom: 16),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton(
-              hint: Text("Select Lab"),
-              isExpanded: true,
-              value: lab,
-              items: labs.map((e) {
-                return DropdownMenuItem(
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 0,vertical: 0),
-                    dense: true,
-                    title: Text(e.name),
-                    leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: Image.network(e.imagePath, width: 32, height: 32,)),
-                    subtitle: Text("Available Tests (${e.testsAvailable})"),
-                  ),
-                  value: e,
-                );
-              }).toList(),
-              onChanged: (lab) {
-                setState(() {
-                  chooseTest.clear();
-                  this.lab = lab;
-                });
-              }),
-        ),
-      ),
-    )
-        : CircularProgressIndicator();
+            width: MediaQuery.of(context).size.width,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  stops: [0.01, 0.01],
+                  colors: [MyColors.primary, Colors.white]),
+            ),
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 8, right: 8, top: 0, bottom: 16),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton(
+                    hint: const Text("Select Lab"),
+                    isExpanded: true,
+                    value: lab,
+                    items: labs.map((e) {
+                      return DropdownMenuItem(
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          dense: true,
+                          title: Text(e.name),
+                          leading: ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: Image.network(
+                                e.imagePath,
+                                width: 32,
+                                height: 32,
+                              )),
+                          subtitle:
+                              Text("Available Tests (${e.testsAvailable})"),
+                        ),
+                        value: e,
+                      );
+                    }).toList(),
+                    onChanged: (lab) {
+                      setState(() {
+                        chooseTest.clear();
+                        this.lab = lab;
+                      });
+                    }),
+              ),
+            ),
+          )
+        : const CircularProgressIndicator();
   }
 
   @override
@@ -525,15 +547,13 @@ class _BookLabTestState extends State<BookLabTest> {
   }
 
   Future<void> getLab() async {
-
-    if (!await Utilities.isOnline()){
+    if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);
       return;
     }
 
-
-    String response = await Utilities.httpGet(ServerConfig.GET_LABS);
-    if (response !="404"){
+    String response = await Utilities.httpGet(ServerConfig.labs);
+    if (response != "404") {
       var list = labModelFromJson(response);
       setState(() {
         labs.addAll(list.response.labs);
@@ -545,7 +565,6 @@ class _BookLabTestState extends State<BookLabTest> {
   }
 
   void placeOrder() async {
-
     disableButton();
 
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -557,14 +576,14 @@ class _BookLabTestState extends State<BookLabTest> {
     String username = preferences.getString(Keys.USERNAME);
     String testString;
 
-    if (name.isEmpty){
+    if (name.isEmpty) {
       enableButton();
       setState(() {
         isNameEmpty = true;
       });
       return;
     }
-    if (phone.isEmpty){
+    if (phone.isEmpty) {
       enableButton();
       setState(() {
         isPhoneEmpty = true;
@@ -579,42 +598,41 @@ class _BookLabTestState extends State<BookLabTest> {
       return;
     }
 
-
-    if (location.isEmpty){
+    if (location.isEmpty) {
       enableButton();
       setState(() {
         isLocationEmpty = true;
       });
       return;
     }
-    if (widget.isPrescription){
-      if (file == null){
+    if (widget.isPrescription) {
+      if (file == null) {
         enableButton();
         Utilities.showToast("Please Upload Prescription");
         return;
       } else {
-        if (isLoading){
+        if (isLoading) {
           enableButton();
           Utilities.showToast("Image Uploading...");
           return;
         }
       }
     } else {
-      if (chooseTest.isEmpty){
+      if (chooseTest.isEmpty) {
         enableButton();
-        Utilities.showToast("Please search and select Test(s) from provided list");
+        Utilities.showToast(
+            "Please search and select Test(s) from provided list");
         return;
       }
 
-
-
       // medicines ki list ko json list mein convert karna hai...
-      testString = jsonEncode(List<dynamic>.from(chooseTest.map((x) => x.toJson()))).replaceAll("\'", "");
-
+      testString =
+          jsonEncode(List<dynamic>.from(chooseTest.map((x) => x.toJson())))
+              .replaceAll("'", "");
     }
 
     Loading.build(context, false);
-    if (!await Utilities.isOnline()){
+    if (!await Utilities.isOnline()) {
       enableButton();
       Navigator.pop(context);
       Utilities.internetNotAvailable(context);
@@ -629,28 +647,27 @@ class _BookLabTestState extends State<BookLabTest> {
         "&Location=$location&Phone=$phone&Email=$email&Area=&City="
         "&SessionToken=&RefferedBy=&fetchtype=mobile&attachment=$prescriptionPath&Amount=";
 
-    print(formData.fields);
 
-
-    Dio dio = new Dio();
+    Dio dio = Dio();
 
     Response response;
     try {
-      response = await dio.post(ServerConfig.BOOK_LAB_TEST + values, data: formData);
-    } catch (e){
+      response =
+          await dio.post(ServerConfig.labTestBook + values, data: formData);
+    } catch (e) {
       print(e);
     }
 
     Loading.dismiss();
-    if (response == null){
+    if (response == null) {
       enableButton();
       Utilities.showToast("Something went wrong");
       return;
     }
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       enableButton();
-      Route route = MaterialPageRoute(builder: (_)=> ThankYouScreen());
+      Route route = MaterialPageRoute(builder: (_) => ThankYouScreen());
       await Navigator.of(context).push(route);
     } else {
       enableButton();
@@ -670,5 +687,4 @@ class _BookLabTestState extends State<BookLabTest> {
       isTaped = true;
     });
   }
-
 }

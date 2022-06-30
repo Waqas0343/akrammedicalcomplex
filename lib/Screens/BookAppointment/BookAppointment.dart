@@ -1,4 +1,4 @@
-import 'package:amc/Models/TimeSlotModel.dart';
+import 'package:amc/models/time_slot_model.dart';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -8,10 +8,9 @@ import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookAppointment extends StatefulWidget {
   final String drName;
@@ -50,10 +49,10 @@ class _BookAppointmentState extends State<BookAppointment> {
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
         elevation: 0,
-        title: Text("Confirm Appointment"),
+        title: const Text("Confirm Appointment"),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
         child: timeSlots.isNotEmpty
             ? view()
             : AppointmentShimmer(),
@@ -101,7 +100,7 @@ class _BookAppointmentState extends State<BookAppointment> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
               child: NetWorkImage(
                 imagePath: widget.image,
                 placeHolder: MyImages.imageNotFound,
@@ -111,36 +110,36 @@ class _BookAppointmentState extends State<BookAppointment> {
             ),
             Expanded(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.drName,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                       maxLines: 2,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(
                       widget.category,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                           color: Colors.black),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                       decoration: BoxDecoration(
                           color: MyColors.accent,
                           borderRadius: BorderRadius.circular(8)),
                       child: Text(
-                        "${widget.fee}",
-                        style: TextStyle(color: Colors.white),
+                        widget.fee,
+                        style: const TextStyle(color: Colors.white),
                       ),
                     )
                   ],
@@ -149,21 +148,21 @@ class _BookAppointmentState extends State<BookAppointment> {
             )
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 12 ,
         ),
-        Container(
+        SizedBox(
           height: 65.0,
           child: ListView.builder(
             itemBuilder: (BuildContext context, int index) {
               bool select = selected == index ? true : false;
               TimeSlot date = timeSlots[index];
-              DateTime dateObj = new DateFormat("MM/dd/yyyy").parse(date.date);
+              DateTime dateObj = DateFormat("MM/dd/yyyy").parse(date.date);
               DateTime nowDateTime =
                   DateTime(dateObj.year, dateObj.month, dateObj.day);
 
-              String day = new DateFormat("EEEE").format(nowDateTime);
-              String finalDate = new DateFormat("d MMM").format(dateObj);
+              String day = DateFormat("EEEE").format(nowDateTime);
+              String finalDate = DateFormat("d MMM").format(dateObj);
 
               return GestureDetector(
                 onTap: () {
@@ -179,7 +178,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                   child: Row(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(right: 32),
+                        padding: const EdgeInsets.only(right: 32),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -191,7 +190,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                   color:
                                       select ? MyColors.primary : Colors.black),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 6,
                             ),
                             Text(
@@ -202,7 +201,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                       select ? MyColors.primary : Colors.black),
                             ),
                             select
-                                ? Container(
+                                ? const SizedBox(
                                     width: 40,
                                     child: Divider(
                                       color: MyColors.primary,
@@ -210,7 +209,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                                       thickness: 3,
                                     ),
                                   )
-                                : SizedBox.shrink(),
+                                : const SizedBox.shrink(),
                           ],
                         ),
                       )
@@ -223,14 +222,14 @@ class _BookAppointmentState extends State<BookAppointment> {
             scrollDirection: Axis.horizontal,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         Expanded(
           child: GridView.count(
               crossAxisCount: 4,
               childAspectRatio: MediaQuery.of(context).size.height / 400,
-              physics: ScrollPhysics(),
+              physics: const ScrollPhysics(),
               shrinkWrap: true,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
@@ -248,13 +247,13 @@ class _BookAppointmentState extends State<BookAppointment> {
                         color: timeSelected ? MyColors.primary : Colors.white,
                         border: Border.all(color: Colors.grey),
                         borderRadius: BorderRadius.circular(8.0)),
-                    child: new Center(
+                    child: Center(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 8),
-                        child: new Text(
+                        child: Text(
                           e.replaceAll(":00 ", " "),
-                          style: new TextStyle(
+                          style: TextStyle(
                               color: timeSelected
                                   ? Colors.white
                                   : MyColors.primary,
@@ -286,14 +285,14 @@ class _BookAppointmentState extends State<BookAppointment> {
                  activeColor: MyColors.primary,
                  checkColor: Colors.white,
                ),
-              Text("Online Consultation", style: TextStyle(fontSize: 16, color: MyColors.primary,),),
+              const Text("Online Consultation", style: TextStyle(fontSize: 16, color: MyColors.primary,),),
             ],
           ),
         ),
 
-        Container(
+        SizedBox(
           width: MediaQuery.of(context).size.width,
-          child: RaisedButton(
+          child: ElevatedButton(
             onPressed: isTaped
                 ? () {
                     if (timeSlot == null) {
@@ -310,7 +309,7 @@ class _BookAppointmentState extends State<BookAppointment> {
             child: Text(
               buttonText,
               style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
         )
@@ -324,19 +323,19 @@ class _BookAppointmentState extends State<BookAppointment> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: Text("Do you really want to confirm this appointment ?"),
+            content: const Text("Do you really want to confirm this appointment ?"),
             actions: [
-              FlatButton(
+              TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text(
+                  child: const Text(
                     "No",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
-              FlatButton(
+              TextButton(
                   onPressed: () => bookAppointment(),
-                  child: Text(
+                  child: const Text(
                     "Yes",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   )),
@@ -355,9 +354,7 @@ class _BookAppointmentState extends State<BookAppointment> {
     String newDate = timeSlot.date + " " + time;
     String checkUp = isChecked ? "Online" : "Regular Checkup";
 
-    String values = "&DoctorUsername=${widget.drUsername}" +
-        "&Location=${Keys.locationId}" +
-        "&patname=" +
+    String values = "&DoctorUsername=${widget.drUsername}" "&Location=${Keys.locationId}" "&patname=" +
         name +
         "&PatientUsername=" +
         username +
@@ -382,7 +379,7 @@ class _BookAppointmentState extends State<BookAppointment> {
     Loading.dismiss();
 
     if (response != "404") {
-      Route route = new MaterialPageRoute(builder: (_) => ThankYouScreen());
+      Route route = MaterialPageRoute(builder: (_) => ThankYouScreen());
       Navigator.push(context, route);
     } else {
       Utilities.showToast("Unable to create appointment");

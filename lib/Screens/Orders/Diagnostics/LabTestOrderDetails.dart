@@ -1,5 +1,5 @@
-import 'package:amc/Models/LabTestOrdersModel.dart';
-import 'package:amc/Models/SearchLabTestModel.dart';
+import 'package:amc/models/lab_test_order_model.dart';
+import 'package:amc/models/lab_test_search_model.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Styles/MyImages.dart';
@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 class LabTestOrderDetails extends StatelessWidget {
   final TestOrder order;
 
-  LabTestOrderDetails(this.order);
+  const LabTestOrderDetails(this.order,{Key key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +38,13 @@ class LabTestOrderDetails extends StatelessWidget {
                   ),
                 ),
               ),
-            ) : SizedBox.shrink(),
+            ) : const SizedBox.shrink(),
             Padding(
               padding:
               const EdgeInsets.only(top: 8, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Order Status"),
                   ),
@@ -54,13 +55,13 @@ class LabTestOrderDetails extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding:
               const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Name"),
                   ),
@@ -71,13 +72,13 @@ class LabTestOrderDetails extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding:
               const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Phone"),
                   ),
@@ -88,13 +89,13 @@ class LabTestOrderDetails extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             Padding(
               padding:
               const EdgeInsets.only(top: 4, bottom: 4, right: 8, left: 8),
               child: Row(
                 children: <Widget>[
-                  Expanded(
+                  const Expanded(
                     flex: 1,
                     child: Text("Address"),
                   ),
@@ -105,25 +106,25 @@ class LabTestOrderDetails extends StatelessWidget {
                 ],
               ),
             ),
-            Divider(),
+            const Divider(),
             order.testList != null
-                ? Padding(
-              padding: const EdgeInsets.all(8.0),
+                ? const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Lab Test(s)",
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
             )
-                : SizedBox.shrink(),
+                : const SizedBox.shrink(),
             order.testList != null
                 ? ListView.builder(
               shrinkWrap: true,
-              physics: ScrollPhysics(),
+              physics: const ScrollPhysics(),
               itemBuilder: (BuildContext context, int index) =>
                   makeList(context, index),
               itemCount: order.testList.length,
             )
-                : SizedBox.shrink()
+                : const SizedBox.shrink()
           ],
         ),
       ),
@@ -134,19 +135,19 @@ class LabTestOrderDetails extends StatelessWidget {
   Widget makeList(BuildContext context, int index) {
     Test medicine = order.testList[index];
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       title: AutoSizeText(
         medicine.testName ?? "",
         maxLines: 2,
       ),
       subtitle: Text(medicine.fee ?? ""),
-      leading: Container(
+      leading: SizedBox(
           width: 30,
           child: Align(
               alignment: Alignment.centerRight,
               child: Text(
                 '${index + 1}',
-                style: TextStyle(fontWeight: FontWeight.w600),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ))),
       dense: true,
     );

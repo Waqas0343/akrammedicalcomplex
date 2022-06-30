@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amc/Models/MedicalRecordModel.dart';
+import 'package:amc/models/medical_record_model.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -14,6 +14,8 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddHealthRecord extends StatefulWidget {
+  const AddHealthRecord({Key key}) : super(key: key);
+
   @override
   _AddHealthRecordState createState() => _AddHealthRecordState();
 }
@@ -47,7 +49,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text("Add New"),
+        title: const Text("Add New"),
       ),
       body: Stack(
         children: <Widget>[
@@ -57,7 +59,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
               children: <Widget>[
                 imageViewLayout(),
                 attachmentLayout(),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 TextField(
@@ -85,12 +87,12 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                     errorText: isNameEmpty ? "Required" : null,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.bottomCenter,
                         end: Alignment.topCenter,
@@ -103,7 +105,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                     child: DropdownButtonHideUnderline(
 
                       child: DropdownButton(
-                          hint: Text("Document Type"),
+                          hint: const Text("Document Type"),
                           isExpanded: true,
                           value: type,
                           items: types.map((e) {
@@ -122,7 +124,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
                 TextField(
@@ -133,20 +135,20 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                   maxLength: 250,
                   controller: desController,
                   focusNode: desFocus,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       hintText: "Description",
                       counterText: ""),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 8,
                 ),
-                RaisedButton(
+                ElevatedButton(
                   onPressed:isTaped ? () => upload():null,
                   child: Text(
                     buttonText,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                 ),
               ],
@@ -159,7 +161,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
 
   Widget imageViewLayout (){
     return file != null
-        ? Container(
+        ? SizedBox(
         height: 200,
         child: Stack(
           children: <Widget>[
@@ -186,9 +188,9 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                   });
                 },
                 child: Container(
-                  padding: EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(6),
                   color: Colors.grey.withOpacity(0.8),
-                  child: Icon(Icons.close),
+                  child: const Icon(Icons.close),
                 ),
               ),
             ),
@@ -196,29 +198,28 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
             isLoading ? Align(alignment: Alignment.bottomCenter, child: LinearPercentIndicator(
               lineHeight: 18.0,
               percent: uploadingValue,
-              center: Text("${(uploadingValue * 100).toInt()} %",style: TextStyle(color: Colors.white,fontSize: 12),),
-              linearStrokeCap: LinearStrokeCap.roundAll,
+              center: Text("${(uploadingValue * 100).toInt()} %",style: const TextStyle(color: Colors.white,fontSize: 12),),
+              barRadius: const Radius.circular(8),
               progressColor: MyColors.primary,
-            )) : SizedBox.shrink(),
+            )) : const SizedBox.shrink(),
           ],
         ))
-        : SizedBox.shrink();
+        : const SizedBox.shrink();
   }
 
   Widget attachmentLayout() {
     return file == null
-        ? Container(
-        child: Row(
+        ? Row(
           children: <Widget>[
             Expanded(
               flex: 1,
               child: Card(
-                margin: EdgeInsets.all(0),
+                margin: const EdgeInsets.all(0),
                 elevation: 0,
                 color: Colors.white,
                 child: InkWell(
                   onTap: () async {
-                    var image = await _picker.getImage(
+                    var image = await _picker.pickImage(
                         source: ImageSource.camera);
                     if (image != null) {
                       setState(() {
@@ -230,7 +231,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      children: <Widget>[
+                      children: const <Widget>[
                         Icon(
                           Icons.camera,
                           size: 38,
@@ -246,18 +247,18 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             Expanded(
               flex: 1,
               child: Card(
                 elevation: 0,
-                margin: EdgeInsets.all(0),
+                margin: const EdgeInsets.all(0),
                 color: Colors.white,
                 child: InkWell(
                   onTap: () async {
-                    var image = await _picker.getImage(
+                    var image = await _picker.pickImage(
                         source: ImageSource.gallery);
                     if (image != null) {
                       setState(() {
@@ -269,7 +270,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                      children: <Widget>[
+                      children: const <Widget>[
                         Icon(
                           Icons.image,
                           size: 38,
@@ -286,8 +287,8 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
               ),
             ),
           ],
-        ))
-        : SizedBox.shrink();
+        )
+        : const SizedBox.shrink();
   }
 
   @override
@@ -381,7 +382,6 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
         setState(() {
           uploadingValue = (sent / total);
         });
-        print('progress: $uploadingValue');
       },);
 
     if (response.statusCode == 200){

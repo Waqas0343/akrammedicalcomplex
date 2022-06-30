@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:file_utils/file_utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' show get;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,8 +12,9 @@ class ViewReport extends StatefulWidget {
   final String path;
   final String name;
 
-  ViewReport({Key key, this.path, this.name}) : super(key: key);
+  const ViewReport({Key key, this.path, this.name}) : super(key: key);
 
+  @override
   _ViewReportState createState() => _ViewReportState();
 }
 
@@ -34,7 +33,7 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
       ),
       body: Center(
         child: pdfReady
-            ? isError ? Text("Unable to Open File")
+            ? isError ? const Text("Unable to Open File")
             : PDFView(
           filePath: urlPDFPath,
           autoSpacing: true,
@@ -43,7 +42,6 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
           swipeHorizontal: false,
           nightMode: false,
           onError: (e) {
-            print(e);
           },
           onRender: (_pages) {
 
@@ -54,7 +52,7 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
           },
           onPageError: (page, e) {},
         )
-            : CircularProgressIndicator(),
+            : const CircularProgressIndicator(),
       ),
       // floatingActionButton: FloatingActionButton(
       //   onPressed: ()=>downloadFile(),
@@ -76,7 +74,7 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
 
   Future<void> getFileFromUrl(String url) async {
     try {
-      var data = await get(url);
+      var data = await get(Uri.parse(url));
       var bytes = data.bodyBytes;
       var dir = await getApplicationDocumentsDirectory();
       String filename = widget.name.replaceAll(" ", "_");
@@ -92,7 +90,6 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
         isError = true;
         pdfReady = true;
       });
-      print(e);
     }
   }
 
@@ -128,16 +125,14 @@ class _ViewReportState extends State<ViewReport> with WidgetsBindingObserver {
       Utilities.showToast("Downloading...");
 
       String finalPath = '$path/ReportNo${widget.name}.pdf';
-      print(finalPath);
       try {
         FileUtils.mkdir([path]);
-        var data = await get(widget.path);
+        var data = await get(Uri.parse(widget.path));
         var bytes = data.bodyBytes;
         File file = File(finalPath);
         await file.writeAsBytes(bytes);
         Utilities.showToast("Downloading Completed");
       } catch (e) {
-        print(e);
         Utilities.showToast("Downloading Failed, try again later.");
       }
     }

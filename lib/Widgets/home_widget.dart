@@ -19,8 +19,8 @@ class HomeWidget extends StatelessWidget {
         child: Column(
           children: [
             SvgPicture.asset(icon, height: 40,),
-            SizedBox(height: 8,),
-            Text(title, textAlign: TextAlign.center,style: TextStyle(fontWeight: FontWeight.bold, height: 1.3, fontSize: 12),maxLines: 2,)
+            const SizedBox(height: 8,),
+            Text(title, textAlign: TextAlign.center,style: const TextStyle(fontWeight: FontWeight.bold, height: 1.3, fontSize: 12),maxLines: 2,)
           ],
         ),
       ),

@@ -1,5 +1,5 @@
-import 'package:amc/Models/SearchTeshModel.dart';
-import 'package:amc/Models/TestOrderResponseModel.dart';
+import 'package:amc/models/test_search_model.dart';
+import 'package:amc/models/test_order_model.dart';
 import 'package:amc/Screens/LabReports/ViewReport.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -31,10 +31,10 @@ class _LabReportsState extends State<LabReports> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(title: Text("My Lab Reports")),
+      appBar: AppBar(title: const Text("My Lab Reports")),
       body: ordersModel.isNotEmpty
           ? view()
-          : ordersModel.isEmpty && !isLoading ? Center(
+          : ordersModel.isEmpty && !isLoading ? const Center(
               child: Text(
                 "No Reports",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -58,7 +58,7 @@ class _LabReportsState extends State<LabReports> {
 
   void getOrders() async {
     if (!await Utilities.isOnline()) {
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         setState(() {
           isLoading = false;
         });
@@ -101,24 +101,24 @@ class _LabReportsState extends State<LabReports> {
                 filled: false,
                 hintText: "Search by Test Name",
                 counterText: "",
-                prefixIcon: Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search),
                 suffixIcon: GestureDetector(
                     onTap: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                       nameController.clear();
                       filterSearchResults("");
                     },
-                    child: Icon(Icons.close))),
+                    child: const Icon(Icons.close))),
           ),
         ),
         orders.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
-                  padding: EdgeInsets.symmetric(vertical: 4),
+                  padding: const EdgeInsets.symmetric(vertical: 4),
                   itemBuilder: (BuildContext context, int index) {
                     TestModel testModel = orders[index];
                     return Card(
-                      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       elevation: 4,
                       child: Column(
                         children: [
@@ -129,7 +129,7 @@ class _LabReportsState extends State<LabReports> {
                             ),
                             title: Text(
                               "Order ID # ${testModel.orderId}",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             trailing: Icon(testModel.isExpanded
                                 ? Icons.keyboard_arrow_down
@@ -146,7 +146,7 @@ class _LabReportsState extends State<LabReports> {
                               child: testModel.isPrescription()
                                   ? ListTile(
                                       onTap: () {
-                                        Route route = new MaterialPageRoute(
+                                        Route route = MaterialPageRoute(
                                             builder: (context) => ViewReport(
                                                   path: testModel
                                                       .attachmentsResults,
@@ -154,13 +154,13 @@ class _LabReportsState extends State<LabReports> {
                                                 ));
                                         Navigator.push(context, route);
                                       },
-                                      contentPadding: EdgeInsets.only(
+                                      contentPadding: const EdgeInsets.only(
                                           bottom: 8,
                                           left: 16,
                                           right: 16,
                                           top: 8),
                                       title: Container(
-                                          margin: EdgeInsets.only(left: 8),
+                                          margin: const EdgeInsets.only(left: 8),
                                           alignment: Alignment.centerLeft,
                                           child: NetWorkImage(
                                             placeHolder: MyImages.instaFile,
@@ -169,21 +169,21 @@ class _LabReportsState extends State<LabReports> {
                                             height: 50,
                                             width: 70,
                                           )),
-                                      trailing: Icon(
+                                      trailing: const Icon(
                                         Icons.arrow_forward_ios,
                                         size: 18,
                                       ),
                                     )
                                   : ListView.builder(
                                       padding: EdgeInsets.zero,
-                                      physics: NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       itemBuilder:
                                           (BuildContext context, int index) {
                                         Test test = testModel.testList[index];
                                         return ListTile(
                                           onTap: () {
-                                            Route route = new MaterialPageRoute(
+                                            Route route = MaterialPageRoute(
                                                 builder: (context) =>
                                                     ViewReport(
                                                       path: testModel
@@ -193,7 +193,7 @@ class _LabReportsState extends State<LabReports> {
                                             Navigator.push(context, route);
                                           },
                                           title: Container(
-                                              margin: EdgeInsets.only(
+                                              margin: const EdgeInsets.only(
                                                   left: 16, bottom: 6),
                                               child: Text(
                                                 test.testName.trim(),
@@ -201,9 +201,9 @@ class _LabReportsState extends State<LabReports> {
                                                 overflow: TextOverflow.ellipsis,
                                               )),
                                           subtitle: Container(
-                                              margin: EdgeInsets.only(left: 16),
+                                              margin: const EdgeInsets.only(left: 16),
                                               child: Text(test.fee)),
-                                          trailing: Icon(
+                                          trailing: const Icon(
                                             Icons.arrow_forward_ios,
                                             size: 18,
                                           ),
@@ -219,8 +219,8 @@ class _LabReportsState extends State<LabReports> {
                 ),
               )
             : Container(
-                margin: EdgeInsets.only(top: 20),
-                child: Text(
+                margin: const EdgeInsets.only(top: 20),
+                child: const Text(
                   "No Test Found",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -234,11 +234,11 @@ class _LabReportsState extends State<LabReports> {
 
   void filterSearchResults(String query) {
     if (query.isNotEmpty) {
-      List<TestModel> dummyListData = List<TestModel>();
+      List<TestModel> dummyListData = <TestModel>[];
       bool isAdded = false;
-      ordersModel.forEach((item) {
+      for (var item in ordersModel) {
         if (item.testList != null) {
-          item.testList.forEach((element) {
+          for (var element in item.testList) {
             String name = element.testName.toLowerCase();
 
             if (name.contains(query.toLowerCase()) && !isAdded) {
@@ -246,10 +246,10 @@ class _LabReportsState extends State<LabReports> {
               dummyListData.add(item);
               return;
             }
-          });
+          }
         }
         isAdded = false;
-      });
+      }
       setState(() {
         orders.clear();
         orders.addAll(dummyListData);

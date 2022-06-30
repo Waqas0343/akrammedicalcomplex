@@ -1,6 +1,6 @@
-import 'package:amc/Models/AppointmentModel.dart';
-import 'package:amc/Models/MedicineOrderModel.dart';
-import 'package:amc/Models/TestOrderResponseModel.dart';
+import 'package:amc/models/appointment_model.dart';
+import 'package:amc/models/medicine_order_model.dart';
+import 'package:amc/models/test_order_model.dart';
 import 'package:amc/Screens/MyBooking/MyLabOrders.dart';
 import 'package:amc/Screens/MyBooking/MyAppointments.dart';
 import 'package:amc/Server/ServerConfig.dart';
@@ -40,7 +40,7 @@ class _MyBookingState extends State<MyBooking> {
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
-              SliverAppBar(
+              const SliverAppBar(
                 pinned: true,
                 floating: true,
                 title: Text("My Bookings"),
@@ -48,13 +48,13 @@ class _MyBookingState extends State<MyBooking> {
                     isScrollable: true,
                     indicatorColor: Colors.white,
                     tabs: <Tab>[
-                      new Tab(
+                      Tab(
                         text: "Test Orders",
                       ),
-                      new Tab(
+                      Tab(
                         text: "Medicine Orders",
                       ),
-                      new Tab(
+                      Tab(
                         text: "Appointments",
                       ),
                     ]),
@@ -63,17 +63,17 @@ class _MyBookingState extends State<MyBooking> {
           },
           body: TabBarView(children: [
             ordersLoading
-                ? MyLabOrderIsLoading()
+                ? const MyLabOrderIsLoading()
                 : LabOrders(
                     orders:testOrders,
                   ),
             medicinesLoading
-              ? MyMedicineOrdersIsLoading()
+              ? const MyMedicineOrdersIsLoading()
               : MyMedicineOrders(
                   orders: medicinesOrders,
                 ),
             appointmentLoading
-                ? LoadingMyAppointmentList()
+                ? const LoadingMyAppointmentList()
                 : MyAppointments(
               appointments: appointments,
             ),
@@ -124,7 +124,7 @@ class _MyBookingState extends State<MyBooking> {
 
   void getMedicineOrders(String username) async {
 
-    String response = await Utilities.httpGet(ServerConfig.MEDICINE_ORDERS + "&username=$username");
+    String response = await Utilities.httpGet(ServerConfig.medicineOrders + "&username=$username");
     if (response != "404") {
       List<Order> list = medicineOrdersFromJson(response).response.orders;
       if (!mounted) return;
