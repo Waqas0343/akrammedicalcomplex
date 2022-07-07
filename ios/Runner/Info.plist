@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Akrammedicalcomplex</string>
+	<string>AMC Patient App</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,13 +17,41 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Application need to access your Media Library.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Application does not using bluetooth to can deny this permission.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Application does not using bluetooth to can deny this permission.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Application need to access your calendars.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera usage required for uploading records and online consultation</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Application need to access your Contacts.</string>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string>Application need to access your Files.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Application need to access your Microphones.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Application need to access your Motions.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Application need to access your Photo Library</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Application need to access your Photo Library</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Application need to access your Speech Recognition.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -31,8 +59,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
