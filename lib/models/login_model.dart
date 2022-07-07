@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 Login loginFromJson(String str) => Login.fromJson(json.decode(str));
 
 String loginToJson(Login data) => json.encode(data.toJson());
@@ -13,28 +12,27 @@ class Login {
   });
 
   factory Login.fromJson(Map<String, dynamic> json) => Login(
-    response: LoginResponse.fromJson(json["Response"]),
-  );
+        response: LoginResponse.fromJson(json["Response"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "Response": response!.toJson(),
-  };
+        "Response": response!.toJson(),
+      };
 }
 
 class LoginResponse {
   User? user;
-
   LoginResponse({
     this.user,
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
-    user: User.fromJson(json["Response"]),
-  );
+        user: User.fromJson(json["Response"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "Response": user!.toJson(),
-  };
+        "Response": user!.toJson(),
+      };
 }
 
 class User {
@@ -45,6 +43,7 @@ class User {
   String? phone;
   String? imagePath;
   String? email;
+  int otpCode;
   bool? status;
   bool? activationStatus;
   String? sessionToken;
@@ -62,6 +61,7 @@ class User {
     this.phone,
     this.imagePath,
     this.email,
+    required this.otpCode,
     this.status,
     this.activationStatus,
     this.sessionToken,
@@ -73,39 +73,41 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    username: json["Username"],
-    type: json["Type"],
-    timeStamp: json["TimeStamp"],
-    name: json["Name"],
-    phone: json["Phone"],
-    imagePath: json["ImagePath"],
-    email: json["Email"],
-    status: json["Status"],
-    activationStatus: json["ActivationStatus"],
-    sessionToken: json["SessionToken"],
-    authToken: json["AuthToken"],
-    ipAddress: json["IPAddress"],
-    facebookId: json["facebook_id"],
-    huDetails: HumanDetails.fromJson(json["hu_details"]),
-    huAddress: HumanAddress.fromJson(json["hu_address"]),
-  );
+        username: json["Username"],
+        type: json["Type"],
+        timeStamp: json["TimeStamp"],
+        name: json["Name"],
+        phone: json["Phone"],
+        imagePath: json["ImagePath"],
+        email: json["Email"],
+        otpCode: json["OTPCode"],
+        status: json["Status"],
+        activationStatus: json["ActivationStatus"],
+        sessionToken: json["SessionToken"],
+        authToken: json["AuthToken"],
+        ipAddress: json["IPAddress"],
+        facebookId: json["facebook_id"],
+        huDetails: HumanDetails.fromJson(json["hu_details"]),
+        huAddress: HumanAddress.fromJson(json["hu_address"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "Username": username,
-    "Type": type,
-    "TimeStamp": timeStamp,
-    "Name": name,
-    "Phone": phone,
-    "ImagePath": imagePath,
-    "Email": email,
-    "ActivationStatus": activationStatus,
-    "SessionToken": sessionToken,
-    "AuthToken": authToken,
-    "IPAddress": ipAddress,
-    "facebook_id": facebookId,
-    "hu_details": huDetails!.toJson(),
-    "hu_address": huAddress!.toJson(),
-  };
+        "Username": username,
+        "Type": type,
+        "TimeStamp": timeStamp,
+        "Name": name,
+        "Phone": phone,
+        "ImagePath": imagePath,
+        "Email": email,
+        "OTPCode": otpCode,
+        "ActivationStatus": activationStatus,
+        "SessionToken": sessionToken,
+        "AuthToken": authToken,
+        "IPAddress": ipAddress,
+        "facebook_id": facebookId,
+        "hu_details": huDetails!.toJson(),
+        "hu_address": huAddress!.toJson(),
+      };
 }
 
 class HumanAddress {
@@ -132,28 +134,28 @@ class HumanAddress {
   });
 
   factory HumanAddress.fromJson(Map<String, dynamic> json) => HumanAddress(
-    id: json["ID"],
-    username: json["Username"],
-    country: json["Country"],
-    stateProvince: json["State_Province"],
-    city: json["City"],
-    location: json["Location"],
-    area: json["Area"],
-    latitude: json["Latitude"],
-    longitude: json["Longitude"],
-  );
+        id: json["ID"],
+        username: json["Username"],
+        country: json["Country"],
+        stateProvince: json["State_Province"],
+        city: json["City"],
+        location: json["Location"],
+        area: json["Area"],
+        latitude: json["Latitude"],
+        longitude: json["Longitude"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "ID": id,
-    "Username": username,
-    "Country": country,
-    "State_Province": stateProvince,
-    "City": city,
-    "Location": location,
-    "Area": area,
-    "Latitude": latitude,
-    "Longitude": longitude,
-  };
+        "ID": id,
+        "Username": username,
+        "Country": country,
+        "State_Province": stateProvince,
+        "City": city,
+        "Location": location,
+        "Area": area,
+        "Latitude": latitude,
+        "Longitude": longitude,
+      };
 }
 
 class HumanDetails {
@@ -192,38 +194,38 @@ class HumanDetails {
   });
 
   factory HumanDetails.fromJson(Map<String, dynamic> json) => HumanDetails(
-    username: json["Username"],
-    gender: json["Gender"],
-    dateOfBirth: json["DateOfBirth"],
-    cnic: json["CNIC"],
-    bloodGroup: json["BloodGroup"],
-    height: json["Height"],
-    weight: json["Weight"],
-    bmi: json["BMI"],
-    bsa: json["BSA"],
-    age: json["Age"],
-    maritalStatus: json["MaritalStatus"],
-    religion: json["Religion"],
-    profession: json["Profession"],
-    nationality: json["Nationality"],
-    salutation: json["salutation"],
-  );
+        username: json["Username"],
+        gender: json["Gender"],
+        dateOfBirth: json["DateOfBirth"],
+        cnic: json["CNIC"],
+        bloodGroup: json["BloodGroup"],
+        height: json["Height"],
+        weight: json["Weight"],
+        bmi: json["BMI"],
+        bsa: json["BSA"],
+        age: json["Age"],
+        maritalStatus: json["MaritalStatus"],
+        religion: json["Religion"],
+        profession: json["Profession"],
+        nationality: json["Nationality"],
+        salutation: json["salutation"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "Username": username,
-    "Gender": gender,
-    "DateOfBirth": dateOfBirth,
-    "CNIC": cnic,
-    "BloodGroup": bloodGroup,
-    "Height": height,
-    "Weight": weight,
-    "BMI": bmi,
-    "BSA": bsa,
-    "Age": age,
-    "MaritalStatus": maritalStatus,
-    "Religion": religion,
-    "Profession": profession,
-    "Nationality": nationality,
-    "salutation": salutation,
-  };
+        "Username": username,
+        "Gender": gender,
+        "DateOfBirth": dateOfBirth,
+        "CNIC": cnic,
+        "BloodGroup": bloodGroup,
+        "Height": height,
+        "Weight": weight,
+        "BMI": bmi,
+        "BSA": bsa,
+        "Age": age,
+        "MaritalStatus": maritalStatus,
+        "Religion": religion,
+        "Profession": profession,
+        "Nationality": nationality,
+        "salutation": salutation,
+      };
 }

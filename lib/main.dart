@@ -1,13 +1,19 @@
 import 'package:amc/Screens/Signup.dart';
 import 'package:amc/Splash.dart';
 import 'package:amc/Styles/MyColors.dart';
+import 'package:amc/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'Screens/Login.dart';
 import 'Screens/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 

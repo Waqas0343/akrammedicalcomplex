@@ -12,6 +12,7 @@ import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
@@ -570,9 +571,11 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
         "&ReferanceBy=${Keys.locationId}";
     try {
       response =
-          await dio.post(ServerConfig.medicineOrderPlace + values, data: data);
+      await dio.post(ServerConfig.medicineOrderPlace + values, data: data);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     Loading.dismiss();

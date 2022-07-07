@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:amc/Database/database.dart';
 import 'package:amc/models/notification_model.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
+import 'package:flutter/foundation.dart';
 
 class Utilities{
 
@@ -17,15 +17,21 @@ class Utilities{
       final result = await InternetAddress.lookup('google.com').timeout(const Duration(seconds: 6),onTimeout: (){
         return <InternetAddress>[];
       });
-      print('connection checking...');
+      if (kDebugMode) {
+        print('connection checking...');
+      }
 
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        print('connected');
+        if (kDebugMode) {
+          print('connected');
+        }
         return true;
       }
 
     } on SocketException catch (_) {
-      print('not connected');
+      if (kDebugMode) {
+        print('not connected');
+      }
     }
 
     return false;
@@ -40,6 +46,9 @@ class Utilities{
   }
 
   static Future<String> httpPost(String url) async {
+    if (kDebugMode) {
+      print(url);
+    }
     Response response = await post(Uri.parse(url));
     int statusCode = response.statusCode;
     if (statusCode == 200){
@@ -50,6 +59,9 @@ class Utilities{
   }
 
   static Future<String> httpGet(String url) async {
+    if (kDebugMode) {
+      print(url);
+    }
     Response response = await get(Uri.parse(url));
     int statusCode = response.statusCode;
     if (statusCode == 200){
@@ -127,7 +139,9 @@ class Utilities{
 
     int id = await dbManager.insert(Keys.notification, notificationModel);
     if (id == 0){
-      print("Unable to add notification in local database");
+      if (kDebugMode) {
+        print("Unable to add notification in local database");
+      }
     }
 
 

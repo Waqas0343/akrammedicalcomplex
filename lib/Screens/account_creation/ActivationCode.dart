@@ -13,10 +13,10 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountActivation extends StatefulWidget {
-  final String? phoneNumber;
+  final String? phoneNumber, otpCode;
 
-  const AccountActivation(this.phoneNumber, {Key? key}) : super(key: key);
-
+  const AccountActivation(this.phoneNumber, this.otpCode, {Key? key})
+      : super(key: key);
 
   @override
   _AccountActivationState createState() => _AccountActivationState();
@@ -30,7 +30,6 @@ class _AccountActivationState extends State<AccountActivation> {
   String buttonText = "Verify";
 
   StreamController<ErrorAnimationType>? errorController;
-
   late Timer _timer;
   int _start = 60;
 
@@ -115,15 +114,15 @@ class _AccountActivationState extends State<AccountActivation> {
                   key: formKey,
                   child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 48),
+                          vertical: 8.0, horizontal: 80),
                       child: PinCodeTextField(
                         keyboardType: TextInputType.number,
-                        length: 4,
+                        length: 6,
                         pinTheme: PinTheme(
                           shape: PinCodeFieldShape.underline,
                           borderRadius: BorderRadius.circular(5),
                           fieldHeight: 50,
-                          fieldWidth: 40,
+                          fieldWidth: 30,
                         ),
                         animationDuration: const Duration(milliseconds: 100),
                         errorAnimationController: errorController,
@@ -187,7 +186,7 @@ class _AccountActivationState extends State<AccountActivation> {
                     child: ElevatedButton(
                       onPressed: isTaped
                           ? () {
-                              if (currentText.length == 4) {
+                              if (currentText.length == 6) {
                                 verify(currentText);
                               } else {
                                 setState(() {
@@ -199,13 +198,14 @@ class _AccountActivationState extends State<AccountActivation> {
                             }
                           : null,
                       child: Center(
-                          child: Text(
-                        buttonText.toUpperCase(),
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      )),
+                        child: Text(
+                          buttonText.toUpperCase(),
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -234,6 +234,11 @@ class _AccountActivationState extends State<AccountActivation> {
   }
 
   void reSend() async {
+    if (widget.otpCode == currentText) {
+      Route route = MaterialPageRoute(
+          builder: (context) => const LocationGettingScreen(false));
+      Navigator.pushAndRemoveUntil(context, route, (route) => false);
+    }
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);
       return;
@@ -248,8 +253,9 @@ class _AccountActivationState extends State<AccountActivation> {
       setState(() {});
     }
 
-    String response =
-        await Utilities.httpGet(ServerConfig.resentCode + '&user=$username');
+    String response = await Utilities.httpPost(
+        ServerConfig.resendCode + '&phone=${widget.phoneNumber}');
+
     if (response != "404") {
       if (jsonDecode(response)["Response"]["Response"] == "Success") {
         enableButton();
@@ -264,6 +270,11 @@ class _AccountActivationState extends State<AccountActivation> {
   }
 
   void verify(String code) async {
+    if (widget.otpCode == currentText) {
+      Route route = MaterialPageRoute(
+          builder: (context) => const LocationGettingScreen(false));
+      Navigator.pushAndRemoveUntil(context, route, (route) => false);
+    }
     disableButton();
     if (!await Utilities.isOnline()) {
       enableButton();
@@ -272,8 +283,10 @@ class _AccountActivationState extends State<AccountActivation> {
     }
 
     Loading.build(context, false);
+
     String values = '&Username=$username&ActivationCode=$code';
     String response = await Utilities.httpGet(ServerConfig.verifyCode + values);
+    print(response);
     Loading.dismiss();
     if (response != "404") {
       if (jsonDecode(response)["Response"]["Response"] != false) {

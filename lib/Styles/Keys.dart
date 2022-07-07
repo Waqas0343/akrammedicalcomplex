@@ -15,6 +15,8 @@ class Keys {
   static const String isFirstTime = "FirstTime";
   static const String email = "Email";
   static const String phone = "Phone";
+  static const String otp = "OTP";
+
   static const String area = "Area";
   static const String address = "Address";
   static const String city = "City";
@@ -47,7 +49,8 @@ class Keys {
 
   static const String appName = "AMC Patient App";
 
-  static const String imageNotFound = "https://instacare.pk/assets/img/Image-not-found.jpg";
+  static const String imageNotFound =
+      "https://instacare.pk/assets/img/Image-not-found.jpg";
 
   static const notificationSchema =
       "CREATE TABLE $notification ($ID INTEGER PRIMARY KEY AUTOINCREMENT, $title TEXT, "

@@ -27,6 +27,7 @@ dependencies:
   badges: ^2.0.2
   webview_flutter: ^3.0.2
   firebase_messaging: ^11.2.13
+  firebase_core: ^1.19.1
   flutter_local_notifications: ^9.4.0
   sqflite: ^2.0.2
   percent_indicator: 4.0.0

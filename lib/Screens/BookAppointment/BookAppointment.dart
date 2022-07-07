@@ -1,4 +1,4 @@
-import 'package:amc/models/time_slot_model.dart';
+import 'dart:convert';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -7,10 +7,11 @@ import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
-import 'package:amc/placeholder/custom_shimmer.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../placeholder/custom_shimmer.dart';
 
 class BookAppointment extends StatefulWidget {
   final String? drName;
@@ -18,10 +19,12 @@ class BookAppointment extends StatefulWidget {
   final String? fee;
   final String? image;
   final String? drUsername;
+  final bool? isTeleMedicineProvider;
 
   const BookAppointment(
       {Key? key,
       this.drName,
+      this.isTeleMedicineProvider,
       this.drUsername,
       this.fee,
       this.image,
@@ -36,10 +39,15 @@ class _BookAppointmentState extends State<BookAppointment> {
   int selected = 0;
   int? timeSelect;
   bool? isChecked = false;
+  List<String> timeSlots = [];
+  String? timeSlot;
+  String? date;
+  List dateLength = [];
+  DateTime selectedDateTime = DateTime.now();
 
-  List<TimeSlot>? timeSlots;
-  TimeSlot? timeSlot;
+  String get day => DateFormat("EEEE").format(selectedDateTime);
 
+  String get finalDate => DateFormat("MM/dd/yyyy").format(selectedDateTime);
   bool isTaped = true;
   String buttonText = "Confirm Appointment";
 
@@ -52,10 +60,9 @@ class _BookAppointmentState extends State<BookAppointment> {
         title: const Text("Confirm Appointment"),
       ),
       body: Container(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
-        child: timeSlots!.isNotEmpty
-            ? view()
-            : AppointmentShimmer(),
+        padding:
+            const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 10),
+        child: timeSlots.isNotEmpty ? view() : const AppointmentShimmer(),
       ),
     );
   }
@@ -64,23 +71,27 @@ class _BookAppointmentState extends State<BookAppointment> {
   void initState() {
     timeSlots = [];
     updateUi();
+    addDate();
     super.initState();
   }
 
   void updateUi() async {
-
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable(context);
       return;
     }
-
-    String response = await Utilities.httpGet(ServerConfig.timeSlots +
-        "&DoctorUsername=${widget.drUsername}&DaysCount=4");
-
+    String response = await Utilities.httpPost(ServerConfig.timeSlots +
+        "&doctor=${widget.drUsername}&day=$day&date=$finalDate&Location=${Keys.locationId}");
+    if (kDebugMode) {
+      print(response);
+    }
     if (response != "404") {
-      timeSlots = timeSlotModelFromJson(response).response!.response;
-      if (timeSlots!.isNotEmpty) {
-        timeSlot = timeSlots![0];
+      timeSlots = List<String>.from(jsonDecode(response)["Response"]["Response"]
+              ["TimeSlots"]
+          .map((e) => e)).toList();
+      date = jsonDecode(response)["Response"]["Response"]["Date"];
+      if (timeSlots.isNotEmpty) {
+        timeSlot = timeSlots[0];
         if (!mounted) return;
         setState(() {});
       } else {
@@ -116,7 +127,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                   children: [
                     Text(
                       widget.drName!,
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 22),
                       maxLines: 2,
                     ),
                     const SizedBox(
@@ -133,12 +145,13 @@ class _BookAppointmentState extends State<BookAppointment> {
                       height: 8,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 4),
                       decoration: BoxDecoration(
                           color: MyColors.accent,
                           borderRadius: BorderRadius.circular(8)),
                       child: Text(
-                        widget.fee!,
+                        "${widget.fee!} PKR ",
                         style: const TextStyle(color: Colors.white),
                       ),
                     )
@@ -149,46 +162,63 @@ class _BookAppointmentState extends State<BookAppointment> {
           ],
         ),
         const SizedBox(
-          height: 12 ,
+          height: 20,
         ),
-        SizedBox(
-          height: 65.0,
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Select Date",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: 16.0),
+          height: MediaQuery.of(context).size.height * 0.18,
           child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              bool select = selected == index ? true : false;
-              TimeSlot date = timeSlots![index];
-              DateTime dateObj = DateFormat("MM/dd/yyyy").parse(date.date!);
-              DateTime nowDateTime =
-                  DateTime(dateObj.year, dateObj.month, dateObj.day);
-
-              String day = DateFormat("EEEE").format(nowDateTime);
-              String finalDate = DateFormat("d MMM").format(dateObj);
-
-              return GestureDetector(
-                onTap: () {
-                  timeSlot = date;
-                  timeSelect = null;
-                  selected = index;
-                  setState(() {});
-                },
-                child: Card(
-                  color: Colors.transparent,
-                  elevation: 0,
-                  margin: EdgeInsets.zero,
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(right: 32),
+              scrollDirection: Axis.horizontal,
+              itemCount: dateLength.length,
+              itemBuilder: (context, index) {
+                String date = dateLength[index];
+                DateTime dateObj = DateFormat("yyyy-MM-dd").parse(date);
+                DateTime nowDateTime =
+                    DateTime(dateObj.year, dateObj.month, dateObj.day);
+                String day = DateFormat("E").format(nowDateTime);
+                String finalDate = DateFormat("d").format(nowDateTime);
+                return SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  child: GestureDetector(
+                    onTap: () {
+                      updateUi();
+                      timeSlots.clear();
+                      setDayAndDate(nowDateTime);
+                      setState(() {
+                        selected = index;
+                      });
+                    },
+                    child: Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(color: Colors.grey, width: 0.5),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      color:
+                          index == selected ? Colors.indigo[900] : Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               finalDate,
                               style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      select ? MyColors.primary : Colors.black),
+                                fontSize: 30.0,
+                                color: index == selected
+                                    ? Colors.white
+                                    : Colors.black87,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             const SizedBox(
                               height: 6,
@@ -196,30 +226,29 @@ class _BookAppointmentState extends State<BookAppointment> {
                             Text(
                               day,
                               style: TextStyle(
-                                  fontSize: 16,
-                                  color:
-                                      select ? MyColors.primary : Colors.black),
+                                fontSize: 14.0,
+                                color: index == selected
+                                    ? Colors.white
+                                    : Colors.black87,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            select
-                                ? const SizedBox(
-                                    width: 40,
-                                    child: Divider(
-                                      color: MyColors.primary,
-                                      height: 10,
-                                      thickness: 3,
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
                           ],
                         ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
-            itemCount: timeSlots!.length,
-            scrollDirection: Axis.horizontal,
+                );
+              }),
+        ),
+        const Align(
+          alignment: Alignment.topLeft,
+          child: Text(
+            "Select Time",
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         const SizedBox(
@@ -234,12 +263,12 @@ class _BookAppointmentState extends State<BookAppointment> {
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
               scrollDirection: Axis.vertical,
-              children: timeSlot!.timeSlots!.map((e) {
-                int index = timeSlot!.timeSlots!.indexOf(e);
+              children: timeSlots.map((e) {
+                int index = timeSlots.indexOf(e);
                 bool timeSelected = timeSelect == index ? true : false;
                 return GestureDetector(
                   onTap: () {
-                    timeSelect = timeSlot!.timeSlots!.indexOf(e);
+                    timeSelect = timeSlots.indexOf(e);
                     setState(() {});
                   },
                   child: Container(
@@ -252,7 +281,7 @@ class _BookAppointmentState extends State<BookAppointment> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 4, vertical: 8),
                         child: Text(
-                          e.replaceAll(":00 ", " "),
+                          e.toString().replaceAll(":00 ", " "),
                           style: TextStyle(
                               color: timeSelected
                                   ? Colors.white
@@ -266,30 +295,35 @@ class _BookAppointmentState extends State<BookAppointment> {
                 );
               }).toList()),
         ),
-
-        GestureDetector(
-          onTap: (){
-            setState(() {
-              isChecked = !isChecked!;
-            });
-          },
-          child: Row(
-            children: [
-               Checkbox(
-                 value: isChecked,
-                 onChanged: (value) {
-                   setState(() {
-                     isChecked = value;
-                   });
-                 },
-                 activeColor: MyColors.primary,
-                 checkColor: Colors.white,
-               ),
-              const Text("Online Consultation", style: TextStyle(fontSize: 16, color: MyColors.primary,),),
-            ],
+        if (widget.isTeleMedicineProvider == true)
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                isChecked = !isChecked!;
+              });
+            },
+            child: Row(
+              children: [
+                Checkbox(
+                  value: isChecked,
+                  onChanged: (value) {
+                    setState(() {
+                      isChecked = value;
+                    });
+                  },
+                  activeColor: MyColors.primary,
+                  checkColor: Colors.white,
+                ),
+                const Text(
+                  "Online Consultation",
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: MyColors.primary,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-
         SizedBox(
           width: MediaQuery.of(context).size.width,
           child: ElevatedButton(
@@ -308,8 +342,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                 : null,
             child: Text(
               buttonText,
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
         )
@@ -323,7 +357,8 @@ class _BookAppointmentState extends State<BookAppointment> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: const Text("Do you really want to confirm this appointment ?"),
+            content:
+                const Text("Do you really want to confirm this appointment ?"),
             actions: [
               TextButton(
                   onPressed: () {
@@ -344,47 +379,44 @@ class _BookAppointmentState extends State<BookAppointment> {
         });
   }
 
+  void addDate() {
+    for (int i = 0; i < 10; i++) {
+      dateLength.add(DateFormat('yyyy-MM-dd')
+          .format(DateTime.now().add(Duration(days: i))));
+    }
+  }
+
   void bookAppointment() async {
     disableButton();
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String username = preferences.getString(Keys.username)!;
     String name = preferences.getString(Keys.name)!;
-
-    String time = timeSlot!.timeSlots![timeSelect!];
-    String newDate = timeSlot!.date! + " " + time;
+    String time = timeSlots[timeSelect!];
+    String newDate = date! + " " + time;
     String checkUp = isChecked! ? "Online" : "Regular Checkup";
 
-    String values = "&DoctorUsername=${widget.drUsername}" "&Location=${Keys.locationId}" "&patname=" +
-        name +
-        "&PatientUsername=" +
-        username +
-        "&Status=Pending" +
-        "&ScheduledDate_Short=" +
-        newDate +
-        "&ScheduledTime_Short=" +
-        time +
-        "&ScheduledEndTime_Short=" +
-        time +
-        "&AppointmentSource=Private" +
-        "&Source=${Keys.source}" +
-        "&Reason=" +
-        "&Type=$checkUp";
+    String values =
+        "&DoctorUsername=${widget.drUsername}&Location=${Keys.locationId}&patname=$name&PatientUsername=$username&Status=Pending&ScheduledDate_Short=$newDate&ScheduledTime_Short=$time&ScheduledEndTime_Short=$time&AppointmentSource=Private&Source=${Keys.source}&Reason=&Type=$checkUp";
 
     isOnline();
     Navigator.pop(context);
 
     Loading.build(context, false);
-    var response = await Utilities.httpPost(
-        ServerConfig.appointmentTreatmentSave + values);
+    var response =
+        await Utilities.httpPost(ServerConfig.appointmentSave + values);
     Loading.dismiss();
 
     if (response != "404") {
-      Route route = MaterialPageRoute(builder: (_) => ThankYouScreen());
+      Route route = MaterialPageRoute(builder: (_) => const ThankYouScreen());
       Navigator.push(context, route);
     } else {
       Utilities.showToast("Unable to create appointment");
     }
     enableButton();
+  }
+
+  void setDayAndDate(DateTime dateTime) {
+    selectedDateTime = dateTime;
   }
 
   void disableButton() {
@@ -401,9 +433,9 @@ class _BookAppointmentState extends State<BookAppointment> {
 
   void isOnline() async {
     if (!await Utilities.isOnline()) {
-    Utilities.internetNotAvailable(context);
-    enableButton();
-    return;
+      Utilities.internetNotAvailable(context);
+      enableButton();
+      return;
     }
   }
 }

@@ -114,25 +114,13 @@ class _BookTreatmentState extends State<BookTreatment> {
     String newDate = date + " " + time.trim();
 
     String values = "&DoctorUsername=" "&Location=${Keys.locationId}" "&patname=" +
-        name! +
-        "&PatientUsername=" +
-        username! +
-        "&Status=Pending" +
-        "&ScheduledDate_Short=" +
-        newDate +
-        "&ScheduledTime_Short=" +
-        time +
-        "&ScheduledEndTime_Short=" +
-        time +
-        "&AppointmentSource=Private" +
-        "&Source=${Keys.source}" +
-        "&Details=$services" +
-        "&Reason=" +
-        "&Type=Treatment";
+        name! + "&PatientUsername=" + username! + "&Status=Pending" + "&ScheduledDate_Short=" + newDate +
+        "&ScheduledTime_Short=" + time + "&ScheduledEndTime_Short=" + time + "&AppointmentSource=Private" +
+        "&Source=${Keys.source}" + "&Details=$services" + "&Reason=" + "&Type=Treatment";
     Navigator.pop(context);
     Loading.build(context, false);
     var response = await Utilities.httpPost(
-        ServerConfig.appointmentTreatmentSave + values);
+        ServerConfig.appointmentSave + values);
     Loading.dismiss();
 
     if (response != "404") {

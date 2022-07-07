@@ -21,7 +21,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
   final FocusNode nameFocus = FocusNode();
   final FocusNode usernameFocus = FocusNode();
   final FocusNode phoneFocus = FocusNode();
@@ -49,7 +48,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -71,7 +69,8 @@ class _SignUpState extends State<SignUp> {
                     elevation: 8,
                     margin: const EdgeInsets.symmetric(horizontal: 24),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -93,14 +92,14 @@ class _SignUpState extends State<SignUp> {
                             focusNode: nameFocus,
                             controller: nameController,
                             inputFormatters: [Utilities.onlyTextFormat()],
-                            onChanged: (text){
-                              if (text.isNotEmpty){
+                            onChanged: (text) {
+                              if (text.isNotEmpty) {
                                 setState(() {
                                   isNameEmpty = false;
                                 });
                               }
                             },
-                            onSubmitted: (text){
+                            onSubmitted: (text) {
                               nameFocus.unfocus();
                               FocusScope.of(context).requestFocus(phoneFocus);
                             },
@@ -116,12 +115,14 @@ class _SignUpState extends State<SignUp> {
                           TextField(
                             keyboardType: TextInputType.phone,
                             maxLength: 11,
-                            inputFormatters: [Utilities.onlyNumberFormat(),],
+                            inputFormatters: [
+                              Utilities.onlyNumberFormat(),
+                            ],
                             textInputAction: TextInputAction.next,
                             focusNode: phoneFocus,
                             controller: phoneController,
-                            onChanged: (text){
-                              if (text.isNotEmpty){
+                            onChanged: (text) {
+                              if (text.isNotEmpty) {
                                 if (Utilities.numberHasValid(text)) {
                                   setState(() {
                                     isPhoneEmpty = false;
@@ -129,9 +130,10 @@ class _SignUpState extends State<SignUp> {
                                 }
                               }
                             },
-                            onSubmitted: (text){
+                            onSubmitted: (text) {
                               phoneFocus.unfocus();
-                              FocusScope.of(context).requestFocus(usernameFocus);
+                              FocusScope.of(context)
+                                  .requestFocus(usernameFocus);
                             },
                             decoration: InputDecoration(
                               hintText: "Phone",
@@ -145,26 +147,26 @@ class _SignUpState extends State<SignUp> {
                           ),
                           // Login ID
                           TextField(
-                            inputFormatters: [
-                              Utilities.bothFormat()
-                            ],
+                            inputFormatters: [Utilities.bothFormat()],
                             textInputAction: TextInputAction.next,
                             focusNode: usernameFocus,
-                            onSubmitted: (text){
+                            onSubmitted: (text) {
                               usernameFocus.unfocus();
-                              FocusScope.of(context).requestFocus(passwordFocus);
+                              FocusScope.of(context)
+                                  .requestFocus(passwordFocus);
                             },
-                            onChanged: (username){
-                              if(username.toString().trim().isNotEmpty){
+                            onChanged: (username) {
+                              if (username.toString().trim().isNotEmpty) {
                                 setState(() {
                                   isUsernameEmpty = false;
                                 });
                               }
 
-                              if(username.toString().trim().length < 8){
+                              if (username.toString().trim().length < 8) {
                                 setState(() {
                                   isUsernameEmpty = true;
-                                  userNameError = "UserName length must be greater than 8";
+                                  userNameError =
+                                      "UserName length must be greater than 8";
                                 });
                                 return;
                               } else {
@@ -174,11 +176,11 @@ class _SignUpState extends State<SignUp> {
                                 });
                               }
 
-
-                              if(!Utilities.validateStructure(username)){
+                              if (!Utilities.validateStructure(username)) {
                                 setState(() {
                                   isUsernameEmpty = true;
-                                  userNameError = "UserId must contain combination of alphabets and number";
+                                  userNameError =
+                                      "UserId must contain combination of alphabets and number";
                                 });
                                 return;
                               } else {
@@ -188,7 +190,6 @@ class _SignUpState extends State<SignUp> {
                                 });
                               }
                               checkUserName(username);
-
                             },
                             controller: usernameController,
                             decoration: InputDecoration(
@@ -196,7 +197,14 @@ class _SignUpState extends State<SignUp> {
                               filled: false,
                               errorMaxLines: 2,
                               errorText: isUsernameEmpty ? userNameError : null,
-                              suffix: isUsernameFind ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2,)) : const SizedBox.shrink(),
+                              suffix: isUsernameFind
+                                  ? const SizedBox(
+                                      height: 18,
+                                      width: 18,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ))
+                                  : const SizedBox.shrink(),
                             ),
                           ),
                           const SizedBox(
@@ -208,10 +216,10 @@ class _SignUpState extends State<SignUp> {
                             obscureText: visible,
                             focusNode: passwordFocus,
                             controller: passwordController,
-                            onSubmitted: (text){
+                            onSubmitted: (text) {
                               passwordFocus.unfocus();
                             },
-                            onChanged: (text){
+                            onChanged: (text) {
                               setState(() {
                                 isPasswordEmpty = false;
                               });
@@ -228,7 +236,8 @@ class _SignUpState extends State<SignUp> {
                                       visible = !visible;
                                     });
                                   }),
-                              errorText: isPasswordEmpty ? "Can't be Empty" : null,
+                              errorText:
+                                  isPasswordEmpty ? "Can't be Empty" : null,
                             ),
                           ),
                         ],
@@ -237,7 +246,9 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ],
               ),
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
                 child: Column(
@@ -246,7 +257,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: isTaped ?() =>registerPatient():null,
+                        onPressed: isTaped ? () => registerPatient() : null,
                         child: Text(
                           buttonText,
                           style: const TextStyle(
@@ -254,19 +265,25 @@ class _SignUpState extends State<SignUp> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     RichText(
                         textAlign: TextAlign.center,
-                        text: TextSpan(text: "Already a member? ",
+                        text: TextSpan(
+                          text: "Already a member? ",
                           style: const TextStyle(color: Colors.black),
                           children: [
-                            TextSpan(text: "Login",
-                                style: const TextStyle(fontWeight: FontWeight.w600, color: MyColors.primary),
+                            TextSpan(
+                                text: "Login",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: MyColors.primary),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.pushReplacementNamed(context, "/login");
-                                  }
-                            )
+                                    Navigator.pushReplacementNamed(
+                                        context, "/login");
+                                  })
                           ],
                         )),
                   ],
@@ -277,8 +294,14 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text("Smart Hospital App by ", style: TextStyle(fontSize: 16.0),),
-                    Image.asset(MyImages.instaLogoBlue, height: 36.0,),
+                    const Text(
+                      "Smart Hospital App by ",
+                      style: TextStyle(fontSize: 16.0),
+                    ),
+                    Image.asset(
+                      MyImages.instaLogoBlue,
+                      height: 36.0,
+                    ),
                   ],
                 ),
               )
@@ -289,10 +312,8 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-
   Future<void> registerPatient() async {
     disableButton();
-
     String name = nameController.text.toString().trim();
     String phone = phoneController.text.toString().trim();
     String username = usernameController.text.toString().trim();
@@ -303,13 +324,12 @@ class _SignUpState extends State<SignUp> {
     usernameFocus.unfocus();
     passwordFocus.unfocus();
 
-
-    if (!await Utilities.isOnline()){
+    if (!await Utilities.isOnline()) {
       enableButton();
       Utilities.internetNotAvailable(context);
       return;
     }
-    if (name.isEmpty){
+    if (name.isEmpty) {
       enableButton();
       setState(() {
         isNameEmpty = true;
@@ -317,7 +337,7 @@ class _SignUpState extends State<SignUp> {
       return;
     }
 
-    if (phone.isEmpty){
+    if (phone.isEmpty) {
       enableButton();
       setState(() {
         isPhoneEmpty = true;
@@ -332,15 +352,13 @@ class _SignUpState extends State<SignUp> {
       return;
     }
 
-    if (username.isEmpty || isUsernameEmpty){
+    if (username.isEmpty || isUsernameEmpty) {
       enableButton();
       setState(() {
         isUsernameEmpty = true;
       });
       return;
     }
-
-
 
     if (password.isEmpty) {
       enableButton();
@@ -351,22 +369,25 @@ class _SignUpState extends State<SignUp> {
     }
 
     Loading.build(context, false);
-
-    String values = "&DateOfBirth=&salutation=" "&Gender=&area=&city=&cnic=&Username=$username&height=&weight=" "&profession=&Password=$password&Type=Patient&Name=$name&Phone=$phone&Email=";
+    String values = "&DateOfBirth=&salutation="
+        "&Gender=&area=&city=&cnic=&Username=$username&height=&weight="
+        "&profession=&Password=$password&Type=Patient&Name=$name&Phone=$phone&Email=";
 
     String response = await Utilities.httpPost(ServerConfig.signUp + values);
     Loading.dismiss();
     if (response != "404") {
       User user = loginFromJson(response).response!.user!;
       preferences.setString(Keys.phone, user.phone!);
+      preferences.setString(Keys.otp, user.otpCode.toString());
       preferences.setString(Keys.password, password);
       preferences.setString(Keys.username, user.username!);
       preferences.setString(Keys.name, user.name!);
 
-
-      Route route = MaterialPageRoute(builder: (context) => AccountActivation(user.phone));
+      Route route = MaterialPageRoute(
+          builder: (context) => AccountActivation(
+                user.phone,user.otpCode.toString(),
+              ));
       Navigator.pushAndRemoveUntil(context, route, (route) => false);
-
     } else {
       Utilities.showToast("Unable to create account, try again later.");
     }
@@ -377,12 +398,13 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       isUsernameFind = true;
     });
-    String response = await Utilities.httpGet(ServerConfig.checkUsername + "&Username=$username");
+    String response = await Utilities.httpGet(
+        ServerConfig.checkUsername + "&Username=$username");
     setState(() {
       isUsernameFind = false;
     });
-    if (response != "404"){
-      if (jsonDecode(response)["Response"]["Response"] == true){
+    if (response != "404") {
+      if (jsonDecode(response)["Response"]["Response"] == true) {
         setState(() {
           userNameError = "Username already exists";
           isUsernameEmpty = true;
@@ -402,10 +424,9 @@ class _SignUpState extends State<SignUp> {
     super.initState();
   }
 
-  void updateUi() async{
+  void updateUi() async {
     preferences = await SharedPreferences.getInstance();
   }
-
 
   void disableButton() {
     setState(() {

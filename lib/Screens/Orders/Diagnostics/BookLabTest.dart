@@ -13,6 +13,7 @@ import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
@@ -441,11 +442,11 @@ class _BookLabTestState extends State<BookLabTest> {
 
   Future<List<Test>> searchTest(String name) async {
     String response = await Utilities.httpGet(ServerConfig.searchTest +
-        "&q=$name&pageLimit=15&page=0&labid=${lab!.username}");
+        "&q=$name&pageLimit=15&page=0&labid=${lab!.username}&searchTest=&offset=0&nextFetch=10&labID=&minFee="
+            "&maxFee=&category=&discount=true&cities=${Keys.city}&homeSample=true");
     List<Test>? list = [];
     if (response != "404") {
-      list =
-          searchLabTestModelFromJson(response).response!.response!.testsList!;
+      list = searchLabTestModelFromJson(response).response!.response!;
     }
     return list;
   }
@@ -643,6 +644,7 @@ class _BookLabTestState extends State<BookLabTest> {
       "OrderList": testString,
     });
 
+
     String values = "&LabId=${lab!.username}&Name=$name&username=$username"
         "&Location=$location&Phone=$phone&Email=$email&Area=&City="
         "&SessionToken=&RefferedBy=&fetchtype=mobile&attachment=$prescriptionPath&Amount=";
@@ -654,7 +656,9 @@ class _BookLabTestState extends State<BookLabTest> {
       response =
           await dio.post(ServerConfig.labTestBook + values, data: formData);
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     }
 
     Loading.dismiss();

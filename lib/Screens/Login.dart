@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:amc/models/login_model.dart';
 import 'package:amc/Screens/account_creation/ActivationCode.dart';
 import 'package:amc/Server/ServerConfig.dart';
@@ -26,7 +25,6 @@ class _LoginState extends State<Login> {
   final remindPhoneController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
-
   bool phoneValidate = false;
   bool passwordValidate = false;
 
@@ -328,13 +326,14 @@ class _LoginState extends State<Login> {
       preferences.setString(Keys.image, user.imagePath!);
       preferences.setString(Keys.name, user.name!);
       preferences.setString(Keys.email, user.email!);
+      preferences.setString(Keys.otp, user.otpCode.toString());
       preferences.setString(Keys.sessionToken, user.sessionToken!);
       preferences.setString(Keys.address, user.huAddress!.location!);
       preferences.setString(Keys.city, user.huAddress!.city!);
       preferences.setString(Keys.area, user.huAddress!.area!);
       if (!user.activationStatus!) {
         Route route = MaterialPageRoute(
-            builder: (context) => AccountActivation(user.phone));
+            builder: (context) => AccountActivation(user.phone,user.otpCode.toString()));
         Navigator.pushAndRemoveUntil(context, route, (route) => false);
         await Utilities.httpGet(ServerConfig.resentCode + '&user=$username');
       } else {

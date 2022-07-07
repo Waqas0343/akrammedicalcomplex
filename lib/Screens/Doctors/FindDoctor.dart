@@ -28,7 +28,6 @@ class _FindDoctorState extends State<FindDoctor> {
   int totalRecord = 0, pageNo = 0;
 
   late List<ResponseDetail> doctors;
-
   Category? category;
   late List<Category> categories;
 
@@ -122,8 +121,8 @@ class _FindDoctorState extends State<FindDoctor> {
           doctors.isNotEmpty
               ? Expanded(
                   child: ListView.builder(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 0, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
                     itemBuilder: (BuildContext context, int index) {
                       if (index >= doctors.length) {
                         if (!isLoading) {
@@ -133,14 +132,13 @@ class _FindDoctorState extends State<FindDoctor> {
                       }
                       return doctorListView(context, index);
                     },
-                    itemCount:
-                        hasMore ? doctors.length + 1 : doctors.length,
+                    itemCount: hasMore ? doctors.length + 1 : doctors.length,
                   ),
                 )
               : Expanded(
                   child: doctors.isEmpty && !isLoading
                       ? const Center(
-                          child: Text("No Doctor Found"),
+                          child: CircularProgressIndicator(),
                         )
                       : const LoadingDoctorsList(),
                 ),
@@ -175,7 +173,8 @@ class _FindDoctorState extends State<FindDoctor> {
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
                           child: ClipRRect(
-                            borderRadius: const BorderRadius.all(Radius.circular(50)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(50)),
                             child: NetWorkImage(
                               placeHolder: MyImages.doctorPlace,
                               imagePath: doctorModel.imagepath,
@@ -224,6 +223,9 @@ class _FindDoctorState extends State<FindDoctor> {
                                 const SizedBox(
                                   height: 6,
                                 ),
+                                const SizedBox(
+                                  height: 6,
+                                ),
                               ],
                             ),
                           ),
@@ -253,6 +255,8 @@ class _FindDoctorState extends State<FindDoctor> {
                             category: doctorModel.speciality,
                             fee: doctorModel.fee,
                             image: doctorModel.imagepath,
+                            isTeleMedicineProvider:
+                                doctorModel.isTeleMedicineProvider,
                           ));
                   Navigator.push(context, route);
                 },
