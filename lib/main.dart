@@ -35,32 +35,6 @@ class MyApp extends StatelessWidget {
         primaryColorLight: MyColors.primaryLight,
         primaryColorDark: MyColors.primaryDark,
         fontFamily: "Regular",
-        appBarTheme: AppBarTheme(
-          iconTheme: const IconThemeData(color: Colors.white),
-          centerTitle: false,
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          toolbarTextStyle: const TextTheme(
-            headline6: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontFamily: "SemiBold",
-            ),
-          ).bodyText2,
-          titleTextStyle: const TextTheme(
-            headline6: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontFamily: "SemiBold",
-            ),
-          ).headline6,
-        ),
-        tabBarTheme: TabBarTheme(
-          unselectedLabelColor: Colors.grey.shade300,
-          labelColor: Colors.white,
-          labelStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         cupertinoOverrideTheme: const CupertinoThemeData(
           primaryColor: MyColors.primary,
         ),
@@ -77,16 +51,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        textTheme: const TextTheme(
-          headline1: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
         inputDecorationTheme: const InputDecorationTheme(
-          hintStyle: TextStyle(
-            fontFamily: "Light",
-          ),
           fillColor: Colors.white,
           filled: true,
         ),
