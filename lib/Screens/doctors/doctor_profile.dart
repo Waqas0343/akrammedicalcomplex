@@ -2,7 +2,7 @@ import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/models/doctor_response_model.dart';
-import 'package:amc/Screens/BookAppointment/BookAppointment.dart';
+import 'package:amc/Screens/Bookings/book_appointment.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -15,24 +15,24 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DoctorProfile extends StatefulWidget {
-  final String? username;
+  final String username;
 
-  const DoctorProfile({Key? key, this.username}) : super(key: key);
+  const DoctorProfile({
+    Key? key,
+    required this.username,
+  }) : super(key: key);
 
   @override
-  _DoctorProfileState createState() => _DoctorProfileState(username);
+  _DoctorProfileState createState() => _DoctorProfileState();
 }
 
 class _DoctorProfileState extends State<DoctorProfile> {
   String? sessionToken;
-  final String? username;
 
   DocProfile? doctorProfile;
   bool isLoading = true;
 
   late SharedPreferences preferences;
-
-  _DoctorProfileState(this.username);
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +82,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           borderRadius: const BorderRadius.all(
                                               Radius.circular(50)),
                                           child: NetWorkImage(
-                                            imagePath:
-                                                doctorProfile!.imagePath,
+                                            imagePath: doctorProfile!.imagePath,
                                             placeHolder: MyImages.doctorPlace,
                                             width: 70,
                                             height: 70,
@@ -121,7 +120,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           CrossAxisAlignment.start,
                                       children: <Widget>[
                                         AutoSizeText(
-                                          doctorProfile!.name!,
+                                          doctorProfile!.name,
                                           maxLines: 1,
                                           style: const TextStyle(
                                               color: Colors.white,
@@ -132,8 +131,9 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           height: 2,
                                         ),
                                         AutoSizeText(
-                                          doctorProfile!.speciality!.name!,
-                                          style: const TextStyle(color: Colors.white),
+                                          doctorProfile!.speciality!.name,
+                                          style: const TextStyle(
+                                              color: Colors.white),
                                         ),
                                         const SizedBox(
                                           height: 2,
@@ -141,7 +141,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                         AutoSizeText(
                                           qualification ?? "",
                                           maxLines: 2,
-                                          style: const TextStyle(color: Colors.white),
+                                          style: const TextStyle(
+                                              color: Colors.white),
                                         ),
                                       ],
                                     ),
@@ -311,7 +312,8 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                           ),
                                           Flexible(
                                               child: Text(
-                                            doctorProfile!.services![index].name!,
+                                            doctorProfile!
+                                                .services![index].name!,
                                             softWrap: false,
                                             overflow: TextOverflow.fade,
                                           ))
@@ -345,15 +347,16 @@ class _DoctorProfileState extends State<DoctorProfile> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           ClipRRect(
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(30)),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                                    Radius.circular(30)),
                                             child: FadeInImage.assetNetwork(
                                               image: doctorProfile!
                                                   .reviews![index].imagePath!,
                                               fit: BoxFit.cover,
                                               placeholder: MyImages.user,
-                                              fadeInDuration:
-                                                  const Duration(milliseconds: 100),
+                                              fadeInDuration: const Duration(
+                                                  milliseconds: 100),
                                               height: 30,
                                             ),
                                           ),
@@ -395,20 +398,25 @@ class _DoctorProfileState extends State<DoctorProfile> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     width: MediaQuery.of(context).size.width,
                     child: ElevatedButton(
                       child: const Text("Book Appointment"),
                       onPressed: () {
                         Route route = MaterialPageRoute(
-                            builder: (_) => BookAppointment(
-                                  drUsername: doctorProfile!.username,
-                                  drName: doctorProfile!.name,
-                                  fee: doctorProfile!
-                                      .assosiations![0].regularCharges,
-                                  category: doctorProfile!.speciality!.name,
-                                  image: doctorProfile!.imagePath,
-                                ));
+                          builder: (_) => BookAppointment(
+                            username: doctorProfile!.username,
+                            name: doctorProfile!.name,
+                            fee: doctorProfile!
+                                    .assosiations![0].regularCharges ??
+                                "N/A",
+                            speciality: doctorProfile!.speciality!.name,
+                            imagePath: doctorProfile?.imagePath,
+                            isTeleMedicineProvider:
+                                doctorProfile?.isTeleMedicineProvider ?? false,
+                          ),
+                        );
                         Navigator.push(context, route);
                       },
                     ),
@@ -428,7 +436,7 @@ class _DoctorProfileState extends State<DoctorProfile> {
 
   void getProfile() async {
     String response = await Utilities.httpGet(ServerConfig.doctorProfile +
-        "&Username=$username" +
+        "&Username=${widget.username}" +
         "&SessionToken=$sessionToken");
 
     if (response != "404") {

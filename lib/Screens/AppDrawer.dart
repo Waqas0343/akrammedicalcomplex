@@ -15,7 +15,7 @@ import 'package:amc/Screens/Orders/Medicines/MedicineOrderType.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Doctors/FindDoctor.dart';
+import 'Doctors/find_doctor.dart';
 import 'LabReports/LabReports.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -191,7 +191,7 @@ class _AppDrawerState extends State<AppDrawer> {
                   },
                 ),
                 DrawerList(
-                  title: "My Bookings",
+                  title: "My bookings",
                   icon: MyIcons.icPharmacyColored,
                   isBottomBorder: true,
                   isDropdown: false,

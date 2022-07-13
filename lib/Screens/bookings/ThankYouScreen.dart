@@ -66,7 +66,7 @@ class _ThankYouScreenState extends State<ThankYouScreen> {
   }
 
   void navigationPage(){
-    Route newRoute = MaterialPageRoute(builder: (_)=> Home());
+    Route newRoute = MaterialPageRoute(builder: (_)=> const Home());
     Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
   }
 

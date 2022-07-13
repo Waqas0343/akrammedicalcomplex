@@ -362,7 +362,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
   }
 
   void move() {
-    Route newRoute = MaterialPageRoute(builder: (_) => Home());
+    Route newRoute = MaterialPageRoute(builder: (_) => const Home());
     Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
   }
 

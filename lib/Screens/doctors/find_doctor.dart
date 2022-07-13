@@ -3,14 +3,14 @@ import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/models/category_model.dart';
-import 'package:amc/Screens/BookAppointment/BookAppointment.dart';
+import 'package:amc/Screens/Bookings/book_appointment.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Widgets/lazy_loader_widget.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:flutter/material.dart';
 
-import 'DoctorProfile.dart';
+import 'doctor_profile.dart';
 
 class FindDoctor extends StatefulWidget {
   final bool? isSearching;
@@ -59,7 +59,7 @@ class _FindDoctorState extends State<FindDoctor> {
                 items: categories.map((e) {
                   return DropdownMenuItem(
                     child: AutoSizeText(
-                      e.name!,
+                      e.name,
                       softWrap: false,
                       overflow: TextOverflow.fade,
                     ),
@@ -159,9 +159,10 @@ class _FindDoctorState extends State<FindDoctor> {
             child: InkWell(
               onTap: () {
                 Route route = MaterialPageRoute(
-                    builder: (context) => DoctorProfile(
-                          username: doctorModel.username,
-                        ));
+                  builder: (context) => DoctorProfile(
+                    username: doctorModel.username!,
+                  ),
+                );
                 Navigator.push(context, route);
               },
               child: Row(
@@ -249,15 +250,16 @@ class _FindDoctorState extends State<FindDoctor> {
               child: GestureDetector(
                 onTap: () {
                   Route route = MaterialPageRoute(
-                      builder: (_) => BookAppointment(
-                            drName: doctorModel.name,
-                            drUsername: doctorModel.username,
-                            category: doctorModel.speciality,
-                            fee: doctorModel.fee,
-                            image: doctorModel.imagepath,
-                            isTeleMedicineProvider:
-                                doctorModel.isTeleMedicineProvider,
-                          ));
+                    builder: (_) => BookAppointment(
+                      name: doctorModel.name!,
+                      username: doctorModel.username!,
+                      speciality: doctorModel.speciality ?? "N/A",
+                      fee: doctorModel.fee ?? "N/A",
+                      imagePath: doctorModel.imagepath,
+                      isTeleMedicineProvider:
+                          doctorModel.isTeleMedicineProvider ?? false,
+                    ),
+                  );
                   Navigator.push(context, route);
                 },
                 child: Text(

@@ -25,7 +25,7 @@ class DiagnosticsHome extends StatelessWidget {
             title: const Text("Book Lab Test", style: TextStyle(fontWeight: FontWeight.bold),),
             trailing: const Icon(Icons.arrow_forward_ios,size: 18,),
             onTap: (){
-              Route route = MaterialPageRoute(builder: (_)=> LabTestType());
+              Route route = MaterialPageRoute(builder: (_)=> const LabTestType());
               Navigator.push(context, route);
             },
           ),
@@ -40,7 +40,7 @@ class DiagnosticsHome extends StatelessWidget {
             title: const Text("My Orders", style: TextStyle(fontWeight: FontWeight.bold),),
             trailing: const Icon(Icons.arrow_forward_ios,size: 18,),
             onTap: (){
-              Route route = MaterialPageRoute(builder: (_)=>MyLabTestOrders());
+              Route route = MaterialPageRoute(builder: (_)=>const MyLabTestOrders());
               Navigator.push(context, route);
             },
           ),

@@ -41,7 +41,7 @@ class _BookTreatmentState extends State<BookTreatment> {
         title: const Text(Keys.homeServices),
       ),
       body: isLoading
-          ? LoadingServicesList()
+          ? const LoadingServicesList()
           : servicesModel.isNotEmpty
               ? view()
               : const Center(
@@ -125,7 +125,7 @@ class _BookTreatmentState extends State<BookTreatment> {
 
     if (response != "404") {
       enableButton();
-      Route route = MaterialPageRoute(builder: (_) => ThankYouScreen());
+      Route route = MaterialPageRoute(builder: (_) => const ThankYouScreen());
       Navigator.push(context, route);
     } else {
       Utilities.showToast("Unable to ${Keys.homeServices}");

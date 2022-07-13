@@ -19,7 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Bookings/BookTreatment.dart';
 import 'Bookings/SelectTestType.dart';
-import 'Doctors/FindDoctor.dart';
+import 'Doctors/find_doctor.dart';
 import 'LabReports/LabReports.dart';
 import 'MyBooking/MyBooking.dart';
 import 'MyBooking/MyTreatments.dart';
@@ -116,7 +116,7 @@ class _HomeState extends State<Home> {
                             isDense: true,
                             isCollapsed: true,
                             contentPadding: EdgeInsets.only(top: 10.0),
-                            hintText: "Search Doctors",
+                            hintText: "Search doctors",
                             prefixIcon: Icon(Icons.search)),
                       ),
                     ),
@@ -367,12 +367,10 @@ class _HomeState extends State<Home> {
     String? username = preferences.getString(Keys.username);
 
     String response = await Utilities.httpPost(ServerConfig.saveToken +
-        '&deviceType=Flutter&username=$username&token=$token&ProjectId=${Keys.projectId}');
+        '&deviceType=Flutter&username=$username&token=$token');
 
     if (response != '404') {
       print("Token was saved Successfully");
-    } else {
-      print("Unable to save firebase token");
     }
   }
 
