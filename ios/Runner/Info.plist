@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -25,29 +27,29 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Application need to access your Media Library.</string>
+	<string>$(PRODUCT_NAME) need to access your Media Library.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Application does not using bluetooth to can deny this permission.</string>
+	<string>$(PRODUCT_NAME) need to access to connect with headset and other devices while taking online consultation</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Application does not using bluetooth to can deny this permission.</string>
+	<string>$(PRODUCT_NAME) need to access to connect with headset and other devices while taking online consultation</string>
 	<key>NSCalendarsUsageDescription</key>
-	<string>Application need to access your calendars.</string>
+	<string>$(PRODUCT_NAME) is not using Motion this may internal library, you can deny.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Camera usage required for uploading records and online consultation</string>
+	<string>$(PRODUCT_NAME) need to access for capture profile image and for uploading medical records.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Application need to access your Contacts.</string>
+	<string>$(PRODUCT_NAME) is not using Contacts this may internal library, you can deny.</string>
 	<key>NSFileProviderDomainUsageDescription</key>
-	<string>Application need to access your Files.</string>
+	<string>$(PRODUCT_NAME) need to access for uploading prescription.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Application need to access your Microphones.</string>
+	<string>$(PRODUCT_NAME) need to access for online teleconsultation.</string>
 	<key>NSMotionUsageDescription</key>
-	<string>Application need to access your Motions.</string>
+	<string>$(PRODUCT_NAME) is not using Motion this may internal library, you can deny.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Application need to access your Photo Library</string>
+	<string>$(PRODUCT_NAME) need to access for uploading profile image and medical records.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Application need to access your Photo Library</string>
+	<string>$(PRODUCT_NAME) need to access for uploading profile image and medical records.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Application need to access your Speech Recognition.</string>
+	<string>$(PRODUCT_NAME) is not using Speech Recognition this may internal library, you can deny.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
