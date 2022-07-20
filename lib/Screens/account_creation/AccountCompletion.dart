@@ -43,7 +43,7 @@ class _AccountCompletionState extends State<AccountCompletion> {
                     TextSpan(text: "Privacy Policy.",
                         style: const TextStyle(fontWeight: FontWeight.bold, color: MyColors.primary, fontSize: 18.0, decoration: TextDecoration.underline, height: 1.5),
                         recognizer: TapGestureRecognizer()..onTap = () {
-                          Route newRoute = MaterialPageRoute(builder: (_)=>PrivacyPolicy());
+                          Route newRoute = MaterialPageRoute(builder: (_)=>const PrivacyPolicy());
                           Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
                         }
                     ),
@@ -61,7 +61,7 @@ class _AccountCompletionState extends State<AccountCompletion> {
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
                 onPressed: () {
-                  Route newRoute = MaterialPageRoute(builder: (_)=>Home());
+                  Route newRoute = MaterialPageRoute(builder: (_)=>const Home());
                   Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
                 },
                 child: const Text(

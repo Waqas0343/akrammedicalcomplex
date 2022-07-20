@@ -38,7 +38,7 @@ class _PrescriptionState extends State<MyPrescriptions> {
                 "No Prescriptions",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-            ) : LoadingMyPrescription(),
+            ) : const LoadingMyPrescription(),
     );
   }
 

@@ -157,7 +157,7 @@ class DoctorProfileResponse {
 }
 
 class DocProfile {
-  String? username;
+  String username;
   String? about;
   String? registrationNo;
   String? registrationType;
@@ -171,7 +171,7 @@ class DocProfile {
   String? experience;
   bool? onboard;
   String? featured;
-  String? name;
+  String name;
   String? phone;
   String? imagePath;
   String? email;
@@ -190,7 +190,7 @@ class DocProfile {
   dynamic addresses;
 
   DocProfile({
-    this.username,
+    required this.username,
     this.about,
     this.registrationNo,
     this.registrationType,
@@ -204,7 +204,7 @@ class DocProfile {
     this.experience,
     this.onboard,
     this.featured,
-    this.name,
+    required this.name,
     this.phone,
     this.imagePath,
     this.email,

@@ -35,7 +35,7 @@ class ServerConfig {
 
   static const doctorProfile = baseUrl + "/api/Profile?SystemKey=" + systemKey;
 
-  static const doctors = baseUrl + "api/Doctors/DoctorListShort?SystemKey=$systemKey&Medusername=${Keys.locationId}";
+  static const doctors = baseUrl + "api/doctors/DoctorListShort?SystemKey=$systemKey&Medusername=${Keys.locationId}";
 
   static const verifyCode = baseUrl + "api/Accounts/Activate?SystemKey=$systemKey";
 
@@ -62,7 +62,7 @@ class ServerConfig {
 
   static const appointments = baseUrl + "api/CustomAppointments/GetList?SystemKey=" + systemKey; //patientusername
 
-  static const saveToken = baseUrl + "api/Accounts/SaveFirebaseToken?SystemKey=" + systemKey; //&username=&token=
+  static const saveToken = baseEmrUrl + "api/Accounts/SaveFirebaseToken?SystemKey=$systemKey&ProjectId=${Keys.projectId}"; //&username=&token=
 
   static const treatments = baseEmrUrl + "Treatment/GetBookedTreatmentList?SystemKey=" + systemKey; //&username=&token=
 

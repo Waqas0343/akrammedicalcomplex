@@ -338,7 +338,7 @@ class _LoginState extends State<Login> {
         await Utilities.httpGet(ServerConfig.resentCode + '&user=$username');
       } else {
         preferences.setBool(Keys.status, true);
-        Route route = MaterialPageRoute(builder: (context) => Home());
+        Route route = MaterialPageRoute(builder: (context) => const Home());
         Navigator.pushAndRemoveUntil(context, route, (route) => false);
       }
     } else {

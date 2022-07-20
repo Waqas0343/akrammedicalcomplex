@@ -35,7 +35,8 @@ class _SettingsState extends State<Settings> {
         title: Image.asset(
           MyImages.logo,
           height: 50,
-        ), systemOverlayStyle: SystemUiOverlayStyle.dark,
+        ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
       ),
       body: Container(
         color: Colors.white,
@@ -46,9 +47,11 @@ class _SettingsState extends State<Settings> {
                   profile: profile,
                   cities: cities,
                 )
-              : isLoading ? ProfileShimmer() : const Center(
-                  child: Text("Profile Not found"),
-                ),
+              : isLoading
+                  ? const ProfileShimmer()
+                  : const Center(
+                      child: Text("Profile Not found"),
+                    ),
         ),
       ),
     );
@@ -74,8 +77,6 @@ class _SettingsState extends State<Settings> {
 
     String response = await Utilities.httpGet(
         ServerConfig.getPatientInfo + "&username=$username");
-
-
 
     if (response != "404") {
       setState(() {

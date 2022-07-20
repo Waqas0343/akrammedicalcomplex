@@ -39,7 +39,7 @@ class _LabReportsState extends State<LabReports> {
                 "No Reports",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-            ) : MyLabReportsShimmer(),
+            ) : const MyLabReportsShimmer(),
     );
   }
 

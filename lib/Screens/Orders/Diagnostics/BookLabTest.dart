@@ -670,7 +670,7 @@ class _BookLabTestState extends State<BookLabTest> {
 
     if (response.statusCode == 200) {
       enableButton();
-      Route route = MaterialPageRoute(builder: (_) => ThankYouScreen());
+      Route route = MaterialPageRoute(builder: (_) => const ThankYouScreen());
       await Navigator.of(context).push(route);
     } else {
       enableButton();

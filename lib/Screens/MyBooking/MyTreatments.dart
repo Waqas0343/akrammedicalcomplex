@@ -25,21 +25,22 @@ class _MyTreatmentsState extends State<MyTreatments> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        appBar: AppBar(
-          title: const Text(
-            "My Home Services",
-          ),
+      backgroundColor: Colors.grey.shade200,
+      appBar: AppBar(
+        title: const Text(
+          "My Home Services",
         ),
-        body: treatmentsModel.isNotEmpty
-            ? treatmentsView()
-            : !treatmentLoading && treatmentsModel.isEmpty ? const Center(
-                child: Text(
-                  "No Service Found",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-              ) :
-        MyServicesLoading(),
+      ),
+      body: treatmentsModel.isNotEmpty
+          ? treatmentsView()
+          : !treatmentLoading && treatmentsModel.isEmpty
+              ? const Center(
+                  child: Text(
+                    "No Service Found",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                )
+              : const MyServicesLoading(),
     );
   }
 
@@ -72,18 +73,22 @@ class _MyTreatmentsState extends State<MyTreatments> {
         treatments.isNotEmpty
             ? Expanded(
                 child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   itemBuilder: (BuildContext context, int index) {
                     TreatmentData treatmentData = treatments[index];
                     return Card(
-                      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 4),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 4),
                       elevation: 4,
                       child: Column(
                         children: [
                           ListTile(
                             title: AutoSizeText(
                               "Order Id # " + treatmentData.id!,
-                              style: const TextStyle(fontWeight: FontWeight.bold,),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                               maxLines: 1,
                             ),
                             subtitle: Text(
@@ -189,7 +194,8 @@ class _MyTreatmentsState extends State<MyTreatments> {
     if (treatmentResponse != "404") {
       if (!mounted) return;
       setState(() {
-        var list = treatmentModelFromJson(treatmentResponse).response!.response!;
+        var list =
+            treatmentModelFromJson(treatmentResponse).response!.response!;
         treatments.addAll(list);
         treatmentsModel.addAll(treatments);
       });
