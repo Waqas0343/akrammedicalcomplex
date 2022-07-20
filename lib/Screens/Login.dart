@@ -1,18 +1,19 @@
 import 'dart:convert';
-import 'package:amc/models/login_model.dart';
-import 'package:amc/Screens/account_creation/ActivationCode.dart';
+import 'package:amc/Screens/Signup.dart';
 import 'package:amc/Server/ServerConfig.dart';
-import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/routes/routes.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'home.dart';
+import '../controllers/login_controller.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -23,20 +24,17 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final remindPhoneController = TextEditingController();
-  final phoneController = TextEditingController();
-  final passwordController = TextEditingController();
   bool phoneValidate = false;
   bool passwordValidate = false;
-
+  final FocusNode phoneFocus = FocusNode();
   final FocusNode usernameFocus = FocusNode();
-  final FocusNode passwordFocus = FocusNode();
-
+  var isPhoneEmpty = false;
+  final loginController = Get.put(LoginController());
   bool visible = true;
-
   late SharedPreferences preferences;
-
   bool isTaped = true;
   String buttonText = "Login";
+  String phoneError = "Phone can't be Empty";
 
   @override
   Widget build(BuildContext context) {
@@ -82,76 +80,55 @@ class _LoginState extends State<Login> {
                             height: 16,
                           ),
                           TextField(
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.phone,
+                            maxLength: 11,
+                            inputFormatters: [
+                              Utilities.onlyNumberFormat(),
+                            ],
                             textInputAction: TextInputAction.next,
-                            controller: phoneController,
-                            focusNode: usernameFocus,
-                            onSubmitted: (text) {
-                              usernameFocus.unfocus();
-                              FocusScope.of(context)
-                                  .requestFocus(passwordFocus);
-                            },
+                            focusNode: phoneFocus,
+                            controller: loginController.phoneController,
                             onChanged: (text) {
                               if (text.isNotEmpty) {
-                                setState(() => phoneValidate = false);
+                                if (Utilities.numberHasValid(text)) {
+                                  setState(() {
+                                    isPhoneEmpty = false;
+                                  });
+                                }
                               }
                             },
+                            onSubmitted: (text) {
+                              phoneFocus.unfocus();
+                              FocusScope.of(context)
+                                  .requestFocus(usernameFocus);
+                            },
                             decoration: InputDecoration(
+                              hintText: "Phone",
                               filled: false,
-                              hintText: "Login ID / Phone",
-                              errorText:
-                                  phoneValidate ? "Can't be Empty" : null,
+                              counterText: "",
+                              errorText: isPhoneEmpty ? phoneError : null,
                             ),
                           ),
                           const SizedBox(
                             height: 8,
                           ),
-                          TextField(
-                            keyboardType: TextInputType.visiblePassword,
-                            obscureText: visible,
-                            controller: passwordController,
-                            focusNode: passwordFocus,
-                            onSubmitted: (text) {
-                              passwordFocus.unfocus();
-                            },
-                            onChanged: (text) {
-                              if (text.isNotEmpty) {
-                                setState(() => passwordValidate = false);
-                              }
-                            },
-                            decoration: InputDecoration(
-                              hintText: "Password",
-                              filled: false,
-                              suffixIcon: IconButton(
-                                  icon: Icon(visible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility),
-                                  onPressed: () {
-                                    setState(() {
-                                      visible = !visible;
-                                    });
-                                  }),
-                              errorText:
-                                  passwordValidate ? "Can't be Empty" : null,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () => forgotDialog(),
-                              child: const Text(
-                                'Account Forgot?',
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                    color: MyColors.primary,
-                                    fontWeight: FontWeight.w600,
-                                    letterSpacing: 0.4),
-                              ),
-                            ),
-                          ),
+                          // const SizedBox(
+                          //   height: 16,
+                          // ),
+                          // Align(
+                          //   alignment: Alignment.centerRight,
+                          //   child: GestureDetector(
+                          //     onTap: () => forgotDialog(),
+                          //     child: const Text(
+                          //       'Account Forgot?',
+                          //       textAlign: TextAlign.right,
+                          //       style: TextStyle(
+                          //           color: MyColors.primary,
+                          //           fontWeight: FontWeight.w600,
+                          //           letterSpacing: 0.4),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -166,7 +143,8 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: isTaped ? () => login() : null,
+                        onPressed:
+                            isTaped ? () => loginController.login() : null,
                         child: const Text(
                           "Login",
                           style: TextStyle(
@@ -190,8 +168,7 @@ class _LoginState extends State<Login> {
                                     color: MyColors.primary),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.pushReplacementNamed(
-                                        context, "/signup");
+                                    Get.toNamed(AppRoutes.signUp);
                                   })
                           ],
                         )),
@@ -281,72 +258,6 @@ class _LoginState extends State<Login> {
     );
   }
 
-  void login() async {
-    disableButton();
-    String username = phoneController.text.trim().replaceAll(" ", "");
-    String password = passwordController.text.trim();
-
-    usernameFocus.unfocus();
-    passwordFocus.unfocus();
-
-    if (!await Utilities.isOnline()) {
-      enableButton();
-      Utilities.internetNotAvailable(context);
-      return;
-    }
-
-    if (username.isEmpty) {
-      enableButton();
-      setState(() {
-        phoneValidate = true;
-      });
-      return;
-    }
-
-    if (password.isEmpty) {
-      enableButton();
-      setState(() {
-        passwordValidate = true;
-      });
-      return;
-    }
-
-    Loading.build(context, false);
-
-    String response = await Utilities.httpGet(
-        ServerConfig.login + "&Username=$username&Password=$password");
-
-    Loading.dismiss();
-
-    if (response != "404") {
-      User user = loginFromJson(response).response!.user!;
-
-      preferences.setString(Keys.username, user.username!);
-      preferences.setString(Keys.phone, user.phone!);
-      preferences.setString(Keys.image, user.imagePath!);
-      preferences.setString(Keys.name, user.name!);
-      preferences.setString(Keys.email, user.email!);
-      preferences.setString(Keys.otp, user.otpCode.toString());
-      preferences.setString(Keys.sessionToken, user.sessionToken!);
-      preferences.setString(Keys.address, user.huAddress!.location!);
-      preferences.setString(Keys.city, user.huAddress!.city!);
-      preferences.setString(Keys.area, user.huAddress!.area!);
-      if (!user.activationStatus!) {
-        Route route = MaterialPageRoute(
-            builder: (context) => AccountActivation(user.phone,user.otpCode.toString()));
-        Navigator.pushAndRemoveUntil(context, route, (route) => false);
-        await Utilities.httpGet(ServerConfig.resentCode + '&user=$username');
-      } else {
-        preferences.setBool(Keys.status, true);
-        Route route = MaterialPageRoute(builder: (context) => const Home());
-        Navigator.pushAndRemoveUntil(context, route, (route) => false);
-      }
-    } else {
-      Utilities.showToast("Authentication Denied");
-    }
-    enableButton();
-  }
-
   @override
   void initState() {
     updateUi();
@@ -356,6 +267,33 @@ class _LoginState extends State<Login> {
   void updateUi() async {
     preferences = await SharedPreferences.getInstance();
   }
+
+  void userDialog() => showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: const Text(
+            "User Not Exist Do you want to create new account",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "No",
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Get.to(const SignUp());
+              },
+              child: const Text(
+                "Yes",
+              ),
+            ),
+          ],
+        ),
+      );
 
   Future<bool> sendPassword(String phone) async {
     if (await Utilities.isOnline()) {
@@ -375,15 +313,4 @@ class _LoginState extends State<Login> {
     return false;
   }
 
-  void disableButton() {
-    setState(() {
-      isTaped = false;
-    });
-  }
-
-  void enableButton() {
-    setState(() {
-      isTaped = true;
-    });
-  }
 }

@@ -1,10 +1,14 @@
 import 'dart:async';
 
+import 'package:amc/Screens/Login.dart';
 import 'package:amc/Styles/MyImages.dart';
-import 'package:amc/app/debug.dart';
+import 'package:amc/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Screens/home.dart';
 import 'Styles/Keys.dart';
 
 class Splash extends StatefulWidget {
@@ -50,17 +54,13 @@ class _SplashState extends State<Splash> {
   }
 
   void navigationPage() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
     bool status = prefs.getBool(Keys.status) ?? false;
-
     if (status) {
-      Navigator.of(context).pushReplacementNamed('/home');
+      Get.offNamed(AppRoutes.home);
     } else {
-      Navigator.of(context).pushReplacementNamed('/login');
+      Get.offNamed(AppRoutes.login);
     }
-
   }
 
 

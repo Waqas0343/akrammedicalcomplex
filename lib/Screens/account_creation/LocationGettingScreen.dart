@@ -340,14 +340,11 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
         area +
         "&Location=" +
         location +
-//            "&Weight=" +
-//            "&Height="  +
-//            "&dateofbirth=" +
         "&ImagePath=${image ?? ""}";
     Loading.build(context, false);
 
-    String response =
-        await Utilities.httpGet(ServerConfig.patientInfoUpdate + values);
+    String response = await Utilities.httpGet(ServerConfig.patientInfoUpdate + values);
+    print(response);
     Loading.dismiss();
     if (response != "404") {
       preferences.setString(Keys.city, city);

@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:amc/Screens/AppDrawer.dart';
-import 'package:amc/Screens/HealthRecords/MyHealthRecords.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -12,23 +11,25 @@ import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/home_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Bookings/BookTreatment.dart';
-import 'Bookings/SelectTestType.dart';
+import '../routes/routes.dart';
 import 'Doctors/find_doctor.dart';
 import 'LabReports/LabReports.dart';
 import 'MyBooking/MyBooking.dart';
 import 'MyBooking/MyTreatments.dart';
-import 'Orders/Medicines/MedicineOrderType.dart';
 import 'Prescription/MyPrescriptions.dart';
 import 'Settings/Settings.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  const Home({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _HomeState createState() => _HomeState();
@@ -46,6 +47,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+    String? username = preferences.getString(Keys.name);
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () => onWillPop(),
@@ -73,8 +75,7 @@ class _HomeState extends State<Home> {
                 ],
               ),
               child: ClipRRect(
-                borderRadius:
-                const BorderRadius.all(Radius.circular(40)),
+                borderRadius: const BorderRadius.all(Radius.circular(40)),
                 child: NetWorkImage(
                   imagePath: imagePath,
                   placeHolder: MyImages.imageNotFound,
@@ -98,11 +99,9 @@ class _HomeState extends State<Home> {
                         top: 20, bottom: 20.0, left: 16.0, right: 16.0),
                     child: GestureDetector(
                       onTap: () {
-                        Route route = MaterialPageRoute(
-                            builder: (_) => const FindDoctor(
-                                  isSearching: true,
-                                ));
-                        Navigator.push(context, route);
+                        Get.to(() => const FindDoctor(
+                          isSearching: true,
+                        ));
                       },
                       child: TextFormField(
                         enabled: false,
@@ -116,7 +115,7 @@ class _HomeState extends State<Home> {
                             isDense: true,
                             isCollapsed: true,
                             contentPadding: EdgeInsets.only(top: 10.0),
-                            hintText: "Search doctors",
+                            hintText: "Search Doctors",
                             prefixIcon: Icon(Icons.search)),
                       ),
                     ),
@@ -138,12 +137,21 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 16, bottom: 16, left: 4),
-                    child: Text(
-                      'Hello!', // TODO: add greeting
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 16, bottom: 16, left: 4),
+                    child: Row(
+                      children: [
+                        Text(
+                          timeWishes(''), style: const TextStyle(fontSize: 14),
+
+                        ),
+                        Text(
+                          ' $username !',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                      ],
                     ),
                   ),
                   Row(
@@ -154,29 +162,24 @@ class _HomeState extends State<Home> {
                         title: "Book Home \nServices",
                         icon: MyIcons.icHomeService,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const BookTreatment());
-                          Navigator.push(context, route);
+                          Get.toNamed(AppRoutes.bookTreatment);
                         },
                       ),
                       HomeWidget(
                         title: "Find the Best \nSpecialist",
                         icon: MyIcons.icDoctorColored,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const FindDoctor(
-                                    isSearching: false,
-                                  ));
-                          Navigator.push(context, route);
+
+                          Get.to(() => const FindDoctor(
+                            isSearching: true,
+                          ));
                         },
                       ),
                       HomeWidget(
                         title: "My Home \nServices",
                         icon: MyIcons.icHomeService,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const MyTreatments());
-                          Navigator.push(context, route);
+                          Get.toNamed(AppRoutes.myTreatment);
                         },
                       ),
                     ],
@@ -192,27 +195,21 @@ class _HomeState extends State<Home> {
                         title: "Diagnostics",
                         icon: MyIcons.icLabColored,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const TestType());
-                          Navigator.push(context, route);
+                          Get.toNamed(AppRoutes.labTestHome);
                         },
                       ),
                       HomeWidget(
                         title: "Medicines",
                         icon: MyIcons.icMedicineColored,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const MedicineOrderType());
-                          Navigator.push(context, route);
+                          Get.toNamed(AppRoutes.medicineHome);
                         },
                       ),
                       HomeWidget(
                         title: "My Bookings",
                         icon: MyIcons.icPharmacyColored,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const MyBooking());
-                          Navigator.push(context, route);
+                          Get.toNamed(AppRoutes.myBookings);
                         },
                       ),
                     ],
@@ -228,18 +225,14 @@ class _HomeState extends State<Home> {
                         title: "My Prescriptions",
                         icon: MyIcons.icPrescriptionColored,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const MyPrescriptions());
-                          Navigator.push(context, route);
+                          Get.toNamed(AppRoutes.myPrescriptions);
                         },
                       ),
                       HomeWidget(
                         title: "My Health \nRecords",
                         icon: MyIcons.icHealthRecordColored,
                         onTap: () {
-                          Route route = MaterialPageRoute(
-                              builder: (_) => const MyHealthRecords());
-                          Navigator.push(context, route);
+                          Get.toNamed(AppRoutes.myHealthRecords);
                         },
                       ),
                       HomeWidget(
@@ -370,10 +363,11 @@ class _HomeState extends State<Home> {
         '&deviceType=Flutter&username=$username&token=$token');
 
     if (response != '404') {
-      print("Token was saved Successfully");
+      if (kDebugMode) {
+        print("Token was saved Successfully");
+      }
     }
   }
-
   showNotification({String? title, String? body}) async {
     var android = const AndroidNotificationDetails("Updates", "Updates",
         importance: Importance.defaultImportance,
@@ -453,6 +447,19 @@ class _HomeState extends State<Home> {
             ],
           );
         });
+  }
+
+  String timeWishes(String time) {
+    var hour = DateTime.now().hour;
+    if (hour <= 12) {
+      return 'Good Morning';
+    } else if ((hour > 12) && (hour <= 16)) {
+      return 'Good Afternoon';
+    } else if ((hour > 16) && (hour < 20)) {
+      return 'Good Evening';
+    } else {
+      return 'Good Night';
+    }
   }
 
   Future<bool> onWillPop() {

@@ -1,5 +1,4 @@
 import 'package:amc/Screens/Prescription/MyPrescriptions.dart';
-import 'package:amc/Screens/Settings/AccountSettings.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Screens/Bookings/BookTreatment.dart';
@@ -13,8 +12,11 @@ import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Widgets/drawer_list.dart';
 import 'package:amc/Screens/Orders/Medicines/MedicineOrderType.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../routes/routes.dart';
 import 'Doctors/find_doctor.dart';
 import 'LabReports/LabReports.dart';
 
@@ -123,6 +125,15 @@ class _AppDrawerState extends State<AppDrawer> {
                   },
                 ),
                 DrawerList(
+                  title: "Delete Accounts",
+                  icon: MyIcons.icProfile,
+                  isBottomBorder: true,
+                  isDropdown: false,
+                  onTap: () {
+                    Get.toNamed(AppRoutes.deleteAccounts);
+                  },
+                ),
+                DrawerList(
                   title: "Find Doctor",
                   icon: MyIcons.icDoctorColored,
                   isBottomBorder: true,
@@ -212,17 +223,17 @@ class _AppDrawerState extends State<AppDrawer> {
                     Navigator.push(context, route);
                   },
                 ),
-                DrawerList(
-                  title: "Change Password",
-                  icon: MyIcons.icPassword,
-                  isBottomBorder: true,
-                  isDropdown: true,
-                  onTap: () {
-                    Route route = MaterialPageRoute(
-                        builder: (_) => const AccountSettings());
-                    Navigator.push(context, route);
-                  },
-                ),
+                // DrawerList(
+                //   title: "Change Password",
+                //   icon: MyIcons.icPassword,
+                //   isBottomBorder: true,
+                //   isDropdown: true,
+                //   onTap: () {
+                //     Route route = MaterialPageRoute(
+                //         builder: (_) => const AccountSettings());
+                //     Navigator.push(context, route);
+                //   },
+                // ),
                 // DrawerList(
                 //   title: "About Us",
                 //   icon: MyIcons.icInfo,

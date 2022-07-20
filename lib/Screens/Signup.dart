@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:amc/models/login_model.dart';
 import 'package:amc/Screens/account_creation/ActivationCode.dart';
 import 'package:amc/Server/ServerConfig.dart';
@@ -8,10 +6,16 @@ import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/routes/routes.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Widgets/loading_spinner.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -19,26 +23,25 @@ class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();
 }
-
 class _SignUpState extends State<SignUp> {
   final FocusNode nameFocus = FocusNode();
   final FocusNode usernameFocus = FocusNode();
+  final FocusNode emailFocus = FocusNode();
   final FocusNode phoneFocus = FocusNode();
   final FocusNode passwordFocus = FocusNode();
-
   final nameController = TextEditingController();
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
-
   var isNameEmpty = false;
   var isUsernameEmpty = false;
   var isPhoneEmpty = false;
   var isPasswordEmpty = false;
-  var isUsernameFind = false;
+  var isEmailValidate = false;
 
   String userNameError = "Username can't be empty";
   String phoneError = "Phone can't be Empty";
+  String emailErrorMessage = "invalid email format";
 
   late SharedPreferences preferences;
   bool visible = true;
@@ -139,6 +142,7 @@ class _SignUpState extends State<SignUp> {
                               hintText: "Phone",
                               filled: false,
                               counterText: "",
+
                               errorText: isPhoneEmpty ? phoneError : null,
                             ),
                           ),
@@ -147,99 +151,36 @@ class _SignUpState extends State<SignUp> {
                           ),
                           // Login ID
                           TextField(
-                            inputFormatters: [Utilities.bothFormat()],
-                            textInputAction: TextInputAction.next,
-                            focusNode: usernameFocus,
+                            keyboardType: TextInputType.emailAddress,
+                            // textInputAction: TextInputAction.values,
+                            focusNode: emailFocus,
+                            controller: emailController,
+                            onChanged: (text) {
+                              if (text.isNotEmpty) {
+                                if (EmailValidator.validate(text)) {
+                                  setState(() {
+                                    isEmailValidate = false;
+                                  });
+                                }
+                              }
+                            },
                             onSubmitted: (text) {
-                              usernameFocus.unfocus();
+                              emailFocus.unfocus();
                               FocusScope.of(context)
-                                  .requestFocus(passwordFocus);
+                                  .requestFocus(emailFocus);
                             },
-                            onChanged: (username) {
-                              if (username.toString().trim().isNotEmpty) {
-                                setState(() {
-                                  isUsernameEmpty = false;
-                                });
-                              }
-
-                              if (username.toString().trim().length < 8) {
-                                setState(() {
-                                  isUsernameEmpty = true;
-                                  userNameError =
-                                      "UserName length must be greater than 8";
-                                });
-                                return;
-                              } else {
-                                setState(() {
-                                  isUsernameEmpty = false;
-                                  userNameError = "Username can't be empty";
-                                });
-                              }
-
-                              if (!Utilities.validateStructure(username)) {
-                                setState(() {
-                                  isUsernameEmpty = true;
-                                  userNameError =
-                                      "UserId must contain combination of alphabets and number";
-                                });
-                                return;
-                              } else {
-                                setState(() {
-                                  isUsernameEmpty = false;
-                                  userNameError = "Username can't be empty";
-                                });
-                              }
-                              checkUserName(username);
-                            },
-                            controller: usernameController,
                             decoration: InputDecoration(
-                              hintText: "Login ID",
+                              hintText: "Email",
                               filled: false,
-                              errorMaxLines: 2,
-                              errorText: isUsernameEmpty ? userNameError : null,
-                              suffix: isUsernameFind
-                                  ? const SizedBox(
-                                      height: 18,
-                                      width: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                      ))
-                                  : const SizedBox.shrink(),
+                              counterText: "",
+
+                              errorText: isEmailValidate ? emailErrorMessage : null,
                             ),
                           ),
                           const SizedBox(
                             height: 8,
                           ),
-                          TextField(
-                            keyboardType: TextInputType.visiblePassword,
-                            textInputAction: TextInputAction.done,
-                            obscureText: visible,
-                            focusNode: passwordFocus,
-                            controller: passwordController,
-                            onSubmitted: (text) {
-                              passwordFocus.unfocus();
-                            },
-                            onChanged: (text) {
-                              setState(() {
-                                isPasswordEmpty = false;
-                              });
-                            },
-                            decoration: InputDecoration(
-                              hintText: "Password",
-                              filled: false,
-                              suffixIcon: IconButton(
-                                  icon: Icon(visible
-                                      ? Icons.visibility_off
-                                      : Icons.visibility),
-                                  onPressed: () {
-                                    setState(() {
-                                      visible = !visible;
-                                    });
-                                  }),
-                              errorText:
-                                  isPasswordEmpty ? "Can't be Empty" : null,
-                            ),
-                          ),
+
                         ],
                       ),
                     ),
@@ -281,8 +222,7 @@ class _SignUpState extends State<SignUp> {
                                     color: MyColors.primary),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.pushReplacementNamed(
-                                        context, "/login");
+                                   Get.toNamed(AppRoutes.login);
                                   })
                           ],
                         )),
@@ -316,13 +256,11 @@ class _SignUpState extends State<SignUp> {
     disableButton();
     String name = nameController.text.toString().trim();
     String phone = phoneController.text.toString().trim();
-    String username = usernameController.text.toString().trim();
-    String password = passwordController.text.toString().trim();
-
+    String email = emailController.text.toString().trim();
     nameFocus.unfocus();
     phoneFocus.unfocus();
-    usernameFocus.unfocus();
-    passwordFocus.unfocus();
+    emailFocus.unfocus();
+
 
     if (!await Utilities.isOnline()) {
       enableButton();
@@ -352,71 +290,66 @@ class _SignUpState extends State<SignUp> {
       return;
     }
 
-    if (username.isEmpty || isUsernameEmpty) {
-      enableButton();
-      setState(() {
-        isUsernameEmpty = true;
-      });
-      return;
+    if (email.isEmpty) {
+      bool validate = EmailValidator.validate(email);
+      if (!validate) {
+        setState(() {
+          isEmailValidate = true;
+          emailErrorMessage = "Enter email in format";
+        });
+        enableButton();
+        return;
+      }
     }
 
-    if (password.isEmpty) {
-      enableButton();
-      setState(() {
-        isPasswordEmpty = true;
-      });
-      return;
-    }
-
-    Loading.build(context, false);
-    String values = "&DateOfBirth=&salutation="
-        "&Gender=&area=&city=&cnic=&Username=$username&height=&weight="
-        "&profession=&Password=$password&Type=Patient&Name=$name&Phone=$phone&Email=";
-
+    Get.dialog(const LoadingSpinner());
+    String values = "&Type=Patient&Name=$name&Phone=$phone&Email=$email";
     String response = await Utilities.httpPost(ServerConfig.signUp + values);
+    print(response);
     Loading.dismiss();
     if (response != "404") {
       User user = loginFromJson(response).response!.user!;
       preferences.setString(Keys.phone, user.phone!);
       preferences.setString(Keys.otp, user.otpCode.toString());
-      preferences.setString(Keys.password, password);
-      preferences.setString(Keys.username, user.username!);
+      preferences.setString(Keys.email, user.email!);
       preferences.setString(Keys.name, user.name!);
-
-      Route route = MaterialPageRoute(
-          builder: (context) => AccountActivation(
-                user.phone,user.otpCode.toString(),
-              ));
-      Navigator.pushAndRemoveUntil(context, route, (route) => false);
+      Get.to(() => AccountActivation(
+          user.phone,user.otpCode.toString(),userList: null, isLogin:false
+      ));
+      // Route route = MaterialPageRoute(
+      //     builder: (context) => AccountActivation(
+      //           user.phone,user.otpCode.toString(),userList: null, isLogin:false
+      //         ));
+      // Navigator.pushAndRemoveUntil(context, route, (route) => false);
     } else {
       Utilities.showToast("Unable to create account, try again later.");
     }
     enableButton();
   }
 
-  Future<void> checkUserName(String username) async {
-    setState(() {
-      isUsernameFind = true;
-    });
-    String response = await Utilities.httpGet(
-        ServerConfig.checkUsername + "&Username=$username");
-    setState(() {
-      isUsernameFind = false;
-    });
-    if (response != "404") {
-      if (jsonDecode(response)["Response"]["Response"] == true) {
-        setState(() {
-          userNameError = "Username already exists";
-          isUsernameEmpty = true;
-        });
-      } else {
-        setState(() {
-          userNameError = "Username can't be empty";
-          isUsernameEmpty = false;
-        });
-      }
-    }
-  }
+  // Future<void> checkUserName(String username) async {
+  //   setState(() {
+  //     isUsernameFind = true;
+  //   });
+  //   String response = await Utilities.httpGet(
+  //       ServerConfig.checkUsername + "&email=$username");
+  //   setState(() {
+  //     isUsernameFind = false;
+  //   });
+  //   if (response != "404") {
+  //     if (jsonDecode(response)["Response"]["Response"] == true) {
+  //       setState(() {
+  //         userNameError = "Username already exists";
+  //         isUsernameEmpty = true;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         userNameError = "Username can't be empty";
+  //         isUsernameEmpty = false;
+  //       });
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {

@@ -1,21 +1,29 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:amc/Screens/account_creation/LocationGettingScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Widgets/loading_spinner.dart';
+import '../../models/otp_model.dart';
+import '../accounts/user_accounts.dart';
 
 class AccountActivation extends StatefulWidget {
   final String? phoneNumber, otpCode;
+  final OTPResponse? userList;
+  final bool isLogin;
 
-  const AccountActivation(this.phoneNumber, this.otpCode, {Key? key})
+  const AccountActivation(this.phoneNumber, this.otpCode,
+      {Key? key, required this.userList, required this.isLogin})
       : super(key: key);
 
   @override
@@ -28,11 +36,9 @@ class _AccountActivationState extends State<AccountActivation> {
   String? username;
   bool isTaped = true;
   String buttonText = "Verify";
-
   StreamController<ErrorAnimationType>? errorController;
   late Timer _timer;
   int _start = 60;
-
   bool hasError = false;
   String currentText = "";
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -96,11 +102,12 @@ class _AccountActivationState extends State<AccountActivation> {
                         text: "Enter the code sent to ",
                         children: [
                           TextSpan(
-                              text: widget.phoneNumber,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15)),
+                            text: widget.phoneNumber,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
                         ],
                         style: const TextStyle(
                             color: Colors.black54, fontSize: 15)),
@@ -128,6 +135,9 @@ class _AccountActivationState extends State<AccountActivation> {
                         errorAnimationController: errorController,
                         controller: textEditingController,
                         onCompleted: (v) {
+                          if (currentText.length == 6) {
+                            verify(currentText);
+                          }
                           setState(() {
                             hasError = false;
                           });
@@ -255,11 +265,12 @@ class _AccountActivationState extends State<AccountActivation> {
 
     String response = await Utilities.httpPost(
         ServerConfig.resendCode + '&phone=${widget.phoneNumber}');
-
     if (response != "404") {
       if (jsonDecode(response)["Response"]["Response"] == "Success") {
         enableButton();
-        print("Pin code has been sent");
+        if (kDebugMode) {
+          print("Pin code has been sent");
+        }
       } else {
         Utilities.showToast("Unable to send");
       }
@@ -270,10 +281,12 @@ class _AccountActivationState extends State<AccountActivation> {
   }
 
   void verify(String code) async {
-    if (widget.otpCode == currentText) {
-      Route route = MaterialPageRoute(
-          builder: (context) => const LocationGettingScreen(false));
-      Navigator.pushAndRemoveUntil(context, route, (route) => false);
+    disableButton();
+    if (widget.isLogin == true) {
+      Get.dialog(const LoadingSpinner());
+      Get.to(()=> UserAccounts(list: widget.userList),);
+    } else if (widget.isLogin == false) {
+      Get.to(()=> const LocationGettingScreen(false));
     }
     disableButton();
     if (!await Utilities.isOnline()) {
@@ -281,29 +294,8 @@ class _AccountActivationState extends State<AccountActivation> {
       Utilities.internetNotAvailable(context);
       return;
     }
-
     Loading.build(context, false);
-
-    String values = '&Username=$username&ActivationCode=$code';
-    String response = await Utilities.httpGet(ServerConfig.verifyCode + values);
-    print(response);
     Loading.dismiss();
-    if (response != "404") {
-      if (jsonDecode(response)["Response"]["Response"] != false) {
-        preferences.setBool(Keys.status, true);
-        enableButton();
-        Route route = MaterialPageRoute(
-            builder: (context) => const LocationGettingScreen(false));
-        Navigator.pushAndRemoveUntil(context, route, (route) => false);
-      } else {
-        errorController!.add(ErrorAnimationType.shake);
-        setState(() {
-          hasError = true;
-        });
-      }
-    } else {
-      Utilities.showToast("Server isn't responding, try again later");
-    }
     enableButton();
   }
 

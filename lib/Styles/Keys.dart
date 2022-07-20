@@ -8,6 +8,7 @@ class Keys {
   static const String description = "description";
   static const String time = "time";
   static const String date = "date";
+  static const String onlyNumbers = "field accepts only numbers";
 
   static const String status = "status";
   static const String username = "Username";
@@ -42,6 +43,7 @@ class Keys {
   static const String locationId = "A20200710021733";
 
   static const String source = "AMC";
+  static const String cryptoKey = "fMhBu#\$%be\$5ek!1ULXO6z*iB4Nv03E1";
 
   static const String projectId = "amc-healthcare-services";
 

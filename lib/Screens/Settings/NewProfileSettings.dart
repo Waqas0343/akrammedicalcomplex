@@ -64,6 +64,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
   @override
   Widget build(BuildContext context) {
+
     return profile != null
         ? SingleChildScrollView(
             child: Column(
@@ -561,8 +562,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
         "&Location=$address"
         "&ImagePath=$imagePath";
 
-    String response =
-        await Utilities.httpGet(ServerConfig.patientInfoUpdate + values);
+    String response = await Utilities.httpGet(ServerConfig.patientInfoUpdate + values);
+    print(response);
     Loading.dismiss();
 
     if (response != "404") {
