@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import '../../controllers/users/account_activation/account_activation_controller.dart';
+
 class AccountActivation extends StatelessWidget {
   const AccountActivation({Key? key}) : super(key: key);
 
@@ -33,11 +34,14 @@ class AccountActivation extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
                   'Phone Number Verification',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                  style: Get.textTheme.subtitle1?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 22.0,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -46,18 +50,23 @@ class AccountActivation extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 30.0, vertical: 8),
                 child: RichText(
                   text: TextSpan(
-                      text: "Enter the code sent to ",
-                      children: [
-                        TextSpan(
-                          text: controller.userPhoneNo,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
+                    text: "Enter the code sent to ",
+                    children: [
+                      TextSpan(
+                        text: controller.userPhoneNo,
+                        style: Get.textTheme.subtitle1?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                          fontSize: 15.0,
                         ),
-                      ],
-                      style:
-                          const TextStyle(color: Colors.black54, fontSize: 15)),
+                      ),
+                    ],
+                    style: Get.textTheme.subtitle1?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                      fontSize: 15.0,
+                    ),
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -83,7 +92,7 @@ class AccountActivation extends StatelessWidget {
                       controller: controller.textEditingController,
                       onCompleted: (v) {
                         if (controller.currentText.length == 6) {
-                          controller.verify(controller.currentText);
+                          controller.verifyCode();
                         }
                       },
                       onChanged: (value) {
@@ -101,31 +110,40 @@ class AccountActivation extends StatelessWidget {
                   controller.hasError
                       ? "Please enter valid verification code"
                       : "",
-                  style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
+                  style: Get.textTheme.subtitle1?.copyWith(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.red,
+                    fontSize: 16.0,
+                  ),
                 ),
               ),
               const SizedBox(
                 height: 20,
               ),
-              Obx(() => RichText(
+              Obx(
+                () => RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
                       text: "Didn't receive the code? ",
-                      style: const TextStyle(color: Colors.black54, fontSize: 15),
+                      style: Get.textTheme.subtitle1?.copyWith(
+                        color: Colors.black54,
+                        fontSize: 15.0,
+                      ),
                       children: [
                         TextSpan(
-                            text: controller.isActive ? ' ${controller.start} s' : " RESEND",
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => controller.reSend(),
-                            style: TextStyle(
-                                color: controller.isActive
-                                    ? Colors.black54
-                                    : Colors.blue,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16))
+                          text: controller.isActive
+                              ? ' ${controller.start} s'
+                              : " RESEND",
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () => controller.reSend(),
+                          style: Get.textTheme.subtitle1?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: controller.isActive
+                                ? Colors.black54
+                                : Colors.blue,
+                            fontSize: 16.0,
+                          ),
+                        )
                       ]),
                 ),
               ),
@@ -140,10 +158,7 @@ class AccountActivation extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       if (controller.currentText.length == 6) {
-                        controller.verify(controller.currentText);
-                      } else {
-                        controller.errorController!.add(ErrorAnimationType
-                            .shake); // Triggering error shake animation
+                        controller.verifyCode();
                       }
                     },
                     child: Center(

@@ -22,18 +22,25 @@ class DeleteUserAccounts extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-           const Text(
+           Text(
             "Alert..!",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 20.0, color: Colors.red),
+             style: Get.textTheme.subtitle1?.copyWith(
+               fontWeight: FontWeight.bold,
+               color: Colors.red,
+               fontSize: 20.0,
+             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Text(
                 "All your data will be deleted Profile Info, "
                 "Appointments, Lab Tests, Medicines and Medical Records.",
-                style: TextStyle(fontSize: 16.0,),
+                style: Get.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black87,
+                  fontSize: 16.0,
+                ),
               ),
             ),
           ),

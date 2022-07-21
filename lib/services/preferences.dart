@@ -2,6 +2,8 @@ import 'package:amc/Server/api_fetch.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Styles/Keys.dart';
+
 class Preferences extends GetxService {
   static late SharedPreferences _preferences;
 
@@ -10,6 +12,11 @@ class Preferences extends GetxService {
       _preferences = await SharedPreferences.getInstance();
     } catch (_) {}
     return this;
+  }
+
+  void logOut() async {
+    _preferences.clear();
+    setBool(Keys.isFirstTime, false);
   }
 
   Future<void> setString(String key, String? value) async {
@@ -53,7 +60,7 @@ class Preferences extends GetxService {
     return false;
   }
 
-  static Future<bool> clear() async {
+  Future<bool> clear() async {
     try {
       ApiFetch.saveFCMToken("logout");
       await 0.delay();

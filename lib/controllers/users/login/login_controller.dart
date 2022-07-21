@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../Server/ServerConfig.dart';
 import '../../../Server/api_fetch.dart';
-import '../../../Utilities/Utilities.dart';
 import '../../../Widgets/loading_dialog.dart';
 import '../../../Widgets/loading_spinner.dart';
 import '../../../models/otp_model.dart';
@@ -21,6 +18,7 @@ class LoginController extends GetxController {
 
 
   void login() async {
+
     if (!formKey.currentState!.validate()) return;
     formKey.currentState!.save();
     buttonAction(false);
@@ -43,20 +41,5 @@ class LoginController extends GetxController {
     }
     Get.offAllNamed(AppRoutes.accountActivation,
         arguments: {'Response': user, "isLogin": true});
-  }
-  Future<bool> sendPassword(String phone) async {
-    if (await Utilities.isOnline()) {
-      String response = await Utilities.httpPost(ServerConfig.remindAccount + "&resetphone=$phone");
-      Loading.dismiss();
-      if (response != "404") {
-        String message = jsonDecode(response)["Response"]["Response"];
-        Utilities.showToast(message.replaceAll("Invalid Phone number. ", ""));
-        if (message.contains("User does not exit")) {
-          return false;
-        }
-        return true;
-      }
-    }
-    return false;
   }
 }

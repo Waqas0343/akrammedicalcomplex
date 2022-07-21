@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Server/ServerConfig.dart';
 import '../../../Styles/Keys.dart';
 import '../../../Utilities/Utilities.dart';
@@ -9,6 +8,7 @@ import '../../../Widgets/loading_dialog.dart';
 import '../../../Widgets/loading_spinner.dart';
 import '../../../models/login_model.dart';
 import '../../../routes/routes.dart';
+import '../../../services/preferences.dart';
 
 class SignUpController extends GetxController {
   String? name, phone, email;
@@ -29,11 +29,6 @@ class SignUpController extends GetxController {
     email = emailController.text.toString().trim();
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable;
-      enableButton();
-      return;
-    }
-    if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable;
       return;
     }
     Get.dialog(const LoadingSpinner());
@@ -44,23 +39,21 @@ class SignUpController extends GetxController {
     }
     Loading.dismiss();
     if (response != "404") {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
       User user = loginFromJson(response).response!.user!;
-      preferences.setString(Keys.phone, user.phone!);
-      preferences.setString(Keys.otp, user.otpCode.toString());
-      preferences.setString(Keys.email, user.email!);
-      preferences.setString(Keys.name, user.name!);
+      Get.find<Preferences>().setString(Keys.phone, user.phone!);
+      Get.find<Preferences>().setString(Keys.otp, user.otpCode.toString());
+      Get.find<Preferences>().setString(Keys.email, user.email!);
+      Get.find<Preferences>().setString(Keys.name, user.name!);
 
-      Get.toNamed(AppRoutes.accountActivation,
-          arguments: { "isLogin": false, "userPhone": user.phone, "userOTP": user.otpCode.toString()});
+      Get.toNamed(AppRoutes.accountActivation, arguments: {
+        "isLogin": false,
+        "userPhone": user.phone,
+        "userOTP": user.otpCode.toString()
+      });
     } else {
       Utilities.showToast("Unable to create account, try again later.");
     }
     enableButton();
-  }
-
-  void disableButton() {
-    isTaped = false;
   }
 
   void enableButton() {

@@ -2,9 +2,12 @@ import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/firebase_options.dart';
 import 'package:amc/routes/pages.dart';
 import 'package:amc/routes/routes.dart';
+import 'package:amc/services/preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 void main() async {
@@ -12,6 +15,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await Get.putAsync(() => Preferences().initial());
   runApp(GetMaterialApp(
     title: 'amc',
     debugShowCheckedModeBanner: false,

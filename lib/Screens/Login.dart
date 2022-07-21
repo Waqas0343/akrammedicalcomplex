@@ -10,8 +10,9 @@ import '../Widgets/text_format.dart';
 import '../controllers/users/login/login_controller.dart';
 import '../routes/routes.dart';
 
-class Login  extends StatelessWidget {
-  const Login ({Key? key}) : super(key: key);
+class Login extends StatelessWidget {
+  const Login({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final loginController = Get.put(LoginController());
@@ -47,13 +48,14 @@ class Login  extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Login",
-                              style: TextStyle(
-                                  color: MyColors.primary,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 24),
                               textAlign: TextAlign.center,
+                              style: Get.textTheme.subtitle1?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: MyColors.primary,
+                                fontSize: 24.0,
+                              ),
                             ),
                             const SizedBox(
                               height: 16,
@@ -61,26 +63,29 @@ class Login  extends StatelessWidget {
                             TextFormField(
                               keyboardType: TextInputType.phone,
                               maxLength: 11,
-                              inputFormatters: [Utilities.onlyNumberFormat(),],
+                              inputFormatters: [
+                                Utilities.onlyNumberFormat(),
+                              ],
                               textInputAction: TextInputAction.done,
                               focusNode: loginController.phoneFocus,
                               controller: loginController.phoneController,
-                              onFieldSubmitted: (text) => Get.focusScope!.unfocus(),
+                              onFieldSubmitted: (text) =>
+                                  Get.focusScope!.unfocus(),
                               validator: (text) {
                                 if (text!.isEmpty) {
                                   return 'Can\'t be Empty';
-                                } else if (!GetUtils.hasMatch(text, MyTextFormats.validNumber.pattern)) {
+                                } else if (!GetUtils.hasMatch(
+                                    text, MyTextFormats.validNumber.pattern)) {
                                   return "Phone ${Keys.onlyNumbers}";
-                                } else if (!GetUtils.hasMatch(text, MyTextFormats.phonePattern.pattern)) {
+                                } else if (!GetUtils.hasMatch(
+                                    text, MyTextFormats.phonePattern.pattern)) {
                                   return 'Invalid number';
                                 }
                                 return null;
                               },
                               onSaved: (text) => loginController.loginID = text,
                               decoration: const InputDecoration(
-                                  hintText: "Phone",
-                                  counterText: ""
-                              ),
+                                  hintText: "Phone", counterText: ""),
                             ),
                             const SizedBox(
                               height: 8,
@@ -100,14 +105,17 @@ class Login  extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed:(){
+                        onPressed: () {
                           loginController.buttonAction.value;
                           loginController.login();
                         },
-                        child: const Text(
+                        child: Text(
                           "Login",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Get.textTheme.subtitle1?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
                     ),
@@ -115,22 +123,28 @@ class Login  extends StatelessWidget {
                       height: 16,
                     ),
                     RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: "Don't have an Account? ",
-                          style: const TextStyle(color: Colors.black),
-                          children: [
-                            TextSpan(
-                                text: "Get Registered",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: MyColors.primary),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Get.toNamed(AppRoutes.signUp);
-                                  })
-                          ],
-                        )),
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: "Don't have an Account? ",
+                        style: Get.textTheme.subtitle1?.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: "Get Registered",
+                            style: Get.textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: MyColors.primary,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Get.toNamed(AppRoutes.signUp);
+                              },
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -139,9 +153,11 @@ class Login  extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    const Text(
+                    Text(
                       "Smart Hospital App by ",
-                      style: TextStyle(fontSize: 16.0),
+                      style: Get.textTheme.subtitle1?.copyWith(
+                        fontSize: 16.0,
+                      ),
                     ),
                     Image.asset(
                       MyImages.instaLogoBlue,

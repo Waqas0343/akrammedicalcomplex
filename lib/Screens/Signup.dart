@@ -10,8 +10,9 @@ import '../Widgets/text_format.dart';
 import '../controllers/users/register/signup_controller.dart';
 import '../routes/routes.dart';
 
-class SignUp  extends StatelessWidget {
-  const SignUp ({Key? key}) : super(key: key);
+class SignUp extends StatelessWidget {
+  const SignUp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(SignUpController());
@@ -43,12 +44,13 @@ class SignUp  extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               "Register",
-                              style: TextStyle(
-                                  color: MyColors.primary,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 24),
+                              style: Get.textTheme.subtitle1?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: MyColors.primary,
+                                fontSize: 24.0,
+                              ),
                               textAlign: TextAlign.center,
                             ),
 
@@ -57,7 +59,7 @@ class SignUp  extends StatelessWidget {
                             ),
                             TextFormField(
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
                               controller: controller.nameController,
@@ -78,10 +80,12 @@ class SignUp  extends StatelessWidget {
                             ),
                             TextFormField(
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               keyboardType: TextInputType.phone,
                               maxLength: 11,
-                              inputFormatters: [Utilities.onlyNumberFormat(),],
+                              inputFormatters: [
+                                Utilities.onlyNumberFormat(),
+                              ],
                               textInputAction: TextInputAction.next,
                               controller: controller.phoneController,
                               onSaved: (text) => controller.phone = text,
@@ -100,7 +104,6 @@ class SignUp  extends StatelessWidget {
                                   labelText: 'Phone',
                                   hintText: "e.g 03XXXXXXXXX",
                                   counterText: ""),
-
                             ),
                             const SizedBox(
                               height: 8,
@@ -108,20 +111,18 @@ class SignUp  extends StatelessWidget {
                             // Login ID
                             TextFormField(
                               autovalidateMode:
-                              AutovalidateMode.onUserInteraction,
+                                  AutovalidateMode.onUserInteraction,
                               keyboardType: TextInputType.emailAddress,
                               controller: controller.emailController,
                               onSaved: (text) => controller.email = text,
                               validator: (text) {
                                 if (text!.trim().isEmpty) {
                                   return "Can't be empty";
-                                }
-                                else if (text.isEmpty) {
+                                } else if (text.isEmpty) {
                                   return null;
-                                }
-                                else if (text.isNotEmpty &&
-                                    !GetUtils.hasMatch(
-                                        text, MyTextFormats.validEmail.pattern)) {
+                                } else if (text.isNotEmpty &&
+                                    !GetUtils.hasMatch(text,
+                                        MyTextFormats.validEmail.pattern)) {
                                   return "Invalid Email";
                                 } else if (!GetUtils.isEmail(text)) {
                                   return "Invalid Email";
@@ -132,12 +133,10 @@ class SignUp  extends StatelessWidget {
                                   labelText: 'Email',
                                   hintText: "e.g example@gmail.com",
                                   counterText: ""),
-
                             ),
                             const SizedBox(
                               height: 8,
                             ),
-
                           ],
                         ),
                       ),
@@ -156,14 +155,17 @@ class SignUp  extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed:(){
+                        onPressed: () {
                           controller.buttonAction.value;
                           controller.registerPatient();
-                        } ,
+                        },
                         child: Text(
                           controller.buttonText,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                          style: Get.textTheme.subtitle1?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
                         ),
                       ),
                     ),
@@ -174,13 +176,16 @@ class SignUp  extends StatelessWidget {
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           text: "Already a member? ",
-                          style: const TextStyle(color: Colors.black),
+                          style: Get.textTheme.subtitle1?.copyWith(
+                            color: Colors.black,
+                          ),
                           children: [
                             TextSpan(
                                 text: "Login",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: MyColors.primary),
+                                style: Get.textTheme.subtitle1?.copyWith(
+                                  color: MyColors.primary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Get.toNamed(AppRoutes.login);

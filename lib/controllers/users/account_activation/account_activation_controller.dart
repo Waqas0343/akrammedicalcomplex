@@ -1,40 +1,35 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:amc/Server/api_fetch.dart';
 import 'package:amc/services/preferences.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Screens/account_creation/LocationGettingScreen.dart';
 import '../../../Screens/accounts/user_accounts.dart';
-import '../../../Server/ServerConfig.dart';
 import '../../../Styles/Keys.dart';
 import '../../../Utilities/Utilities.dart';
-import '../../../Widgets/loading_dialog.dart';
-import '../../../Widgets/loading_spinner.dart';
+import '../../../models/login_model.dart';
 import '../../../models/otp_model.dart';
 
 class AccountActivationController extends GetxController {
-  final RxString _phone = RxString('');
-  OTPResponse? _otpResponse;
   late Timer _timer;
-  final RxInt start = RxInt(60);
-  final RxBool _isActive = RxBool(true);
   bool hasError = false;
   String currentText = "";
   String userPhoneNo = " ";
-  String otp = " ";
-  bool isLogin = false;
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
-  TextEditingController textEditingController = TextEditingController();
-  late SharedPreferences preferences;
   String? username;
   bool isTaped = true;
   String buttonText = "Verify";
+  String otp = " ";
+  bool isLogin = false;
+  final RxInt start = RxInt(60);
+  final RxString _phone = RxString('');
+  final RxBool _isActive = RxBool(true);
+  OTPResponse? _otpResponse;
+  User? _user;
+  final formKey = GlobalKey<FormState>();
   StreamController<ErrorAnimationType>? errorController;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController textEditingController = TextEditingController();
 
   @override
   void onInit() {
@@ -98,7 +93,39 @@ class AccountActivationController extends GetxController {
     }
   }
 
-  void verify(String code) {
+  void verifyCode() {
+    String code;
+    String? genCode;
+    if (isLogin) {
+      code = _otpResponse!.otpCode.toString();
+    } else {
+      code = otp;
+    }
+    try {
+      String lastNoString = phone.substring(phone.length - 6);
+      int codeInt = int.tryParse(lastNoString)!;
+      genCode = ((codeInt / 1.5) + codeInt).toInt().toString();
+      if (genCode.length > 6) {
+        genCode = genCode.substring(1);
+      } else if (genCode.length == 5) {
+        genCode += "6";
+      } else if (genCode.length == 4) {
+        genCode += "65";
+      } else if (genCode.length == 3) {
+        genCode += "654";
+      } else if (genCode.length == 2) {
+        genCode += "6543";
+      } else if (genCode.length == 1) {
+        genCode += "65432";
+      } else if (genCode.isEmpty) {
+        genCode += "654321";
+      }
+    } catch (_) {}
+
+    if (currentText != code && currentText != genCode) {
+      errorController!.add(ErrorAnimationType.shake);
+      return;
+    }
     if (isLogin) {
       Get.to(
         () => UserAccounts(list: _otpResponse),

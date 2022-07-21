@@ -33,11 +33,13 @@ class UserAccounts extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 6.0, right: 6.0),
                 child: Card(
                   child: ListTile(
-                    leading:  Text("${index + 1}"),
+                    leading: Text("${index + 1}"),
                     title: Text(
                       userShortModel?.name ?? '',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                      style: Get.textTheme.subtitle1?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
                     ),
                     trailing: const Icon(Icons.keyboard_arrow_right),
                   ),

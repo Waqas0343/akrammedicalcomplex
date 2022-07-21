@@ -8,6 +8,7 @@ import '../../Widgets/loading_spinner.dart';
 import '../../models/login_model.dart';
 import '../../models/otp_model.dart';
 import '../../Screens/home.dart';
+import '../../services/preferences.dart';
 
 class UserAccountsController extends GetxController {
   RxList<UserShortModel> accounts = RxList<UserShortModel>();
@@ -31,19 +32,18 @@ class UserAccountsController extends GetxController {
     Get.offAll(()=> const Home());
   }
   Future<void> setPreferences(User user) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(Keys.username,  user.username??'');
-    sharedPreferences.setString(Keys.name, user.name??'');
-    sharedPreferences.setString(Keys.phone,user.phone??'');
-    sharedPreferences.setString(Keys.image, user.imagePath??'');
-    sharedPreferences.setString(Keys.email, user.email??'');
-    sharedPreferences.setString(Keys.sessionToken,user.sessionToken??'');
-    sharedPreferences.setString(Keys.address, user.huAddress!.location??'');
-    sharedPreferences.setString(Keys.city, user.huAddress!.city??'');
-    sharedPreferences.setString(Keys.area, user.huAddress!.area??'');
+    Get.find<Preferences>().setString(Keys.phone, user.phone!);
+    Get.find<Preferences>().setString(Keys.username,  user.username??'');
+    Get.find<Preferences>().setString(Keys.name, user.name??'');
+    Get.find<Preferences>().setString(Keys.image, user.imagePath??'');
+    Get.find<Preferences>().setString(Keys.email, user.email??'');
+    Get.find<Preferences>().setString(Keys.sessionToken,user.sessionToken??'');
+    Get.find<Preferences>().setString(Keys.address, user.huAddress!.location??'');
+    Get.find<Preferences>().setString(Keys.city, user.huAddress!.city??'');
+    Get.find<Preferences>().setString(Keys.area, user.huAddress!.area??'');
   }
   void getPreferences() async {
-    phone(Get.find<SharedPreferences>().getString(Keys.username));
+    phone(Get.find<Preferences>().getString(Keys.username));
   }
 
 }
