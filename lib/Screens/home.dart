@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:amc/Screens/AppDrawer.dart';
 import 'package:amc/Server/ServerConfig.dart';
+import 'package:amc/Server/api_fetch.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyIcons.dart';
@@ -100,8 +101,8 @@ class _HomeState extends State<Home> {
                     child: GestureDetector(
                       onTap: () {
                         Get.to(() => const FindDoctor(
-                          isSearching: true,
-                        ));
+                              isSearching: true,
+                            ));
                       },
                       child: TextFormField(
                         enabled: false,
@@ -143,8 +144,8 @@ class _HomeState extends State<Home> {
                     child: Row(
                       children: [
                         Text(
-                          timeWishes(''), style: const TextStyle(fontSize: 14),
-
+                          timeWishes(''),
+                          style: const TextStyle(fontSize: 14),
                         ),
                         Text(
                           ' $username !',
@@ -169,10 +170,9 @@ class _HomeState extends State<Home> {
                         title: "Find the Best \nSpecialist",
                         icon: MyIcons.icDoctorColored,
                         onTap: () {
-
                           Get.to(() => const FindDoctor(
-                            isSearching: true,
-                          ));
+                                isSearching: true,
+                              ));
                         },
                       ),
                       HomeWidget(
@@ -351,23 +351,10 @@ class _HomeState extends State<Home> {
 
     _firebaseMessaging.getToken().then((String? token) {
       assert(token != null);
-      saveTokenTask(token: token);
+      ApiFetch.saveFCMToken(token!);
     });
   }
 
-  static saveTokenTask({required String? token}) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? username = preferences.getString(Keys.username);
-
-    String response = await Utilities.httpPost(ServerConfig.saveToken +
-        '&deviceType=Flutter&username=$username&token=$token');
-
-    if (response != '404') {
-      if (kDebugMode) {
-        print("Token was saved Successfully");
-      }
-    }
-  }
   showNotification({String? title, String? body}) async {
     var android = const AndroidNotificationDetails("Updates", "Updates",
         importance: Importance.defaultImportance,

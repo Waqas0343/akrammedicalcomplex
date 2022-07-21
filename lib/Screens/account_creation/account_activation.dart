@@ -15,7 +15,7 @@ class AccountActivation extends StatelessWidget {
       key: controller.scaffoldKey,
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(FocusNode());
+          Get.focusScope?.unfocus();
         },
         child: SizedBox(
           height: MediaQuery.of(context).size.height,

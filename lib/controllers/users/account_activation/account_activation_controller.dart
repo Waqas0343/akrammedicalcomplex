@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:amc/Server/api_fetch.dart';
+import 'package:amc/services/preferences.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +20,7 @@ class AccountActivationController extends GetxController {
   final RxString _phone = RxString('');
   OTPResponse? _otpResponse;
   late Timer _timer;
-  RxInt start = 60.obs;
+  final RxInt start = RxInt(60);
   final RxBool _isActive = RxBool(true);
   bool hasError = false;
   String currentText = "";
@@ -36,7 +38,7 @@ class AccountActivationController extends GetxController {
 
   @override
   void onInit() {
-    getPreferences();
+    Get.find<Preferences>().getString(Keys.username);
     startTimer();
     errorController = StreamController<ErrorAnimationType>();
     isLogin = Get.arguments['isLogin'];
@@ -46,9 +48,9 @@ class AccountActivationController extends GetxController {
       try {
         _phone(_otpResponse!.userList!.first.phone);
       } catch (_) {}
-     } else{
-         userPhoneNo =  Get.arguments['userPhone'];
-         otp =Get.arguments['userOTP'];
+    } else {
+      userPhoneNo = Get.arguments['userPhone'];
+      otp = Get.arguments['userOTP'];
     }
     super.onInit();
   }
@@ -76,68 +78,34 @@ class AccountActivationController extends GetxController {
     );
   }
 
-  void reSend() async {
-    if (otp == currentText) {
-      Get.to(() => const LocationGettingScreen(false));
+  Future reSend() async {
+    if (_timer.isActive) {
+      return;
     }
+
+    _timer.cancel();
+    startTimer();
+    start.value = 60;
+
     if (!await Utilities.isOnline()) {
       Utilities.internetNotAvailable;
       return;
     }
-    if (_timer.isActive) {
-      return;
-    } else {
-      _timer.cancel();
-      startTimer();
-      start = 60.obs;
-    }
 
-    String response = await Utilities.httpPost(
-        ServerConfig.resendCode + '&phone=$userPhoneNo');
-    if (response != "404") {
-      if (jsonDecode(response)["Response"]["Response"] == "Success") {
-        enableButton();
-        if (kDebugMode) {
-          print("Pin code has been sent");
-        }
-      }
-    } else {
+    bool result = await ApiFetch.resendCode(userPhoneNo);
+    if (!result) {
       Utilities.showToast("Unable to send");
     }
-    enableButton();
   }
 
-  void verify(String code) async {
-    disableButton();
-    if (isLogin == true) {
-      Get.dialog(const LoadingSpinner());
+  void verify(String code) {
+    if (isLogin) {
       Get.to(
         () => UserAccounts(list: _otpResponse),
       );
-    } else if (isLogin == false) {
+    } else {
       Get.to(() => const LocationGettingScreen(false));
     }
-    disableButton();
-    if (!await Utilities.isOnline()) {
-      enableButton();
-      Utilities.internetNotAvailable;
-      return;
-    }
-    Loading.dismiss();
-    enableButton();
-  }
-
-  void getPreferences() async {
-    preferences = await SharedPreferences.getInstance();
-    username = preferences.getString(Keys.USERNAME);
-  }
-
-  void disableButton() {
-    isTaped = false;
-  }
-
-  void enableButton() {
-    isTaped = true;
   }
 
   int get countDown => start.value;
