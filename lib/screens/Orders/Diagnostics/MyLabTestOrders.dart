@@ -2,7 +2,6 @@ import 'package:amc/models/lab_test_order_model.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Server/ServerConfig.dart';
-import 'package:amc/Screens/Orders/Diagnostics/LabTestOrderDetails.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';

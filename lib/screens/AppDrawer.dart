@@ -1,9 +1,10 @@
 import 'package:amc/Screens/Prescription/MyPrescriptions.dart';
 import 'package:amc/Widgets/cache_image.dart';
+import 'package:amc/services/preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Screens/Bookings/BookTreatment.dart';
 import 'package:amc/Screens/Bookings/SelectTestType.dart';
-import 'package:amc/Screens/Login.dart';
+import 'package:amc/Screens/login.dart';
 import 'package:amc/Screens/MyBooking/MyBooking.dart';
 import 'package:amc/Screens/Settings/Settings.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -31,8 +32,6 @@ class AppDrawer extends StatefulWidget {
 }
 
 class _AppDrawerState extends State<AppDrawer> {
-  late SharedPreferences preferences;
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -122,15 +121,6 @@ class _AppDrawerState extends State<AppDrawer> {
                   isDropdown: false,
                   onTap: () {
                     Navigator.pop(context);
-                  },
-                ),
-                DrawerList(
-                  title: "Delete Accounts",
-                  icon: MyIcons.icProfile,
-                  isBottomBorder: true,
-                  isDropdown: false,
-                  onTap: () {
-                    Get.toNamed(AppRoutes.deleteAccounts);
                   },
                 ),
                 DrawerList(
@@ -246,16 +236,23 @@ class _AppDrawerState extends State<AppDrawer> {
                 //   },
                 // ),
                 DrawerList(
+                  title: "Delete Accounts",
+                  icon: MyIcons.icProfile,
+                  isBottomBorder: true,
+                  isDropdown: false,
+                  onTap: () {
+                    Get.toNamed(AppRoutes.deleteAccounts);
+                  },
+                ),
+
+                DrawerList(
                   title: "Logout",
                   icon: MyIcons.icLogout,
                   isBottomBorder: true,
                   isDropdown: false,
                   onTap: () {
-                    preferences.setBool(Keys.status, false);
-                    Route newRoute =
-                        MaterialPageRoute(builder: (_) => const Login());
-                    Navigator.pushAndRemoveUntil(
-                        context, newRoute, (route) => false);
+                    Get.find<Preferences>().clear();
+                    Get.offAllNamed(AppRoutes.login);
                   },
                 ),
               ],
@@ -422,11 +419,6 @@ class _AppDrawerState extends State<AppDrawer> {
     );
   }
 
-  @override
-  void initState() {
-    updateUi();
-    super.initState();
-  }
 
   Widget subMenu() {
     return DropdownButton(
@@ -441,8 +433,4 @@ class _AppDrawerState extends State<AppDrawer> {
         onChanged: null);
   }
 
-
-  void updateUi() async {
-    preferences = await SharedPreferences.getInstance();
-  }
 }

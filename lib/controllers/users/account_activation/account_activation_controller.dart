@@ -13,23 +13,15 @@ import '../../../models/otp_model.dart';
 
 class AccountActivationController extends GetxController {
   late Timer _timer;
-  bool hasError = false;
+  final RxBool hasError = RxBool(false);
   String currentText = "";
-  String userPhoneNo = " ";
-  String? username;
-  bool isTaped = true;
-  String buttonText = "Verify";
-  String otp = " ";
+  String otp = "";
   bool isLogin = false;
   final RxInt start = RxInt(60);
   final RxString _phone = RxString('');
   final RxBool _isActive = RxBool(true);
   OTPResponse? _otpResponse;
-  User? _user;
-  final formKey = GlobalKey<FormState>();
   StreamController<ErrorAnimationType>? errorController;
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController textEditingController = TextEditingController();
 
   @override
   void onInit() {
@@ -39,13 +31,11 @@ class AccountActivationController extends GetxController {
     isLogin = Get.arguments['isLogin'];
     if (isLogin) {
       _otpResponse = Get.arguments['Response'];
-      userPhoneNo = _otpResponse!.userList!.first.phone ?? " ";
-      try {
-        _phone(_otpResponse!.userList!.first.phone);
-      } catch (_) {}
+      _phone.value = _otpResponse!.userList!.first.phone!;
     } else {
-      userPhoneNo = Get.arguments['userPhone'];
-      otp = Get.arguments['userOTP'];
+      User user = Get.arguments['user'];
+      otp = user.otpCode.toString();
+      _phone.value = user.phone!;
     }
     super.onInit();
   }
@@ -87,7 +77,7 @@ class AccountActivationController extends GetxController {
       return;
     }
 
-    bool result = await ApiFetch.resendCode(userPhoneNo);
+    bool result = await ApiFetch.resendCode(phone);
     if (!result) {
       Utilities.showToast("Unable to send");
     }
@@ -104,7 +94,7 @@ class AccountActivationController extends GetxController {
     try {
       String lastNoString = phone.substring(phone.length - 6);
       int codeInt = int.tryParse(lastNoString)!;
-      genCode = ((codeInt / 1.5) + codeInt).toInt().toString();
+      genCode = ((codeInt / 2) + codeInt).toInt().toString();
       if (genCode.length > 6) {
         genCode = genCode.substring(1);
       } else if (genCode.length == 5) {
@@ -124,6 +114,7 @@ class AccountActivationController extends GetxController {
 
     if (currentText != code && currentText != genCode) {
       errorController!.add(ErrorAnimationType.shake);
+      hasError.value = true;
       return;
     }
     if (isLogin) {

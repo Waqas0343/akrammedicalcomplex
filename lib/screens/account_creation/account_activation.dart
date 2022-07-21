@@ -13,7 +13,6 @@ class AccountActivation extends StatelessWidget {
     final controller = Get.put(AccountActivationController());
     return Scaffold(
       backgroundColor: Colors.white,
-      key: controller.scaffoldKey,
       body: GestureDetector(
         onTap: () {
           Get.focusScope?.unfocus();
@@ -38,10 +37,7 @@ class AccountActivation extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Text(
                   'Phone Number Verification',
-                  style: Get.textTheme.subtitle1?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 22.0,
-                  ),
+                  style: Get.textTheme.headlineSmall,
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -53,19 +49,13 @@ class AccountActivation extends StatelessWidget {
                     text: "Enter the code sent to ",
                     children: [
                       TextSpan(
-                        text: controller.userPhoneNo,
-                        style: Get.textTheme.subtitle1?.copyWith(
+                        text: controller.phone,
+                        style: Get.textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                          fontSize: 15.0,
                         ),
                       ),
                     ],
-                    style: Get.textTheme.subtitle1?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                      fontSize: 15.0,
-                    ),
+                    style: Get.textTheme.bodyLarge,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -73,49 +63,43 @@ class AccountActivation extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              Form(
-                key: controller.formKey,
-                child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 80),
-                    child: PinCodeTextField(
-                      keyboardType: TextInputType.number,
-                      length: 6,
-                      pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.underline,
-                        borderRadius: BorderRadius.circular(5),
-                        fieldHeight: 50,
-                        fieldWidth: 30,
-                      ),
-                      animationDuration: const Duration(milliseconds: 100),
-                      errorAnimationController: controller.errorController,
-                      controller: controller.textEditingController,
-                      onCompleted: (v) {
-                        if (controller.currentText.length == 6) {
-                          controller.verifyCode();
-                        }
-                      },
-                      onChanged: (value) {
-                        controller.currentText = value;
-                      },
-                      beforeTextPaste: (text) {
-                        return true;
-                      },
-                      appContext: context,
-                    )),
-              ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Text(
-                  controller.hasError
-                      ? "Please enter valid verification code"
-                      : "",
-                  style: Get.textTheme.subtitle1?.copyWith(
-                    fontWeight: FontWeight.w400,
-                    color: Colors.red,
-                    fontSize: 16.0,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8.0,
+                    horizontal: 32,
                   ),
-                ),
+                  child: PinCodeTextField(
+                    keyboardType: TextInputType.number,
+                    length: 6,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.box,
+                    ),
+                    animationDuration: const Duration(milliseconds: 100),
+                    errorAnimationController: controller.errorController,
+                    onCompleted: (v) {
+                      if (controller.currentText.length == 6) {
+                        controller.verifyCode();
+                      }
+                    },
+                    onChanged: (value) {
+                      controller.hasError.value = false;
+                      controller.currentText = value;
+                    },
+                    beforeTextPaste: (text) {
+                      return true;
+                    },
+                    appContext: context,
+                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                child: Obx(() {
+                  return Text(
+                    controller.hasError.value
+                        ? "Please enter valid verification code"
+                        : "",
+                    style: Get.textTheme.bodyLarge?.copyWith(color: Colors.red),
+                  );
+                }),
               ),
               const SizedBox(
                 height: 20,
@@ -161,10 +145,10 @@ class AccountActivation extends StatelessWidget {
                         controller.verifyCode();
                       }
                     },
-                    child: Center(
+                    child: const Center(
                       child: Text(
-                        controller.buttonText.toUpperCase(),
-                        style: const TextStyle(
+                        "Verify",
+                        style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),

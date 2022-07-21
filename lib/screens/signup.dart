@@ -62,8 +62,6 @@ class SignUp extends StatelessWidget {
                                   AutovalidateMode.onUserInteraction,
                               keyboardType: TextInputType.text,
                               textInputAction: TextInputAction.next,
-                              controller: controller.nameController,
-                              inputFormatters: [Utilities.onlyTextFormat()],
                               onSaved: (text) => controller.name = text,
                               validator: (text) {
                                 if (text!.trim().isEmpty) {
@@ -87,7 +85,6 @@ class SignUp extends StatelessWidget {
                                 Utilities.onlyNumberFormat(),
                               ],
                               textInputAction: TextInputAction.next,
-                              controller: controller.phoneController,
                               onSaved: (text) => controller.phone = text,
                               validator: (text) {
                                 if (text!.trim().isEmpty) {
@@ -113,7 +110,6 @@ class SignUp extends StatelessWidget {
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               keyboardType: TextInputType.emailAddress,
-                              controller: controller.emailController,
                               onSaved: (text) => controller.email = text,
                               validator: (text) {
                                 if (text!.trim().isEmpty) {
@@ -155,12 +151,9 @@ class SignUp extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: () {
-                          controller.buttonAction.value;
-                          controller.registerPatient();
-                        },
+                        onPressed: controller.registerPatient,
                         child: Text(
-                          controller.buttonText,
+                          "Create Account",
                           style: Get.textTheme.subtitle1?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

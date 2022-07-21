@@ -9,6 +9,7 @@ import '../../Widgets/loading_spinner.dart';
 import '../../services/preferences.dart';
 
 class DeleteUserAccountsController extends GetxController {
+
   Future<bool> deleteRecord() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? username = preferences.getString(Keys.username);
@@ -19,17 +20,9 @@ class DeleteUserAccountsController extends GetxController {
     Get.back();
     if (response) {
       Utilities.showToast("Your Accounts Delete Successfully");
-      logout();
+      Get.find<Preferences>().clear();
+      Get.offAllNamed(AppRoutes.login);
     }
     return response;
-  }
-
-  Future<void> logout() async {
-    Get.dialog(const LoadingSpinner(), barrierDismissible: false);
-    Get.find<Preferences>().clear();
-    await ApiFetch.saveFCMToken('logout');
-    Get.find<Preferences>().logOut();
-    Get.back();
-    Get.offAllNamed(AppRoutes.login);
   }
 }

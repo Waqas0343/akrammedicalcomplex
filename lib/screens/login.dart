@@ -40,7 +40,7 @@ class Login extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Card(
-                      elevation: 8,
+                      elevation: 2,
                       margin: const EdgeInsets.symmetric(horizontal: 24),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -51,10 +51,8 @@ class Login extends StatelessWidget {
                             Text(
                               "Login",
                               textAlign: TextAlign.center,
-                              style: Get.textTheme.subtitle1?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: MyColors.primary,
-                                fontSize: 24.0,
+                              style: Get.textTheme.headlineSmall?.copyWith(
+                                color: Get.theme.primaryColor,
                               ),
                             ),
                             const SizedBox(
@@ -63,12 +61,7 @@ class Login extends StatelessWidget {
                             TextFormField(
                               keyboardType: TextInputType.phone,
                               maxLength: 11,
-                              inputFormatters: [
-                                Utilities.onlyNumberFormat(),
-                              ],
                               textInputAction: TextInputAction.done,
-                              focusNode: loginController.phoneFocus,
-                              controller: loginController.phoneController,
                               onFieldSubmitted: (text) =>
                                   Get.focusScope!.unfocus(),
                               validator: (text) {
@@ -83,9 +76,12 @@ class Login extends StatelessWidget {
                                 }
                                 return null;
                               },
-                              onSaved: (text) => loginController.loginID = text,
+                              onSaved: (text) => loginController.phone = text,
                               decoration: const InputDecoration(
-                                  hintText: "Phone", counterText: ""),
+                                hintText: "Phone",
+                                counterText: "",
+                                filled: false,
+                              ),
                             ),
                             const SizedBox(
                               height: 8,
@@ -105,10 +101,7 @@ class Login extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: () {
-                          loginController.buttonAction.value;
-                          loginController.login();
-                        },
+                        onPressed: loginController.login,
                         child: Text(
                           "Login",
                           style: Get.textTheme.subtitle1?.copyWith(
