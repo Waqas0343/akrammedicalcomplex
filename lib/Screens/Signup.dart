@@ -1,56 +1,20 @@
-import 'package:amc/models/login_model.dart';
-import 'package:amc/Screens/account_creation/ActivationCode.dart';
-import 'package:amc/Server/ServerConfig.dart';
-import 'package:amc/Styles/Keys.dart';
-import 'package:amc/Styles/MyColors.dart';
-import 'package:amc/Styles/MyImages.dart';
-import 'package:amc/Utilities/Utilities.dart';
-import 'package:amc/Widgets/loading_dialog.dart';
-import 'package:amc/routes/routes.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../Styles/Keys.dart';
+import '../Styles/MyColors.dart';
+import '../Styles/MyImages.dart';
+import '../Utilities/Utilities.dart';
+import '../Widgets/text_format.dart';
+import '../controllers/users/register/signup_controller.dart';
+import '../routes/routes.dart';
 
-import '../Widgets/loading_spinner.dart';
-
-class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
-
-  @override
-  _SignUpState createState() => _SignUpState();
-}
-class _SignUpState extends State<SignUp> {
-  final FocusNode nameFocus = FocusNode();
-  final FocusNode usernameFocus = FocusNode();
-  final FocusNode emailFocus = FocusNode();
-  final FocusNode phoneFocus = FocusNode();
-  final FocusNode passwordFocus = FocusNode();
-  final nameController = TextEditingController();
-  final emailController = TextEditingController();
-  final phoneController = TextEditingController();
-  final passwordController = TextEditingController();
-  var isNameEmpty = false;
-  var isUsernameEmpty = false;
-  var isPhoneEmpty = false;
-  var isPasswordEmpty = false;
-  var isEmailValidate = false;
-
-  String userNameError = "Username can't be empty";
-  String phoneError = "Phone can't be Empty";
-  String emailErrorMessage = "invalid email format";
-
-  late SharedPreferences preferences;
-  bool visible = true;
-
-  bool isTaped = true;
-  String buttonText = "Create Account";
-
+class SignUp  extends StatelessWidget {
+  const SignUp ({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SignUpController());
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
@@ -74,114 +38,108 @@ class _SignUpState extends State<SignUp> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Register",
-                            style: TextStyle(
-                                color: MyColors.primary,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 24),
-                            textAlign: TextAlign.center,
-                          ),
-
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          TextField(
-                            keyboardType: TextInputType.text,
-                            textInputAction: TextInputAction.next,
-                            focusNode: nameFocus,
-                            controller: nameController,
-                            inputFormatters: [Utilities.onlyTextFormat()],
-                            onChanged: (text) {
-                              if (text.isNotEmpty) {
-                                setState(() {
-                                  isNameEmpty = false;
-                                });
-                              }
-                            },
-                            onSubmitted: (text) {
-                              nameFocus.unfocus();
-                              FocusScope.of(context).requestFocus(phoneFocus);
-                            },
-                            decoration: InputDecoration(
-                              filled: false,
-                              hintText: "Full Name",
-                              errorText: isNameEmpty ? "Can't be Empty" : null,
+                      child: Form(
+                        key: controller.formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Register",
+                              style: TextStyle(
+                                  color: MyColors.primary,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 24),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          TextField(
-                            keyboardType: TextInputType.phone,
-                            maxLength: 11,
-                            inputFormatters: [
-                              Utilities.onlyNumberFormat(),
-                            ],
-                            textInputAction: TextInputAction.next,
-                            focusNode: phoneFocus,
-                            controller: phoneController,
-                            onChanged: (text) {
-                              if (text.isNotEmpty) {
-                                if (Utilities.numberHasValid(text)) {
-                                  setState(() {
-                                    isPhoneEmpty = false;
-                                  });
+
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            TextFormField(
+                              autovalidateMode:
+                              AutovalidateMode.onUserInteraction,
+                              keyboardType: TextInputType.text,
+                              textInputAction: TextInputAction.next,
+                              controller: controller.nameController,
+                              inputFormatters: [Utilities.onlyTextFormat()],
+                              onSaved: (text) => controller.name = text,
+                              validator: (text) {
+                                if (text!.trim().isEmpty) {
+                                  return "Can't be empty";
                                 }
-                              }
-                            },
-                            onSubmitted: (text) {
-                              phoneFocus.unfocus();
-                              FocusScope.of(context)
-                                  .requestFocus(usernameFocus);
-                            },
-                            decoration: InputDecoration(
-                              hintText: "Phone",
-                              filled: false,
-                              counterText: "",
-
-                              errorText: isPhoneEmpty ? phoneError : null,
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                labelText: 'Full Name',
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          // Login ID
-                          TextField(
-                            keyboardType: TextInputType.emailAddress,
-                            // textInputAction: TextInputAction.values,
-                            focusNode: emailFocus,
-                            controller: emailController,
-                            onChanged: (text) {
-                              if (text.isNotEmpty) {
-                                if (EmailValidator.validate(text)) {
-                                  setState(() {
-                                    isEmailValidate = false;
-                                  });
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            TextFormField(
+                              autovalidateMode:
+                              AutovalidateMode.onUserInteraction,
+                              keyboardType: TextInputType.phone,
+                              maxLength: 11,
+                              inputFormatters: [Utilities.onlyNumberFormat(),],
+                              textInputAction: TextInputAction.next,
+                              controller: controller.phoneController,
+                              onSaved: (text) => controller.phone = text,
+                              validator: (text) {
+                                if (text!.trim().isEmpty) {
+                                  return "Can't be empty";
+                                } else if (!GetUtils.hasMatch(
+                                    text, MyTextFormats.validNumber.pattern)) {
+                                  return "Phone ${Keys.onlyNumbers}";
+                                } else if (!MyTextFormats.phoneHasValid(text)) {
+                                  return "Invalid phone number";
                                 }
-                              }
-                            },
-                            onSubmitted: (text) {
-                              emailFocus.unfocus();
-                              FocusScope.of(context)
-                                  .requestFocus(emailFocus);
-                            },
-                            decoration: InputDecoration(
-                              hintText: "Email",
-                              filled: false,
-                              counterText: "",
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                  labelText: 'Phone',
+                                  hintText: "e.g 03XXXXXXXXX",
+                                  counterText: ""),
 
-                              errorText: isEmailValidate ? emailErrorMessage : null,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 8,
-                          ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            // Login ID
+                            TextFormField(
+                              autovalidateMode:
+                              AutovalidateMode.onUserInteraction,
+                              keyboardType: TextInputType.emailAddress,
+                              controller: controller.emailController,
+                              onSaved: (text) => controller.email = text,
+                              validator: (text) {
+                                if (text!.trim().isEmpty) {
+                                  return "Can't be empty";
+                                }
+                                else if (text.isEmpty) {
+                                  return null;
+                                }
+                                else if (text.isNotEmpty &&
+                                    !GetUtils.hasMatch(
+                                        text, MyTextFormats.validEmail.pattern)) {
+                                  return "Invalid Email";
+                                } else if (!GetUtils.isEmail(text)) {
+                                  return "Invalid Email";
+                                }
+                                return null;
+                              },
+                              decoration: const InputDecoration(
+                                  labelText: 'Email',
+                                  hintText: "e.g example@gmail.com",
+                                  counterText: ""),
 
-                        ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -198,9 +156,12 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                        onPressed: isTaped ? () => registerPatient() : null,
+                        onPressed:(){
+                          controller.buttonAction.value;
+                          controller.registerPatient();
+                        } ,
                         child: Text(
-                          buttonText,
+                          controller.buttonText,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 18),
                         ),
@@ -222,7 +183,7 @@ class _SignUpState extends State<SignUp> {
                                     color: MyColors.primary),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                   Get.toNamed(AppRoutes.login);
+                                    Get.toNamed(AppRoutes.login);
                                   })
                           ],
                         )),
@@ -250,126 +211,5 @@ class _SignUpState extends State<SignUp> {
         ),
       ),
     );
-  }
-
-  Future<void> registerPatient() async {
-    disableButton();
-    String name = nameController.text.toString().trim();
-    String phone = phoneController.text.toString().trim();
-    String email = emailController.text.toString().trim();
-    nameFocus.unfocus();
-    phoneFocus.unfocus();
-    emailFocus.unfocus();
-
-
-    if (!await Utilities.isOnline()) {
-      enableButton();
-      Utilities.internetNotAvailable(context);
-      return;
-    }
-    if (name.isEmpty) {
-      enableButton();
-      setState(() {
-        isNameEmpty = true;
-      });
-      return;
-    }
-
-    if (phone.isEmpty) {
-      enableButton();
-      setState(() {
-        isPhoneEmpty = true;
-      });
-      return;
-    } else if (!Utilities.numberHasValid(phone)) {
-      enableButton();
-      setState(() {
-        isPhoneEmpty = true;
-        phoneError = "Invalid phone number";
-      });
-      return;
-    }
-
-    if (email.isEmpty) {
-      bool validate = EmailValidator.validate(email);
-      if (!validate) {
-        setState(() {
-          isEmailValidate = true;
-          emailErrorMessage = "Enter email in format";
-        });
-        enableButton();
-        return;
-      }
-    }
-
-    Get.dialog(const LoadingSpinner());
-    String values = "&Type=Patient&Name=$name&Phone=$phone&Email=$email";
-    String response = await Utilities.httpPost(ServerConfig.signUp + values);
-    print(response);
-    Loading.dismiss();
-    if (response != "404") {
-      User user = loginFromJson(response).response!.user!;
-      preferences.setString(Keys.phone, user.phone!);
-      preferences.setString(Keys.otp, user.otpCode.toString());
-      preferences.setString(Keys.email, user.email!);
-      preferences.setString(Keys.name, user.name!);
-      Get.to(() => AccountActivation(
-          user.phone,user.otpCode.toString(),userList: null, isLogin:false
-      ));
-      // Route route = MaterialPageRoute(
-      //     builder: (context) => AccountActivation(
-      //           user.phone,user.otpCode.toString(),userList: null, isLogin:false
-      //         ));
-      // Navigator.pushAndRemoveUntil(context, route, (route) => false);
-    } else {
-      Utilities.showToast("Unable to create account, try again later.");
-    }
-    enableButton();
-  }
-
-  // Future<void> checkUserName(String username) async {
-  //   setState(() {
-  //     isUsernameFind = true;
-  //   });
-  //   String response = await Utilities.httpGet(
-  //       ServerConfig.checkUsername + "&email=$username");
-  //   setState(() {
-  //     isUsernameFind = false;
-  //   });
-  //   if (response != "404") {
-  //     if (jsonDecode(response)["Response"]["Response"] == true) {
-  //       setState(() {
-  //         userNameError = "Username already exists";
-  //         isUsernameEmpty = true;
-  //       });
-  //     } else {
-  //       setState(() {
-  //         userNameError = "Username can't be empty";
-  //         isUsernameEmpty = false;
-  //       });
-  //     }
-  //   }
-  // }
-
-  @override
-  void initState() {
-    updateUi();
-    super.initState();
-  }
-
-  void updateUi() async {
-    preferences = await SharedPreferences.getInstance();
-  }
-
-  void disableButton() {
-    setState(() {
-      isTaped = false;
-    });
-  }
-
-  void enableButton() {
-    setState(() {
-      isTaped = true;
-    });
   }
 }

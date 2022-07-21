@@ -53,11 +53,6 @@ void main() async {
     ),
     getPages: AppPages.pages,
     initialRoute: AppRoutes.splash,
-    // routes: <String, WidgetBuilder>{
-    //   '/login': (BuildContext context) => const Login(),
-    //   '/home': (BuildContext context) => const Home(),
-    //   '/signup': (BuildContext context) => const SignUp(),
-    // },
   ));
 }
 

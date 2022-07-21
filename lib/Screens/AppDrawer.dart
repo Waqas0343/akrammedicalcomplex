@@ -441,6 +441,7 @@ class _AppDrawerState extends State<AppDrawer> {
         onChanged: null);
   }
 
+
   void updateUi() async {
     preferences = await SharedPreferences.getInstance();
   }

@@ -1,12 +1,11 @@
 import 'package:amc/Utilities/Utilities.dart';
-import 'package:amc/routes/pages.dart';
 import 'package:amc/routes/routes.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Server/api_fetch.dart';
-import '../Styles/Keys.dart';
-import '../Widgets/loading_spinner.dart';
+import '../../Server/api_fetch.dart';
+import '../../Styles/Keys.dart';
+import '../../Widgets/loading_spinner.dart';
 
 class DeleteUserAccountsController extends GetxController {
   @override

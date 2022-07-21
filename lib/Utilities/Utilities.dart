@@ -5,6 +5,8 @@ import 'package:amc/Styles/Keys.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart' as getx;
+import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart';
 import 'package:flutter/foundation.dart';
 
@@ -82,32 +84,31 @@ class Utilities{
   }
 
   static Future<void> internetNotAvailable(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: Colors.white,
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.wifi_off,size: 60,),
-                const SizedBox(height: 16,),
-                const Text('No Internet Connection', style: TextStyle(fontWeight: FontWeight.bold),),
-                const SizedBox(height: 8,),
-                const Text('Internet access is required \nto use this feature.', textAlign: TextAlign.center,),
-                const SizedBox(height: 16,),
-                SizedBox(
-                  width: 120,
-                  child: OutlinedButton(onPressed: (){
-                    Navigator.pop(context);
-
-                  }, child: const Text("Cancel")),
-                )
-              ],
-            ),
-          );
-        });
+    return getx.Get.dialog(
+      AlertDialog(
+        backgroundColor: Colors.white,
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.wifi_off, size: 60,),
+            const SizedBox(height: 16,),
+            const Text('No Internet Connection',
+              style: TextStyle(fontWeight: FontWeight.bold),),
+            const SizedBox(height: 16,),
+            const Text('Internet access is required \nto use this feature.',
+              textAlign: TextAlign.center,),
+            const SizedBox(height: 16,),
+            SizedBox(
+              width: 120,
+              child: OutlinedButton(onPressed: () {
+                Get.back();
+              }, child: const Text("Cancel")),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   static TextInputFormatter onlyNumberFormat(){

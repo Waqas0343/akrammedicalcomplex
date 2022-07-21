@@ -9,6 +9,7 @@ import '../Screens/Orders/Medicines/MedicineOrderType.dart';
 import '../Screens/Prescription/MyPrescriptions.dart';
 import '../Screens/Settings/Settings.dart';
 import '../Screens/Signup.dart';
+import '../Screens/account_creation/account_activation.dart';
 import '../Screens/delete_user_account/delete_user_accounts.dart';
 import '../Screens/home.dart';
 import '../Splash.dart';
@@ -19,6 +20,7 @@ class AppPages {
     GetPage(name: AppRoutes.splash, page: () => const Splash()),
     GetPage(name: AppRoutes.login, page: () => const Login()),
     GetPage(name: AppRoutes.signUp, page: () => const SignUp()),
+    GetPage(name: AppRoutes.accountActivation, page: () => const AccountActivation()),
     GetPage(name: AppRoutes.home, page: () => const Home()),
     GetPage(name: AppRoutes.bookTreatment, page: () => const BookTreatment()),
     GetPage(name: AppRoutes.myTreatment, page: () => const MyTreatments()),

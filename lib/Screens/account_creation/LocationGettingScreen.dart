@@ -16,10 +16,7 @@ import '../home.dart';
 
 class LocationGettingScreen extends StatefulWidget {
   final bool isAlreadyExists;
-
   const LocationGettingScreen(this.isAlreadyExists, {Key? key}) : super(key: key);
-
-
   @override
   _LocationGettingScreenState createState() =>
       _LocationGettingScreenState(isAlreadyExists);

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
-import '../../controllers/delete_user_accounts_controller.dart';
+import '../../controllers/user_accounts/user_accounts_delete_controller.dart';
 
 class DeleteUserAccounts extends StatelessWidget {
   const DeleteUserAccounts({Key? key}) : super(key: key);

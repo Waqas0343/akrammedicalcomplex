@@ -1,4 +1,4 @@
-import 'package:amc/controllers/user_account_controller.dart';
+import 'package:amc/controllers/user_accounts/user_account_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,7 +12,6 @@ class UserAccounts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //String? username = preferences.getString(Keys.name);
     final controller = Get.put(UserAccountsController());
     return Scaffold(
       appBar: AppBar(

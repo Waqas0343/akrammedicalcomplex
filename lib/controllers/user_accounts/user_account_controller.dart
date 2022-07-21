@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../Server/api_fetch.dart';
-import '../Styles/Keys.dart';
-import '../Widgets/crypto_helper.dart';
-import '../Widgets/loading_spinner.dart';
-import '../models/login_model.dart';
-import '../models/otp_model.dart';
-import '../Screens/home.dart';
+import '../../Server/api_fetch.dart';
+import '../../Styles/Keys.dart';
+import '../../Widgets/crypto_helper.dart';
+import '../../Widgets/loading_spinner.dart';
+import '../../models/login_model.dart';
+import '../../models/otp_model.dart';
+import '../../Screens/home.dart';
 
 class UserAccountsController extends GetxController {
   RxList<UserShortModel> accounts = RxList<UserShortModel>();

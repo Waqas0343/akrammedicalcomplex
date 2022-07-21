@@ -1,14 +1,9 @@
 import 'dart:async';
-
-import 'package:amc/Screens/Login.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'Screens/home.dart';
 import 'Styles/Keys.dart';
 
 class Splash extends StatefulWidget {
