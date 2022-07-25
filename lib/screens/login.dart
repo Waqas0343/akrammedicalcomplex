@@ -2,10 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+
 import '../Styles/Keys.dart';
 import '../Styles/MyColors.dart';
 import '../Styles/MyImages.dart';
-import '../Utilities/Utilities.dart';
 import '../Widgets/text_format.dart';
 import '../controllers/users/login/login_controller.dart';
 import '../routes/routes.dart';

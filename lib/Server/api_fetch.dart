@@ -2,6 +2,7 @@ import 'package:amc/Styles/Keys.dart';
 import 'package:amc/services/preferences.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as getx;
+
 import '../app/debug.dart';
 import '../models/login_model.dart' as login_user_model;
 import '../models/otp_model.dart';
@@ -35,10 +36,7 @@ class ApiFetch {
   }
 
   static Future<login_user_model.User?> login(String values) async {
-    // String? ipAddress = await IpAddress().getIpAddress();
-
     Response response;
-
     try {
       Debug.log(ServerConfig.login + values);
       response = await dio.get(ServerConfig.login + values);
@@ -49,7 +47,6 @@ class ApiFetch {
 
     try {
       Debug.log(response.data.toString());
-
       return login_user_model.User.fromJson(
           response.data["Response"]["Response"]);
     } catch (e) {
@@ -101,7 +98,8 @@ class ApiFetch {
   static Future<void> saveFCMToken(String token) async {
     try {
       String? username = getx.Get.find<Preferences>().getString(Keys.username);
-      String url = ServerConfig.saveToken + '&deviceType=Flutter&username=$username&token=$token';
+      String url = ServerConfig.saveToken +
+          '&deviceType=Flutter&username=$username&token=$token';
       print(url);
       Debug.log(url);
       Response response = await dio.post(

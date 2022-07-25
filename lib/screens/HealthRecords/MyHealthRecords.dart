@@ -1,10 +1,10 @@
-import 'package:amc/models/medical_record_model.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/models/medical_record_model.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

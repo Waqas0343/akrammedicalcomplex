@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
 import '../../controllers/users/account_activation/account_activation_controller.dart';
 
 class AccountActivation extends StatelessWidget {

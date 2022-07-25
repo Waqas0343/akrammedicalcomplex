@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amc/models/image_model.dart';
-import 'package:amc/models/lab_model.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/models/test_search_model.dart';
-import 'package:amc/Styles/MyColors.dart';
+import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
+import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
-import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
+import 'package:amc/models/image_model.dart';
+import 'package:amc/models/lab_model.dart';
+import 'package:amc/models/test_search_model.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/foundation.dart';
@@ -18,8 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../models/medicine_order_model.dart';
 
 class BookLabTest extends StatefulWidget {
   final bool isPrescription;

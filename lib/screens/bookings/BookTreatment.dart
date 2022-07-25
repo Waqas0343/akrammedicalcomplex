@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-import 'package:amc/models/service_model.dart';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/models/service_model.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

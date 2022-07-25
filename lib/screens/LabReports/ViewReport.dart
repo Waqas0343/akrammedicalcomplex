@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' show get;
 import 'package:flutter_pdfview/flutter_pdfview.dart';
+import 'package:http/http.dart' show get;
 import 'package:path_provider/path_provider.dart';
 
 class ViewReport extends StatefulWidget {

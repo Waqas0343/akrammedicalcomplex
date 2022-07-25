@@ -1,9 +1,9 @@
-import 'package:amc/models/profile_model.dart';
 import 'package:amc/Screens/Settings/NewProfileSettings.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/models/profile_model.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

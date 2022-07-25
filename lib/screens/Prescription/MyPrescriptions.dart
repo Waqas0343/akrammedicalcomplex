@@ -1,12 +1,11 @@
-import 'package:amc/models/prescription_model.dart';
 import 'package:amc/Screens/Prescription/PrescriptionWebView.dart';
-import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
+import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/models/prescription_model.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
-
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';

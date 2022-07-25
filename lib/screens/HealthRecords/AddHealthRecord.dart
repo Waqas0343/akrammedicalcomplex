@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amc/models/medical_record_model.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/models/medical_record_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

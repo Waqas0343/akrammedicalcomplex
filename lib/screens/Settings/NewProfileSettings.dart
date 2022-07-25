@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:amc/models/profile_model.dart';
 import 'package:amc/Screens/account_creation/LocationGettingScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -9,6 +8,7 @@ import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/models/profile_model.dart';
 import 'package:badges/badges.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';

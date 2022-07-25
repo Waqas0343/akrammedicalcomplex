@@ -1,6 +1,6 @@
+import 'package:amc/Screens/Orders/Diagnostics/MyLabTestOrders.dart';
 import 'package:amc/Screens/Orders/Diagnostics/TestType.dart';
 import 'package:amc/Styles/MyIcons.dart';
-import 'package:amc/Screens/Orders/Diagnostics/MyLabTestOrders.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

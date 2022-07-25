@@ -1,10 +1,10 @@
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
-import 'package:amc/placeholder/custom_shimmer.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/models/service_model.dart';
 import 'package:amc/models/treatment_model.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

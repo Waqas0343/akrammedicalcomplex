@@ -22,6 +22,11 @@ class DeleteUserAccountsController extends GetxController {
       Utilities.showToast("Your Accounts Delete Successfully");
       Get.find<Preferences>().clear();
       Get.offAllNamed(AppRoutes.login);
+
+
+
+
+
     }
     return response;
   }

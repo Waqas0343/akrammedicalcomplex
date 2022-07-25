@@ -3,6 +3,7 @@
 //     final otpModel = otpModelFromJson(jsonString);
 
 import 'dart:convert';
+
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 
 OtpModel otpModelFromJson(String str) => OtpModel.fromJson(json.decode(str));

@@ -1,13 +1,13 @@
-import 'package:amc/models/doctor_response_model.dart';
-import 'package:amc/Widgets/cache_image.dart';
-import 'package:amc/placeholder/custom_shimmer.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/models/category_model.dart';
 import 'package:amc/Screens/Bookings/book_appointment.dart';
 import 'package:amc/Server/ServerConfig.dart';
-import 'package:amc/Widgets/lazy_loader_widget.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/Widgets/cache_image.dart';
+import 'package:amc/Widgets/lazy_loader_widget.dart';
+import 'package:amc/models/category_model.dart';
+import 'package:amc/models/doctor_response_model.dart';
+import 'package:amc/placeholder/custom_shimmer.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'doctor_profile.dart';

@@ -1,9 +1,10 @@
 import 'dart:async';
+
 import 'package:amc/Server/api_fetch.dart';
 import 'package:amc/services/preferences.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
 import '../../../Screens/account_creation/LocationGettingScreen.dart';
 import '../../../Screens/accounts/user_accounts.dart';
 import '../../../Styles/Keys.dart';

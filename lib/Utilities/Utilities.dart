@@ -1,14 +1,15 @@
 import 'dart:io';
+
 import 'package:amc/Database/database.dart';
-import 'package:amc/models/notification_model.dart';
 import 'package:amc/Styles/Keys.dart';
+import 'package:amc/models/notification_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart' as getx;
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart';
-import 'package:flutter/foundation.dart';
 
 class Utilities{
 

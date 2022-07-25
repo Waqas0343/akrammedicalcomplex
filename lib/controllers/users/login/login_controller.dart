@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import '../../../Server/api_fetch.dart';
 import '../../../Styles/Keys.dart';
 import '../../../Widgets/loading_dialog.dart';
 import '../../../Widgets/loading_spinner.dart';
-import '../../../models/login_model.dart';
 import '../../../models/otp_model.dart';
 import '../../../routes/routes.dart';
 import '../../../services/preferences.dart';

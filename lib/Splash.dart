@@ -1,11 +1,12 @@
 import 'dart:async';
+
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/routes/routes.dart';
 import 'package:amc/services/preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'Styles/Keys.dart';
-import 'models/login_model.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);

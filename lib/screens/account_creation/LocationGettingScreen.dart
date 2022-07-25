@@ -1,12 +1,12 @@
-import 'package:amc/models/profile_model.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/models/city_model.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/models/city_model.dart';
+import 'package:amc/models/profile_model.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
