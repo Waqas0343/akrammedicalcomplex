@@ -70,7 +70,9 @@ class SignUp extends StatelessWidget {
                                 return null;
                               },
                               decoration: const InputDecoration(
-                                labelText: 'Full Name',
+                                hintText: 'Full Name',
+                                counterText: "",
+                                filled: false,
                               ),
                             ),
                             const SizedBox(
@@ -98,9 +100,11 @@ class SignUp extends StatelessWidget {
                                 return null;
                               },
                               decoration: const InputDecoration(
-                                  labelText: 'Phone',
-                                  hintText: "e.g 03XXXXXXXXX",
-                                  counterText: ""),
+                                counterText: "",
+                                filled: false,
+                                labelText: 'Phone',
+                                hintText: "e.g 03XXXXXXXXX",
+                              ),
                             ),
                             const SizedBox(
                               height: 8,
@@ -126,9 +130,11 @@ class SignUp extends StatelessWidget {
                                 return null;
                               },
                               decoration: const InputDecoration(
-                                  labelText: 'Email',
-                                  hintText: "e.g example@gmail.com",
-                                  counterText: ""),
+                                counterText: "",
+                                filled: false,
+                                labelText: 'Email',
+                                hintText: "e.g 03XXXXXXXXX",
+                              ),
                             ),
                             const SizedBox(
                               height: 8,

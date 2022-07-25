@@ -41,6 +41,7 @@ class User {
   String? timeStamp;
   String? name;
   String? phone;
+  String? mrNo;
   String? imagePath;
   String? email;
   int otpCode;
@@ -60,6 +61,7 @@ class User {
     this.name,
     this.phone,
     this.imagePath,
+    this.mrNo,
     this.email,
     required this.otpCode,
     this.status,
@@ -87,6 +89,7 @@ class User {
         authToken: json["AuthToken"],
         ipAddress: json["IPAddress"],
         facebookId: json["facebook_id"],
+        mrNo: json["MrNo"],
         huDetails: HumanDetails.fromJson(json["hu_details"]),
         huAddress: HumanAddress.fromJson(json["hu_address"]),
       );
@@ -107,6 +110,7 @@ class User {
         "facebook_id": facebookId,
         "hu_details": huDetails!.toJson(),
         "hu_address": huAddress!.toJson(),
+        "MrNo": mrNo,
       };
 }
 

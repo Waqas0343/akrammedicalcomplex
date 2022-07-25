@@ -53,6 +53,7 @@ class Login extends StatelessWidget {
                               textAlign: TextAlign.center,
                               style: Get.textTheme.headlineSmall?.copyWith(
                                 color: Get.theme.primaryColor,
+                                fontSize: 24.0,
                               ),
                             ),
                             const SizedBox(

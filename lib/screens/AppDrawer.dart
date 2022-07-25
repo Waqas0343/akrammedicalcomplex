@@ -4,10 +4,8 @@ import 'package:amc/services/preferences.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:amc/Screens/Bookings/BookTreatment.dart';
 import 'package:amc/Screens/Bookings/SelectTestType.dart';
-import 'package:amc/Screens/login.dart';
 import 'package:amc/Screens/MyBooking/MyBooking.dart';
 import 'package:amc/Screens/Settings/Settings.dart';
-import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyIcons.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Widgets/drawer_list.dart';
@@ -15,22 +13,21 @@ import 'package:amc/Screens/Orders/Medicines/MedicineOrderType.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Styles/Keys.dart';
 import '../routes/routes.dart';
 import 'Doctors/find_doctor.dart';
 import 'LabReports/LabReports.dart';
 
 class AppDrawer extends StatefulWidget {
-  final String? name, email, imagePath;
+  final String? name, imagePath, mrNumber;
 
-  const AppDrawer({Key? key, this.name, this.email, this.imagePath})
+  const AppDrawer({Key? key, this.name, this.imagePath,this.mrNumber})
       : super(key: key);
 
   @override
   _AppDrawerState createState() => _AppDrawerState();
 }
-
 class _AppDrawerState extends State<AppDrawer> {
   @override
   Widget build(BuildContext context) {
@@ -98,7 +95,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
-                                      AutoSizeText(widget.email ?? "",
+                                      AutoSizeText(widget.mrNumber??'',
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
@@ -252,7 +249,9 @@ class _AppDrawerState extends State<AppDrawer> {
                   isDropdown: false,
                   onTap: () {
                     Get.find<Preferences>().clear();
+                    Get.find<Preferences>().setBool(Keys.status, false);
                     Get.offAllNamed(AppRoutes.login);
+
                   },
                 ),
               ],

@@ -385,7 +385,7 @@ class _BookTestState extends State<BookTest> {
                       );
                     },
                     suggestionsCallback: (name) async {
-                      return await searchTest(name.isEmpty ? "l" : name);
+                      return await searchTest(name);
                     },
                     itemBuilder: (context, Test test) {
                       return ListTile(
@@ -457,7 +457,7 @@ class _BookTestState extends State<BookTest> {
 
   Future<List<Test>> searchTest(String name) async {
     String response = await Utilities.httpGet(ServerConfig.searchTest +
-        "&searchTest=&offset=0&nextFetch=10&labID=chughtailab20180507020024&minFee="
+        "&searchTest=$name&offset=0&nextFetch=10&labID=chughtailab20180507020024&minFee="
             "&maxFee=&category=&discount=true&cities=&homeSample=true");
     List<Test> list = [];
     if (response != "404") {

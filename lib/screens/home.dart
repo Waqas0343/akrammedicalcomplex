@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:amc/Screens/AppDrawer.dart';
-import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Server/api_fetch.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -37,7 +36,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String? name, email, imagePath, oldId;
+  String? name, imagePath, oldId, mrNo;
   late SharedPreferences preferences;
   DateTime? currentBackPressTime;
 
@@ -57,7 +56,7 @@ class _HomeState extends State<Home> {
         drawer: AppDrawer(
           name: name,
           imagePath: imagePath,
-          email: email,
+          mrNumber: mrNo,
         ),
         appBar: AppBar(
           elevation: 0,
@@ -278,7 +277,7 @@ class _HomeState extends State<Home> {
     preferences = await SharedPreferences.getInstance();
     setState(() {
       name = preferences.getString(Keys.name);
-      email = preferences.getString(Keys.email);
+      mrNo = preferences.getString(Keys.mrNo);
       imagePath = preferences.getString(Keys.image);
     });
   }

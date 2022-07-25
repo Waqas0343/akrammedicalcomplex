@@ -101,8 +101,8 @@ class ApiFetch {
   static Future<void> saveFCMToken(String token) async {
     try {
       String? username = getx.Get.find<Preferences>().getString(Keys.username);
-      String url = ServerConfig.saveToken +
-          '&deviceType=Flutter&username=$username&token=$token';
+      String url = ServerConfig.saveToken + '&deviceType=Flutter&username=$username&token=$token';
+      print(url);
       Debug.log(url);
       Response response = await dio.post(
         url,

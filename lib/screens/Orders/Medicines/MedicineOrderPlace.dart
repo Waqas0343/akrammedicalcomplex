@@ -412,7 +412,6 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
                             "/assets/img/online-medicines-image-not-found.png";
                         model.uniqueKey = 1588004799022;
                         model.productQuantity = 1;
-
                         medicines.add(model);
                       });
                     }),
@@ -466,8 +465,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
 
   Future<List<ProductDetail>> otcMedicines(String name) async {
     isOnline();
-    String response =
-        await Utilities.httpGet(ServerConfig.otcMedicines + "&name=$name");
+    String response = await Utilities.httpGet(ServerConfig.otcMedicines + "&name=$name");
     List<ProductDetail> list = [];
     if (response != "404") {
       list = otcMedicinesFromJson(response).response!.otcMedicines!;

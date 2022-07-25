@@ -21,7 +21,8 @@ class ProfileSettings extends StatefulWidget {
   final List<String>? cities;
   final Profile? profile;
 
-  const ProfileSettings({Key? key, this.profile, this.cities}) : super(key: key);
+  const ProfileSettings({Key? key, this.profile, this.cities})
+      : super(key: key);
 
   @override
   _ProfileSettingsState createState() => _ProfileSettingsState(profile);
@@ -64,7 +65,6 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
   @override
   Widget build(BuildContext context) {
-
     return profile != null
         ? SingleChildScrollView(
             child: Column(
@@ -99,10 +99,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                         padding: const EdgeInsets.all(1),
                         badgeColor: Colors.white,
                         elevation: 0,
-                        position:
-                            BadgePosition.bottomEnd(bottom: 0, end: 0),
+                        position: BadgePosition.bottomEnd(bottom: 0, end: 0),
                         child: ClipRRect(
-                          borderRadius: const BorderRadius.all(Radius.circular(50)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(50)),
                           child: NetWorkImage(
                             placeHolder: MyImages.user,
                             imagePath: imagePath,
@@ -120,8 +120,8 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           percent: uploadingValue,
                           center: Text(
                             "${(uploadingValue * 100).toInt()} %",
-                            style:
-                                const TextStyle(color: Colors.white, fontSize: 12),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 12),
                           ),
                           barRadius: const Radius.circular(8),
                           progressColor: MyColors.primary,
@@ -206,8 +206,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                           counterText: "",
                           filled: false,
                           hintText: "Full Name",
-                          errorText:
-                              isNameEmpty ? "Name can't be Empty" : null,
+                          errorText: isNameEmpty ? "Name can't be Empty" : null,
                         ),
                       ),
                     )
@@ -221,12 +220,16 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                   focusNode: usernameFocus,
                   controller: usernameController,
                   decoration: const InputDecoration(
-                      filled: false,
-                      enabled: false,
-                      fillColor: Colors.white,
-                      hintText: "Login ID",
-                      disabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey))),
+                    filled: false,
+                    enabled: false,
+                    fillColor: Colors.white,
+                    hintText: "Login ID",
+                    disabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
                 ),
                 const SizedBox(
                   height: 8,
@@ -234,7 +237,9 @@ class _ProfileSettingsState extends State<ProfileSettings> {
                 TextField(
                   textInputAction: TextInputAction.next,
                   focusNode: phoneFocus,
-                  inputFormatters: [Utilities.onlyNumberFormat(),],
+                  inputFormatters: [
+                    Utilities.onlyNumberFormat(),
+                  ],
                   keyboardType: TextInputType.phone,
                   maxLength: 11,
                   onSubmitted: (text) {
@@ -312,9 +317,10 @@ class _ProfileSettingsState extends State<ProfileSettings> {
     if (profile != null) {
       String? title;
       if (profile!.user!.title != null) {
-        title = profile!.user!.title!.isNotEmpty && profile!.user!.title != "null"
-            ? profile!.user!.title!.replaceAll(".", "")
-            : null;
+        title =
+            profile!.user!.title!.isNotEmpty && profile!.user!.title != "null"
+                ? profile!.user!.title!.replaceAll(".", "")
+                : null;
       }
       imagePath = profile!.user!.imagePath;
       String name = profile!.user!.name!;
@@ -556,13 +562,18 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
     Loading.build(context, true);
 
-    String values = "&Username=$username" "&Title=$title" "&Name=$name" "&Phone=$phone" "&Email=$email"
+    String values = "&Username=$username"
+        "&Title=$title"
+        "&Name=$name"
+        "&Phone=$phone"
+        "&Email=$email"
         "&City=$city"
         "&Area=$area"
         "&Location=$address"
         "&ImagePath=$imagePath";
 
-    String response = await Utilities.httpGet(ServerConfig.patientInfoUpdate + values);
+    String response =
+        await Utilities.httpGet(ServerConfig.patientInfoUpdate + values);
     print(response);
     Loading.dismiss();
 
@@ -576,18 +587,17 @@ class _ProfileSettingsState extends State<ProfileSettings> {
       preferences.setString(Keys.address, address);
       preferences.setString(Keys.title, title ?? "");
       Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LocationGettingScreen(true),
-              ),
-            );
+        context,
+        MaterialPageRoute(
+          builder: (context) => const LocationGettingScreen(true),
+        ),
+      );
       Utilities.showToast("Update successfully");
     } else {
       Utilities.showToast("Something went wrong");
     }
     enableButton();
   }
-
 
   void disableButton() {
     setState(() {

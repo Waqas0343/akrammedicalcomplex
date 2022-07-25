@@ -98,7 +98,7 @@ class ServerConfig {
       "api/CustomAppointments/GetList?SystemKey=$systemKey&source=$sourceUrl"; //patientusername
 
   static const saveToken = baseEmrUrl +
-      "api/Accounts/SaveFirebaseToken?SystemKey=$systemKey&ProjectId=${Keys.projectId}"; //&username=&token=
+      "Accounts/SaveFirebaseToken?SystemKey=$systemKey&ProjectId=${Keys.projectId}"; //&username=&token=
 
   static const treatments = baseEmrUrl +
       "Treatment/GetBookedTreatmentList?SystemKey=$systemKey&source=$sourceUrl"; //&username=&token=

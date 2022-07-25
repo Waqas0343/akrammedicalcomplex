@@ -19,6 +19,8 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/medicine_order_model.dart';
+
 class BookLabTest extends StatefulWidget {
   final bool isPrescription;
 
@@ -365,7 +367,7 @@ class _BookLabTestState extends State<BookLabTest> {
                             contentPadding: EdgeInsets.all(8),
                             hintText: "Search LabTest")),
                     suggestionsCallback: (name) async {
-                      return await searchTest(name.isNotEmpty ? name : "a");
+                      return await searchTest(name.isNotEmpty ? name : "");
                     },
                     noItemsFoundBuilder: (context) {
                       return const Padding(
@@ -391,6 +393,7 @@ class _BookLabTestState extends State<BookLabTest> {
                       setState(() {
                         medicController.clear();
                         chooseTest.add(suggestion);
+                        medicController.text = "";
                       });
                     }),
               ],
@@ -425,13 +428,15 @@ class _BookLabTestState extends State<BookLabTest> {
                         });
                       }),
                   leading: SizedBox(
-                      width: 30,
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            '${index + 1}',
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ))),
+                    width: 30,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        '${index + 1}',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
                 );
               },
               itemCount: chooseTest.length,
@@ -643,7 +648,6 @@ class _BookLabTestState extends State<BookLabTest> {
     FormData formData = FormData.fromMap({
       "OrderList": testString,
     });
-
 
     String values = "&LabId=${lab!.username}&Name=$name&username=$username"
         "&Location=$location&Phone=$phone&Email=$email&Area=&City="

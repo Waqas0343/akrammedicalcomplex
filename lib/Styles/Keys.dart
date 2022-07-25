@@ -9,6 +9,7 @@ class Keys {
   static const String time = "time";
   static const String date = "date";
   static const String onlyNumbers = "field accepts only numbers";
+  static const String mrNo = "MrNo";
 
   static const String status = "status";
   static const String username = "Username";
