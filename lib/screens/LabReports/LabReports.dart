@@ -1,11 +1,11 @@
-import 'package:amc/models/test_search_model.dart';
-import 'package:amc/models/test_order_model.dart';
 import 'package:amc/Screens/LabReports/ViewReport.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/cache_image.dart';
+import 'package:amc/models/test_order_model.dart';
+import 'package:amc/models/test_search_model.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,7 +62,7 @@ class _LabReportsState extends State<LabReports> {
         setState(() {
           isLoading = false;
         });
-        Utilities.internetNotAvailable(context);
+        Utilities.internetNotAvailable();
       });
       return;
     }

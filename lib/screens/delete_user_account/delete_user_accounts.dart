@@ -13,7 +13,7 @@ class DeleteUserAccounts extends StatelessWidget {
     final controller = Get.put(DeleteUserAccountsController());
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Delete Accounts"),
+        title: const Text("Delete Account"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(

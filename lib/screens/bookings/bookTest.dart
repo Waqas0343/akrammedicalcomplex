@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/models/test_search_model.dart';
 import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/models/test_search_model.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/foundation.dart';
@@ -365,50 +365,52 @@ class _BookTestState extends State<BookTest> {
   }
 
   Widget selectTest() {
-    return !widget.isPrescription!
-        ? Card(
-            elevation: 2,
-            margin: const EdgeInsets.all(0),
-            child: Column(
-              children: <Widget>[
-                TypeAheadField(
-                    textFieldConfiguration: TextFieldConfiguration(
-                      controller: medicController,
-                      decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.all(8),
-                          hintText: "Search Lab Test"),
-                    ),
-                    noItemsFoundBuilder: (context) {
-                      return const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Text("No Test Found"),
-                      );
-                    },
-                    suggestionsCallback: (name) async {
-                      return await searchTest(name.isEmpty ? "l" : name);
-                    },
-                    itemBuilder: (context, Test test) {
-                      return ListTile(
-                        dense: true,
-                        subtitle: Text(
-                          test.fee!.replaceAll("Rs/-", "PKR/-"),
-                        ),
-                        title: AutoSizeText(
-                          test.testName!,
-                          maxLines: 1,
-                        ),
-                      );
-                    },
-                    onSuggestionSelected: (Test suggestion) {
-                      setState(() {
-                        medicController.clear();
-                        chooseTestList.add(suggestion);
-                      });
-                    })
-              ],
+    if (!widget.isPrescription!) {
+      return Card(
+        elevation: 2,
+        margin: EdgeInsets.zero,
+        child: TypeAheadField(
+          textFieldConfiguration: TextFieldConfiguration(
+            controller: medicController,
+            decoration: const InputDecoration(
+              contentPadding: EdgeInsets.all(8),
+              hintText: "Search Lab Test",
             ),
-          )
-        : const SizedBox.shrink();
+          ),
+          noItemsFoundBuilder: (context) {
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text("No Test Found"),
+            );
+          },
+          suggestionsCallback: searchTest,
+          itemBuilder: (_, Test test) {
+            return ListTile(
+              dense: true,
+              subtitle: Text(
+                "PKR/- ${test.fee}",
+              ),
+              title: AutoSizeText(
+                test.testName!,
+                maxLines: 1,
+              ),
+            );
+          },
+          onSuggestionSelected: (Test suggestion) {
+            setState(() {
+              medicController.clear();
+              chooseTestList.add(suggestion);
+            });
+          },
+          keepSuggestionsOnLoading: false,
+          hideSuggestionsOnKeyboardHide: false,
+          debounceDuration: const Duration(
+            milliseconds: 300,
+          ),
+        ),
+      );
+    }
+    return const SizedBox.shrink();
   }
 
   Widget testList() {
@@ -416,22 +418,25 @@ class _BookTestState extends State<BookTest> {
         ? Card(
             margin: const EdgeInsets.only(top: 8),
             child: ListView.builder(
-              padding: EdgeInsets.zero,
               shrinkWrap: true,
-              physics: const ScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
+              itemBuilder: (_, int index) {
                 return ListTile(
                   dense: true,
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                  ),
                   title: AutoSizeText(
                     chooseTestList[index].testName!,
                     maxLines: 1,
                   ),
                   subtitle: Text(
-                      chooseTestList[index].fee!.replaceAll("Rs/-", "PKR/-")),
+                    "PKR/- ${chooseTestList[index].fee}",
+                  ),
                   trailing: IconButton(
-                      icon: const Icon(Icons.cancel),
+                      color: Colors.red,
+                      icon: const Icon(
+                        Icons.cancel,
+                      ),
                       onPressed: () {
                         setState(() {
                           chooseTestList.removeAt(index);
@@ -457,13 +462,13 @@ class _BookTestState extends State<BookTest> {
 
   Future<List<Test>> searchTest(String name) async {
     String response = await Utilities.httpGet(ServerConfig.searchTest +
-        "&searchTest=&offset=0&nextFetch=10&labID=chughtailab20180507020024&minFee="
-            "&maxFee=&category=&discount=true&cities=&homeSample=true");
-    List<Test> list = [];
+        "&searchTest=$name&offset=0&nextFetch=10&labID=${Keys.labId}");
     if (response != "404") {
-      list.addAll(searchLabTestModelFromJson(response).response!.response!);
+      return List<Test>.from(jsonDecode(response)['Response']['Response']
+          .map((e) => Test.fromJson(e))
+          .toList());
     }
-    return list;
+    return <Test>[];
   }
 
   void uploadImage(File file) async {
@@ -550,7 +555,7 @@ class _BookTestState extends State<BookTest> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 
@@ -628,7 +633,7 @@ class _BookTestState extends State<BookTest> {
 
     String values = "&LabId=${Keys.labId}&Name=$name&username=$username"
         "&Location=$location&Phone=$phone&Email=$email&Area=&City="
-        "&SessionToken=&Source=${Keys.source}&attachment=$prescriptionPath&Amount=$totalAmount&projectID=amc-healthcare-services&locationID=A20200710021733"
+        "&SessionToken=&Source=${Keys.source}&attachment=$prescriptionPath&Amount=$totalAmount&projectID=${Keys.projectId}&locationID=${Keys.locationId}"
         "&RefferedBy=${Keys.locationId}";
 
     Dio dio = Dio();

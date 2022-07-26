@@ -1,6 +1,8 @@
+import 'package:amc/app/debug.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+
 import '../../../Server/ServerConfig.dart';
 import '../../../Styles/Keys.dart';
 import '../../../Utilities/Utilities.dart';
@@ -25,15 +27,20 @@ class SignUpController extends GetxController {
     Get.dialog(const LoadingSpinner());
     String values = "&Type=Patient&Name=$name&Phone=$phone&Email=$email";
     String response = await Utilities.httpPost(ServerConfig.signUp + values);
-    if (kDebugMode) {
-      print(response);
-    }
+    Debug.log(response);
     Loading.dismiss();
     if (response != "404") {
       User user = loginFromJson(response).response!.user!;
-      Get.find<Preferences>().setString(Keys.phone, user.phone);
-      Get.find<Preferences>().setString(Keys.email, user.email);
+      Get.find<Preferences>().setString(Keys.username, user.username);
       Get.find<Preferences>().setString(Keys.name, user.name);
+      Get.find<Preferences>().setString(Keys.phone, user.phone);
+      Get.find<Preferences>().setString(Keys.image, user.imagePath);
+      Get.find<Preferences>().setString(Keys.email, user.email);
+      Get.find<Preferences>().setString(Keys.mrNo, user.mrNo);
+      Get.find<Preferences>().setString(Keys.sessionToken, user.sessionToken);
+      Get.find<Preferences>().setString(Keys.address, user.huAddress!.location);
+      Get.find<Preferences>().setString(Keys.city, user.huAddress!.city);
+      Get.find<Preferences>().setString(Keys.area, user.huAddress!.area);
 
       Get.toNamed(
         AppRoutes.accountActivation,

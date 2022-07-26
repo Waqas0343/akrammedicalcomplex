@@ -9,6 +9,7 @@ class Keys {
   static const String time = "time";
   static const String date = "date";
   static const String onlyNumbers = "field accepts only numbers";
+  static const String mrNo = "MrNo";
 
   static const String status = "status";
   static const String username = "Username";
@@ -37,8 +38,6 @@ class Keys {
   static const String homeServices = "Home Services";
   static const String medicines = "medicine";
   static const String googleMessageId = "googleMessageId";
-
-  // static const String locationId = "AC20180602102453";
 
   static const String locationId = "A20200710021733";
 

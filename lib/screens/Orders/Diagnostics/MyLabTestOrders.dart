@@ -1,10 +1,10 @@
-import 'package:amc/models/lab_test_order_model.dart';
-import 'package:amc/Styles/Keys.dart';
-import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Server/ServerConfig.dart';
+import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyImages.dart';
+import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
+import 'package:amc/models/lab_test_order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,7 +51,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? username = preferences.getString(Keys.USERNAME);
     if (!await Utilities.isOnline()){
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
     

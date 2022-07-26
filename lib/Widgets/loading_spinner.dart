@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../Styles/MyImages.dart';
-
 class LoadingSpinner extends StatelessWidget {
   const LoadingSpinner({Key? key}) : super(key: key);
 

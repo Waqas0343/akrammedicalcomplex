@@ -1,8 +1,8 @@
+import 'package:amc/Styles/MyImages.dart';
+import 'package:amc/Widgets/cache_image.dart';
 import 'package:amc/models/lab_test_order_model.dart';
 import 'package:amc/models/lab_test_search_model.dart';
-import 'package:amc/Widgets/cache_image.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Styles/MyImages.dart';
 import 'package:flutter/material.dart';
 
 class LabTestOrderDetails extends StatelessWidget {

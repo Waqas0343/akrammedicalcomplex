@@ -1,15 +1,16 @@
-import 'package:amc/models/appointment_model.dart';
-import 'package:amc/models/medicine_order_model.dart';
-import 'package:amc/models/test_order_model.dart';
-import 'package:amc/Screens/MyBooking/MyLabOrders.dart';
 import 'package:amc/Screens/MyBooking/MyAppointments.dart';
+import 'package:amc/Screens/MyBooking/MyLabOrders.dart';
+import 'package:amc/Screens/Orders/Medicines/MyMedicineOrders.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Utilities/Utilities.dart';
-import 'package:amc/Screens/Orders/Medicines/MyMedicineOrders.dart';
+import 'package:amc/models/appointment_model.dart';
+import 'package:amc/models/medicine_order_model.dart';
+import 'package:amc/models/test_order_model.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
+import 'package:amc/services/preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
 class MyBooking extends StatefulWidget {
   final int? initialIndex;
@@ -22,11 +23,13 @@ class MyBooking extends StatefulWidget {
 
 class _MyBookingState extends State<MyBooking> {
   List<Appointment>? appointments;
+
   // List<TreatmentData> treatments;
   List<TestModel>? testOrders;
   List<Order>? medicinesOrders;
 
   bool appointmentLoading = true;
+
   // bool treatmentLoading = true;
   bool ordersLoading = true;
   bool medicinesLoading = true;
@@ -38,7 +41,7 @@ class _MyBookingState extends State<MyBooking> {
       length: 3,
       child: Scaffold(
         body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          headerSliverBuilder: (_, __) {
             return <Widget>[
               const SliverAppBar(
                 pinned: true,
@@ -65,18 +68,18 @@ class _MyBookingState extends State<MyBooking> {
             ordersLoading
                 ? const MyLabOrderIsLoading()
                 : LabOrders(
-                    orders:testOrders,
+                    orders: testOrders,
                   ),
             medicinesLoading
-              ? const MyMedicineOrdersIsLoading()
-              : MyMedicineOrders(
-                  orders: medicinesOrders,
-                ),
+                ? const MyMedicineOrdersIsLoading()
+                : MyMedicineOrders(
+                    orders: medicinesOrders,
+                  ),
             appointmentLoading
                 ? const LoadingMyAppointmentList()
                 : MyAppointments(
-              appointments: appointments,
-            ),
+                    appointments: appointments,
+                  ),
           ]),
         ),
       ),
@@ -86,9 +89,8 @@ class _MyBookingState extends State<MyBooking> {
   @override
   void initState() {
     appointments = [];
-    // treatments = [];
-   testOrders = [];
-   medicinesOrders = [];
+    testOrders = [];
+    medicinesOrders = [];
     super.initState();
     getBookings();
   }
@@ -116,15 +118,15 @@ class _MyBookingState extends State<MyBooking> {
       var list = testOrderResponseModelFromJson(response).response!.response;
       if (!mounted) return;
       setState(() {
-       testOrders!.addAll(list!);
+        testOrders!.addAll(list!);
         ordersLoading = false;
       });
     }
   }
 
   void getMedicineOrders(String? username) async {
-
-    String response = await Utilities.httpGet(ServerConfig.medicineOrders + "&username=$username");
+    String response = await Utilities.httpGet(
+        ServerConfig.medicineOrders + "&username=$username");
     if (response != "404") {
       List<Order>? list = medicineOrdersFromJson(response).response!.orders;
       if (!mounted) return;
@@ -136,13 +138,11 @@ class _MyBookingState extends State<MyBooking> {
   }
 
   void getBookings() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? username = preferences.getString(Keys.username);
+    String? username = Get.find<Preferences>().getString(Keys.username);
 
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       ordersLoading = false;
-      // treatmentLoading = false;
       appointmentLoading = false;
       medicinesLoading = false;
       setState(() {});
@@ -150,7 +150,6 @@ class _MyBookingState extends State<MyBooking> {
     }
 
     getAppointments(username);
-    // getTreatments(username);
     getOrders(username);
     getMedicineOrders(username);
   }

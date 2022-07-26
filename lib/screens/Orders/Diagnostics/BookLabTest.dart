@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:amc/models/image_model.dart';
-import 'package:amc/models/lab_model.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/models/test_search_model.dart';
-import 'package:amc/Styles/MyColors.dart';
+import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
+import 'package:amc/Styles/MyColors.dart';
 import 'package:amc/Utilities/Utilities.dart';
 import 'package:amc/Widgets/loading_dialog.dart';
-import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
+import 'package:amc/models/image_model.dart';
+import 'package:amc/models/lab_model.dart';
+import 'package:amc/models/test_search_model.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/foundation.dart';
@@ -365,7 +365,7 @@ class _BookLabTestState extends State<BookLabTest> {
                             contentPadding: EdgeInsets.all(8),
                             hintText: "Search LabTest")),
                     suggestionsCallback: (name) async {
-                      return await searchTest(name.isNotEmpty ? name : "a");
+                      return await searchTest(name.isNotEmpty ? name : "");
                     },
                     noItemsFoundBuilder: (context) {
                       return const Padding(
@@ -391,6 +391,7 @@ class _BookLabTestState extends State<BookLabTest> {
                       setState(() {
                         medicController.clear();
                         chooseTest.add(suggestion);
+                        medicController.text = "";
                       });
                     }),
               ],
@@ -425,13 +426,15 @@ class _BookLabTestState extends State<BookLabTest> {
                         });
                       }),
                   leading: SizedBox(
-                      width: 30,
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            '${index + 1}',
-                            style: const TextStyle(fontWeight: FontWeight.w600),
-                          ))),
+                    width: 30,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        '${index + 1}',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
                 );
               },
               itemCount: chooseTest.length,
@@ -549,7 +552,7 @@ class _BookLabTestState extends State<BookLabTest> {
 
   Future<void> getLab() async {
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 
@@ -636,14 +639,13 @@ class _BookLabTestState extends State<BookLabTest> {
     if (!await Utilities.isOnline()) {
       enableButton();
       Navigator.pop(context);
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 
     FormData formData = FormData.fromMap({
       "OrderList": testString,
     });
-
 
     String values = "&LabId=${lab!.username}&Name=$name&username=$username"
         "&Location=$location&Phone=$phone&Email=$email&Area=&City="

@@ -1,15 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
+import 'package:amc/Server/ServerConfig.dart';
+import 'package:amc/Styles/Keys.dart';
+import 'package:amc/Styles/MyColors.dart';
+import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/Widgets/loading_dialog.dart';
 import 'package:amc/models/medicine_order_model.dart';
 import 'package:amc/models/otc_medicine_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:amc/Styles/MyColors.dart';
-import 'package:amc/Server/ServerConfig.dart';
-import 'package:amc/Utilities/Utilities.dart';
-import 'package:amc/Styles/Keys.dart';
-import 'package:amc/Widgets/loading_dialog.dart';
-import 'package:amc/Screens/Bookings/ThankYouScreen.dart';
 import 'package:dio/dio.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/foundation.dart';
@@ -369,57 +369,64 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
         ? Card(
             margin: EdgeInsets.zero,
             elevation: 2,
-            child: Column(
-              children: <Widget>[
-                TypeAheadField(
-                    textFieldConfiguration: TextFieldConfiguration(
-                        controller: medicController,
-                        decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.all(8),
-                            hintText: "Search Medicines")),
-                    suggestionsCallback: (name) async {
-                      return await otcMedicines(name);
-                    },
-                    noItemsFoundBuilder: (context) {
-                      return const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        child: Text(
-                          "No Medicine Found!",
-                          style: TextStyle(fontSize: 18, color: Colors.grey),
-                        ),
-                      );
-                    },
-                    itemBuilder: (context, ProductDetail suggestion) {
-                      return ListTile(
-                        dense: true,
-                        subtitle: Text("PKR/- " + suggestion.price!),
-                        title: AutoSizeText(
-                          suggestion.name!,
-                          maxLines: 1,
-                        ),
-                      );
-                    },
-                    onSuggestionSelected: (ProductDetail suggestion) {
-                      setState(() {
-                        medicController.text = "";
-                        PrescriptionConverterModel model =
-                            PrescriptionConverterModel();
-                        model.productName = suggestion.name;
-                        model.productPrice = suggestion.price;
-                        model.productId = suggestion.id;
-                        model.productImage = suggestion.img ??
-                            "/assets/img/online-medicines-image-not-found.png";
-                        model.uniqueKey = 1588004799022;
-                        model.productQuantity = 1;
-
-                        medicines.add(model);
-                      });
-                    }),
-              ],
+            child: TypeAheadField(
+              textFieldConfiguration: TextFieldConfiguration(
+                controller: medicController,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(8),
+                  hintText: "Search Medicines",
+                ),
+              ),
+              noItemsFoundBuilder: (context) {
+                return const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("No Medicine Found"),
+                );
+              },
+              suggestionsCallback: otcMedicines,
+              itemBuilder: (_, ProductDetail suggestion) {
+                return ListTile(
+                  dense: true,
+                  subtitle: Text("PKR/- " + suggestion.price!),
+                  title: AutoSizeText(
+                    suggestion.name!,
+                    maxLines: 1,
+                  ),
+                );
+              },
+              onSuggestionSelected: (ProductDetail suggestion) {
+                setState(() {
+                  medicController.text = "";
+                  PrescriptionConverterModel model =
+                      PrescriptionConverterModel();
+                  model.productName = suggestion.name;
+                  model.productPrice = suggestion.price;
+                  model.productId = suggestion.id;
+                  model.productImage = suggestion.img ??
+                      "/assets/img/online-medicines-image-not-found.png";
+                  model.uniqueKey = 1588004799022;
+                  model.productQuantity = 1;
+                  medicines.add(model);
+                });
+              },
+              keepSuggestionsOnLoading: false,
+              hideSuggestionsOnKeyboardHide: false,
+              debounceDuration: const Duration(
+                milliseconds: 300,
+              ),
             ),
           )
         : const SizedBox.shrink();
+  }
+
+  Future<List<ProductDetail>> otcMedicines(String name) async {
+    String response =
+        await Utilities.httpGet(ServerConfig.otcMedicines + "&name=$name");
+    List<ProductDetail> list = [];
+    if (response != "404") {
+      list = otcMedicinesFromJson(response).response!.otcMedicines!;
+    }
+    return list;
   }
 
   Widget medicineList() {
@@ -464,17 +471,6 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
         : const SizedBox.shrink();
   }
 
-  Future<List<ProductDetail>> otcMedicines(String name) async {
-    isOnline();
-    String response =
-        await Utilities.httpGet(ServerConfig.otcMedicines + "&name=$name");
-    List<ProductDetail> list = [];
-    if (response != "404") {
-      list = otcMedicinesFromJson(response).response!.otcMedicines!;
-    }
-    return list;
-  }
-
   void placeOrder() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     disableButton();
@@ -487,7 +483,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 
@@ -571,7 +567,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
         "&ReferanceBy=${Keys.locationId}";
     try {
       response =
-      await dio.post(ServerConfig.medicineOrderPlace + values, data: data);
+          await dio.post(ServerConfig.medicineOrderPlace + values, data: data);
     } catch (e) {
       if (kDebugMode) {
         print(e);
@@ -652,7 +648,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   void isOnline() async {
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
   }
@@ -660,10 +656,10 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   void getPrefrences() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     username = preferences.getString(Keys.USERNAME);
-    nameController.text = preferences.getString(Keys.name)!;
-    phoneController.text = preferences.getString(Keys.phone)!;
-    emailController.text = preferences.getString(Keys.email)!;
-    locationController.text = preferences.getString(Keys.address)!;
+    nameController.text = preferences.getString(Keys.name) ?? "";
+    phoneController.text = preferences.getString(Keys.phone) ?? "";
+    emailController.text = preferences.getString(Keys.email) ?? "";
+    locationController.text = preferences.getString(Keys.address) ?? "";
   }
 
   @override

@@ -1,6 +1,6 @@
-import 'package:amc/models/medical_record_model.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Widgets/cache_image.dart';
+import 'package:amc/models/medical_record_model.dart';
 import 'package:flutter/material.dart';
 
 class MyHealthRecordDetails extends StatelessWidget {

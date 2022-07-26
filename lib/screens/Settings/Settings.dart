@@ -1,9 +1,9 @@
-import 'package:amc/models/profile_model.dart';
 import 'package:amc/Screens/Settings/NewProfileSettings.dart';
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/models/profile_model.dart';
 import 'package:amc/placeholder/custom_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +18,6 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   Profile? profile;
-  List<String>? cities;
   bool isLoading = true;
 
   @override
@@ -41,11 +40,10 @@ class _SettingsState extends State<Settings> {
       body: Container(
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: profile != null
               ? ProfileSettings(
-                  profile: profile,
-                  cities: cities,
+                  profile: profile!,
                 )
               : isLoading
                   ? const ProfileShimmer()
@@ -60,7 +58,6 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    cities = [];
     getInfo();
   }
 
@@ -68,7 +65,7 @@ class _SettingsState extends State<Settings> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? username = preferences.getString(Keys.username);
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       setState(() {
         isLoading = false;
       });
@@ -77,11 +74,11 @@ class _SettingsState extends State<Settings> {
 
     String response = await Utilities.httpGet(
         ServerConfig.getPatientInfo + "&username=$username");
+    isLoading = false;
 
     if (response != "404") {
       setState(() {
         profile = profileModelFromJson(response).response!.response;
-        isLoading = false;
       });
     } else {
       Utilities.showToast("Unable to get Profile Setting try again later");
