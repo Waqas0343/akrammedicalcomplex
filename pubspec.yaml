@@ -1,7 +1,7 @@
 name: amc
 description: A application for AMC
 
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: '>=2.16.2 <3.0.0'

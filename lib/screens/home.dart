@@ -263,7 +263,7 @@ class _HomeState extends State<Home> {
               Image.asset(
                 MyImages.instaLogoBlue,
                 height: 22.0,
-              )
+              ),
             ],
           ),
         ),
@@ -272,7 +272,6 @@ class _HomeState extends State<Home> {
   }
 
   void getUpdate() async {
-    Get.find<Preferences>().setBool(Keys.status, true);
     setState(() {
       name = Get.find<Preferences>().getString(Keys.name);
       mrNo = Get.find<Preferences>().getString(Keys.mrNo);

@@ -39,8 +39,6 @@ class Keys {
   static const String medicines = "medicine";
   static const String googleMessageId = "googleMessageId";
 
-  // static const String locationId = "AC20180602102453";
-
   static const String locationId = "A20200710021733";
 
   static const String source = "AMC";

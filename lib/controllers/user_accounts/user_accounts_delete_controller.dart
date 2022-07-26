@@ -9,11 +9,9 @@ import '../../Widgets/loading_spinner.dart';
 import '../../services/preferences.dart';
 
 class DeleteUserAccountsController extends GetxController {
-
   Future<bool> deleteRecord() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String? username = preferences.getString(Keys.username);
-    String? phone = preferences.getString(Keys.phone);
+    String? username = Get.find<Preferences>().getString(Keys.username);
+    String? phone = Get.find<Preferences>().getString(Keys.phone);
     String values = "&Username=$username&Phone=$phone";
     Get.dialog(const LoadingSpinner());
     bool response = await ApiFetch.deleteAccounts(values);
@@ -22,11 +20,6 @@ class DeleteUserAccountsController extends GetxController {
       Utilities.showToast("Your Accounts Delete Successfully");
       Get.find<Preferences>().clear();
       Get.offAllNamed(AppRoutes.login);
-
-
-
-
-
     }
     return response;
   }

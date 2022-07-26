@@ -1,3 +1,4 @@
+import 'package:amc/app/debug.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -26,9 +27,7 @@ class SignUpController extends GetxController {
     Get.dialog(const LoadingSpinner());
     String values = "&Type=Patient&Name=$name&Phone=$phone&Email=$email";
     String response = await Utilities.httpPost(ServerConfig.signUp + values);
-    if (kDebugMode) {
-      print(response);
-    }
+    Debug.log(response);
     Loading.dismiss();
     if (response != "404") {
       User user = loginFromJson(response).response!.user!;
@@ -37,7 +36,6 @@ class SignUpController extends GetxController {
       Get.find<Preferences>().setString(Keys.phone, user.phone);
       Get.find<Preferences>().setString(Keys.image, user.imagePath);
       Get.find<Preferences>().setString(Keys.email, user.email);
-      Get.find<Preferences>().setBool(Keys.status, false);
       Get.find<Preferences>().setString(Keys.mrNo, user.mrNo);
       Get.find<Preferences>().setString(Keys.sessionToken, user.sessionToken);
       Get.find<Preferences>().setString(Keys.address, user.huAddress!.location);
@@ -55,4 +53,5 @@ class SignUpController extends GetxController {
       Utilities.showToast("Unable to create account, try again later.");
     }
   }
+
 }

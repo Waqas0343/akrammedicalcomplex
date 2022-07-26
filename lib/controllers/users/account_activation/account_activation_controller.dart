@@ -121,6 +121,7 @@ class AccountActivationController extends GetxController {
     if (isLogin) {
       Get.to(() => UserAccounts(list: _otpResponse));
     } else {
+      Get.find<Preferences>().setBool(Keys.status, true);
       Get.to(() => const LocationGettingScreen(false));
     }
   }

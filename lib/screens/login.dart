@@ -34,64 +34,60 @@ class Login extends StatelessWidget {
                   ),
                 ),
               ),
-              Form(
-                key: loginController.formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Card(
-                      elevation: 2,
-                      margin: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Login",
-                              textAlign: TextAlign.center,
-                              style: Get.textTheme.headlineSmall?.copyWith(
-                                color: Get.theme.primaryColor,
-                                fontSize: 24.0,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            TextFormField(
-                              keyboardType: TextInputType.phone,
-                              maxLength: 11,
-                              textInputAction: TextInputAction.done,
-                              onFieldSubmitted: (text) =>
-                                  Get.focusScope!.unfocus(),
-                              validator: (text) {
-                                if (text!.isEmpty) {
-                                  return 'Can\'t be Empty';
-                                } else if (!GetUtils.hasMatch(
-                                    text, MyTextFormats.validNumber.pattern)) {
-                                  return "Phone ${Keys.onlyNumbers}";
-                                } else if (!GetUtils.hasMatch(
-                                    text, MyTextFormats.phonePattern.pattern)) {
-                                  return 'Invalid number';
-                                }
-                                return null;
-                              },
-                              onSaved: (text) => loginController.phone = text,
-                              decoration: const InputDecoration(
-                                hintText: "Phone",
-                                counterText: "",
-                                filled: false,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                          ],
+              Card(
+                elevation: 2,
+                margin: const EdgeInsets.symmetric(horizontal: 24),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Login",
+                        textAlign: TextAlign.center,
+                        style: Get.textTheme.headlineSmall?.copyWith(
+                          color: Get.theme.primaryColor,
+                          fontSize: 24.0,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Form(
+                        key: loginController.formKey,
+                        child: TextFormField(
+                          keyboardType: TextInputType.phone,
+                          maxLength: 11,
+                          textInputAction: TextInputAction.done,
+                          onFieldSubmitted: (text) => Get.focusScope!.unfocus(),
+                          validator: (text) {
+                            if (text!.isEmpty) {
+                              return 'Can\'t be Empty';
+                            } else if (!GetUtils.hasMatch(
+                                text, MyTextFormats.validNumber.pattern)) {
+                              return "Phone ${Keys.onlyNumbers}";
+                            } else if (!GetUtils.hasMatch(
+                                text, MyTextFormats.phonePattern.pattern)) {
+                              return 'Invalid number';
+                            }
+                            return null;
+                          },
+                          onSaved: (text) => loginController.phone = text,
+                          decoration: const InputDecoration(
+                            hintText: "Phone",
+                            counterText: "",
+                            filled: false,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -133,7 +129,7 @@ class Login extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Get.toNamed(AppRoutes.signUp);
+                                Get.offNamed(AppRoutes.signUp);
                               },
                           )
                         ],

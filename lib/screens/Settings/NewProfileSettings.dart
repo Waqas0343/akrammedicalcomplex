@@ -18,19 +18,15 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileSettings extends StatefulWidget {
-  final List<String>? cities;
-  final Profile? profile;
+  final Profile profile;
 
-  const ProfileSettings({Key? key, this.profile, this.cities})
-      : super(key: key);
+  const ProfileSettings({Key? key, required this.profile}) : super(key: key);
 
   @override
-  _ProfileSettingsState createState() => _ProfileSettingsState(profile);
+  _ProfileSettingsState createState() => _ProfileSettingsState();
 }
 
 class _ProfileSettingsState extends State<ProfileSettings> {
-  final Profile? profile;
-
   final _picker = ImagePicker();
   String? title, imagePath;
 
@@ -61,285 +57,243 @@ class _ProfileSettingsState extends State<ProfileSettings> {
   String buttonText = "Save & Next";
   String emailErrorMessage = "invalid email format";
 
-  _ProfileSettingsState(this.profile);
-
   @override
   Widget build(BuildContext context) {
-    return profile != null
-        ? SingleChildScrollView(
-            child: Column(
-              children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Basic Information",
-                    style: TextStyle(
-                      height: 1.5,
-                      fontWeight: FontWeight.bold,
-                      color: MyColors.primary,
-                      fontSize: 28.0,
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 16,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    chooseAction();
-                  },
-                  child: Container(
-                      margin: const EdgeInsets.only(top: 8, bottom: 16),
-                      child: Badge(
-                        badgeContent: const Icon(
-                          Icons.camera,
-                          size: 24,
-                          color: MyColors.primary,
-                        ),
-                        padding: const EdgeInsets.all(1),
-                        badgeColor: Colors.white,
-                        elevation: 0,
-                        position: BadgePosition.bottomEnd(bottom: 0, end: 0),
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(50)),
-                          child: NetWorkImage(
-                            placeHolder: MyImages.user,
-                            imagePath: imagePath,
-                            height: 80,
-                            width: 80,
-                          ),
-                        ),
-                      )),
-                ),
-                isLoading
-                    ? Container(
-                        margin: const EdgeInsets.only(bottom: 8),
-                        child: LinearPercentIndicator(
-                          lineHeight: 18.0,
-                          percent: uploadingValue,
-                          center: Text(
-                            "${(uploadingValue * 100).toInt()} %",
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 12),
-                          ),
-                          barRadius: const Radius.circular(8),
-                          progressColor: MyColors.primary,
-                        ),
-                      )
-                    : const SizedBox(
-                        height: 4,
-                      ),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 0,
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                              stops: [0.01, 0.01],
-                              colors: [Color(0XFF17145A), Colors.white]),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: ButtonTheme(
-                            alignedDropdown: true,
-                            child: DropdownButton(
-                              autofocus: isTitleEmpty,
-                              value: title,
-                              hint: const Text(
-                                "Title",
-                                maxLines: 1,
-                              ),
-                              onChanged: (String? value) {
-                                setState(() {
-                                  title = value;
-                                  isTitleEmpty = false;
-                                });
-                              },
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontFamily: "Light",
-                                color: Colors.black,
-                              ),
-                              items: Keys.titleList
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    maxLines: 1,
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: TextField(
-                        maxLength: 35,
-                        textInputAction: TextInputAction.next,
-                        focusNode: nameFocus,
-                        inputFormatters: [Utilities.onlyTextFormat()],
-                        onSubmitted: (text) {
-                          nameFocus.unfocus();
-                          FocusScope.of(context).requestFocus(phoneFocus);
-                        },
-                        onChanged: (name) {
-                          if (name.toString().trim().isNotEmpty) {
-                            setState(() {
-                              isNameEmpty = false;
-                            });
-                          }
-                        },
-                        textCapitalization: TextCapitalization.words,
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          counterText: "",
-                          filled: false,
-                          hintText: "Full Name",
-                          errorText: isNameEmpty ? "Name can't be Empty" : null,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                TextField(
-                  textInputAction: TextInputAction.next,
-                  focusNode: usernameFocus,
-                  controller: usernameController,
-                  decoration: const InputDecoration(
-                    filled: false,
-                    enabled: false,
-                    fillColor: Colors.white,
-                    hintText: "Login ID",
-                    disabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                TextField(
-                  textInputAction: TextInputAction.next,
-                  focusNode: phoneFocus,
-                  inputFormatters: [
-                    Utilities.onlyNumberFormat(),
-                  ],
-                  keyboardType: TextInputType.phone,
-                  maxLength: 11,
-                  onSubmitted: (text) {
-                    phoneFocus.unfocus();
-                    FocusScope.of(context).nextFocus();
-                  },
-                  onChanged: (phone) {
-                    if (phone.toString().trim().isNotEmpty) {
-                      if (Utilities.numberHasValid(phone)) {
-                        setState(() {
-                          isPhoneEmpty = false;
-                        });
-                      }
-                    }
-                  },
-                  controller: phoneController,
-                  decoration: InputDecoration(
-                    filled: false,
-                    fillColor: Colors.white,
-                    hintText: "Phone",
-                    counterText: "",
-                    errorText: isPhoneEmpty ? phoneError : null,
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-
-                // email
-                TextField(
-                  textInputAction: TextInputAction.next,
-                  keyboardType: TextInputType.emailAddress,
-                  controller: emailController,
-                  onSubmitted: (text) {
-                    emailFocus.unfocus();
-                    FocusScope.of(context).nextFocus();
-                  },
-                  onChanged: (text) {
-                    if (text.trim().isNotEmpty) {
-                      bool validate = EmailValidator.validate(text);
-                      if (validate) {
-                        setState(() {
-                          emailValidate = false;
-                        });
-                      }
-                    }
-                  },
-                  focusNode: emailFocus,
-                  decoration: InputDecoration(
-                    filled: false,
-                    fillColor: Colors.white,
-                    hintText: "Email",
-                    errorText: emailValidate ? emailErrorMessage : null,
-                  ),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: ElevatedButton(
-                    onPressed: isTaped ? () => updateInfoTask() : null,
-                    child: Text(
-                      buttonText,
-                    ),
-                  ),
-                ),
-              ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Basic Information",
+              style: TextStyle(
+                height: 1.5,
+                fontWeight: FontWeight.bold,
+                color: MyColors.primary,
+                fontSize: 28.0,
+              ),
             ),
-          )
-        : const SizedBox.shrink();
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          GestureDetector(
+            onTap: chooseAction,
+            child: Container(
+              margin: const EdgeInsets.only(
+                top: 8,
+                bottom: 16,
+              ),
+              child: Badge(
+                badgeContent: const Icon(
+                  Icons.camera,
+                  size: 24,
+                  color: MyColors.primary,
+                ),
+                padding: const EdgeInsets.all(1),
+                badgeColor: Colors.white,
+                elevation: 0,
+                position: BadgePosition.bottomEnd(bottom: 0, end: 0),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                  child: NetWorkImage(
+                    placeHolder: MyImages.user,
+                    imagePath: imagePath,
+                    height: 80,
+                    width: 80,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if (isLoading)
+            Container(
+              margin: const EdgeInsets.only(bottom: 8),
+              child: LinearPercentIndicator(
+                lineHeight: 18.0,
+                percent: uploadingValue,
+                center: Text(
+                  "${(uploadingValue * 100).toInt()} %",
+                  style: const TextStyle(color: Colors.white, fontSize: 12),
+                ),
+                barRadius: const Radius.circular(8),
+                progressColor: MyColors.primary,
+              ),
+            ),
+          DropdownButtonFormField(
+            autofocus: isTitleEmpty,
+            value: title,
+            decoration: const InputDecoration(
+              filled: false,
+            ),
+            items: Keys.titleList.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                ),
+              );
+            }).toList(),
+            onChanged: (String? value) {
+              setState(() {
+                title = value;
+                isTitleEmpty = false;
+              });
+            },
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+
+          TextField(
+            maxLength: 35,
+            textInputAction: TextInputAction.next,
+            focusNode: nameFocus,
+            onSubmitted: (text) {
+              nameFocus.unfocus();
+              FocusScope.of(context).requestFocus(phoneFocus);
+            },
+            onChanged: (name) {
+              if (name.toString().trim().isNotEmpty) {
+                setState(() {
+                  isNameEmpty = false;
+                });
+              }
+            },
+            textCapitalization: TextCapitalization.words,
+            controller: nameController,
+            decoration: InputDecoration(
+              counterText: "",
+              filled: false,
+              hintText: "Full Name",
+              errorText: isNameEmpty ? "Name can't be Empty" : null,
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          TextField(
+            textInputAction: TextInputAction.next,
+            focusNode: usernameFocus,
+            controller: usernameController,
+            decoration: const InputDecoration(
+              filled: false,
+              enabled: false,
+              fillColor: Colors.white,
+              hintText: "Login ID",
+              disabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          TextField(
+            textInputAction: TextInputAction.next,
+            focusNode: phoneFocus,
+            inputFormatters: [
+              Utilities.onlyNumberFormat(),
+            ],
+            keyboardType: TextInputType.phone,
+            maxLength: 11,
+            onSubmitted: (text) {
+              phoneFocus.unfocus();
+              FocusScope.of(context).nextFocus();
+            },
+            onChanged: (phone) {
+              if (phone.toString().trim().isNotEmpty) {
+                if (Utilities.numberHasValid(phone)) {
+                  setState(() {
+                    isPhoneEmpty = false;
+                  });
+                }
+              }
+            },
+            controller: phoneController,
+            decoration: InputDecoration(
+              filled: false,
+              fillColor: Colors.white,
+              hintText: "Phone",
+              counterText: "",
+              errorText: isPhoneEmpty ? phoneError : null,
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+
+          // email
+          TextField(
+            textInputAction: TextInputAction.next,
+            keyboardType: TextInputType.emailAddress,
+            controller: emailController,
+            onSubmitted: (text) {
+              emailFocus.unfocus();
+              FocusScope.of(context).nextFocus();
+            },
+            onChanged: (text) {
+              if (text.trim().isNotEmpty) {
+                bool validate = EmailValidator.validate(text);
+                if (validate) {
+                  setState(() {
+                    emailValidate = false;
+                  });
+                }
+              }
+            },
+            focusNode: emailFocus,
+            decoration: InputDecoration(
+              filled: false,
+              fillColor: Colors.white,
+              hintText: "Email",
+              errorText: emailValidate ? emailErrorMessage : null,
+            ),
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+              onPressed: isTaped ? () => updateInfoTask() : null,
+              child: Text(
+                buttonText,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   void updateUi() {
-    if (profile != null) {
-      String? title;
-      if (profile!.user!.title != null) {
-        title =
-            profile!.user!.title!.isNotEmpty && profile!.user!.title != "null"
-                ? profile!.user!.title!.replaceAll(".", "")
-                : null;
-      }
-      imagePath = profile!.user!.imagePath;
-      String name = profile!.user!.name!;
-      String username = profile!.user!.username!;
-      String phone = profile!.user!.phone ?? "";
-      String email = profile!.user!.email ?? "";
-      String area = profile!.address!.area ?? "";
-      String city = profile!.address!.city ?? "";
-      String address = profile!.address!.location ?? "";
-
-      this.title = title;
-      nameController.text = name;
-      usernameController.text = username;
-      phoneController.text = phone;
-      emailController.text = email;
-      areaController.text = area;
-      cityController.text = city;
-      addressController.text = address;
+    String? title;
+    if (widget.profile.user!.title != null) {
+      title = widget.profile.user!.title!.isNotEmpty &&
+              widget.profile.user!.title != "null"
+          ? widget.profile.user!.title!.replaceAll(".", "")
+          : null;
     }
+    imagePath = widget.profile.user!.imagePath;
+    String name = widget.profile.user!.name!;
+    String mrNo = widget.profile.mrNo;
+    String phone = widget.profile.user!.phone ?? "";
+    String email = widget.profile.user!.email ?? "";
+    String area = widget.profile.address!.area ?? "";
+    String city = widget.profile.address!.city ?? "";
+    String address = widget.profile.address!.location ?? "";
+
+    this.title = title;
+    nameController.text = name;
+    usernameController.text = mrNo;
+    phoneController.text = phone;
+    emailController.text = email;
+    areaController.text = area;
+    cityController.text = city;
+    addressController.text = address;
   }
 
   @override

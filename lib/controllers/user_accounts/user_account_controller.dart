@@ -1,4 +1,5 @@
 import 'package:amc/Utilities/Utilities.dart';
+import 'package:amc/routes/routes.dart';
 import 'package:get/get.dart';
 
 import '../../Screens/home.dart';
@@ -25,7 +26,8 @@ class UserAccountsController extends GetxController {
     Get.dialog(const LoadingSpinner());
     String password =
         CryptoHelper.decryption(userList.password!); // loading spinner
-    String values = '&Username=${userList.username}&Password=$password'; // query params
+    String values =
+        '&Username=${userList.username}&Password=$password'; // query params
     User? user = await ApiFetch.login(values);
 
     Get.back();
@@ -35,12 +37,15 @@ class UserAccountsController extends GetxController {
       return;
     }
     setPreferences(user);
-    Get.offAll(() => const Home());
+    Get.offAllNamed(AppRoutes.home);
   }
 
-  Future<void> setPreferences(User user) async {
+  void setPreferences(User user) {
+
+    Get.find<Preferences>().setBool(Keys.status, true);
     Get.find<Preferences>().setString(Keys.phone, user.phone);
     Get.find<Preferences>().setString(Keys.username, user.username);
+    Get.find<Preferences>().setString(Keys.mrNo, user.mrNo);
     Get.find<Preferences>().setString(Keys.name, user.name);
     Get.find<Preferences>().setString(Keys.image, user.imagePath);
     Get.find<Preferences>().setString(Keys.email, user.email);

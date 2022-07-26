@@ -58,4 +58,3 @@ void main() async {
     initialRoute: AppRoutes.splash,
   ));
 }
-

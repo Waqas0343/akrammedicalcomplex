@@ -10,7 +10,7 @@ class ServerConfig {
   static const remindAccount = baseEmrUrl +
       "User/PatientForgotPassword?SystemKey=" +
       systemKey; //resetphone
-  static const deleteAccounts = baseTestUrl2 +
+  static const deleteAccounts = baseUrl +
       "api/Accounts/deactivate?SystemKey=$systemKey&ProjectId=${Keys.projectId}&LocationID=${Keys.locationId}"; //resetphone
   static const signUp = baseUrl +
       "api/Accounts/PatientRegister?SystemKey=$systemKey&SourceUrl=${Keys.source}&projectID=${Keys.projectId}&locationId=${Keys.locationId}";
@@ -27,7 +27,7 @@ class ServerConfig {
   static const healthRecordSave =
       baseUrl + "api/Documents/AddDocuments?SystemKey=" + systemKey;
   static const otp = baseUrl +
-      "api/OTP/GenerateOTP?SystemKey=$systemKey&locationID=$locationID&projectID=$projectID";
+      "api/OTP/GenerateOTP?SystemKey=$systemKey&locationID=${Keys.locationId}&projectID=${Keys.projectId}";
 
   static const medicalRecordDelete =
       baseUrl + "api/Documents/DeleteDocument?SystemKey=" + systemKey; //Id
@@ -36,7 +36,7 @@ class ServerConfig {
       baseUrl + "api/Prescriptions/MyFiles?SystemKey=" + systemKey; //username
 
   static const medicineOrders = baseUrl +
-      "api/Payment/MedicineOrderList?SystemKey=$systemKey&source=$sourceUrl"; //username
+      "api/Payment/MedicineOrderList?SystemKey=$systemKey&source=${Keys.source}"; //username
 
   static const otcMedicines =
       baseUrl + "api/otc/get?SystemKey=" + systemKey; //name=
@@ -45,7 +45,7 @@ class ServerConfig {
       "api/Payment/AddMedicineOrder?SystemKey=$systemKey&LocationId=${Keys.locationId}";
 
   static const myTestOrders = baseUrl +
-      "api/LabTest/LabTestList?SystemKey=$systemKey&source=$sourceUrl";
+      "api/LabTest/LabTestList?SystemKey=$systemKey&source=${Keys.source}";
 
   static const uploadImages =
       baseUrl + "api/documents/savetocloud?"; //userid, attachment(File)
@@ -95,16 +95,13 @@ class ServerConfig {
       baseUrl + "api/Accounts/ChangePassword?SystemKey=" + systemKey;
 
   static const appointments = baseUrl +
-      "api/CustomAppointments/GetList?SystemKey=$systemKey&source=$sourceUrl"; //patientusername
+      "api/CustomAppointments/GetList?SystemKey=$systemKey&source=${Keys.source}"; //patientusername
 
   static const saveToken = baseEmrUrl +
       "Accounts/SaveFirebaseToken?SystemKey=$systemKey&ProjectId=${Keys.projectId}"; //&username=&token=
 
   static const treatments = baseEmrUrl +
-      "Treatment/GetBookedTreatmentList?SystemKey=$systemKey&source=$sourceUrl"; //&username=&token=
+      "Treatment/GetBookedTreatmentList?SystemKey=$systemKey&source=${Keys.source}"; //&username=&token=
 
-  static const String sourceUrl = "AMC";
-  static const String projectID = "amc-healthcare-services";
-  static const String locationID = "A20200710021733";
   static const String systemKey = "6b2e7679-34dd-41f9-b0cd-ac0ea0f8bf8b";
 }

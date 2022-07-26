@@ -25,7 +25,7 @@ class _BookTreatmentState extends State<BookTreatment> {
 
   List<ServiceModel> servicesModel = [];
 
-  final nameController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
   bool isLoading = true;
   SharedPreferences? preferences;
@@ -43,7 +43,85 @@ class _BookTreatmentState extends State<BookTreatment> {
       body: isLoading
           ? const LoadingServicesList()
           : servicesModel.isNotEmpty
-              ? view()
+              ? Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8.0,
+                        right: 8.0,
+                        top: 8.0,
+                        bottom: 4.0,
+                      ),
+                      child: TextField(
+                        controller: nameController,
+                        maxLength: 60,
+                        onChanged: filterSearchResults,
+                        decoration: InputDecoration(
+                          filled: false,
+                          hintText: "Search by Service Name",
+                          counterText: "",
+                          prefixIcon: const Icon(Icons.search),
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              nameController.clear();
+                              filterSearchResults('');
+                            },
+                            child: const Icon(Icons.close),
+                          ),
+                        ),
+                      ),
+                    ),
+                    servicesList.isNotEmpty
+                        ? Expanded(
+                            child: ListView.builder(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              itemBuilder: (BuildContext context, int index) {
+                                ServiceModel serviceModel = servicesList[index];
+                                return Card(
+                                  elevation: 2,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 4),
+                                  child: CheckboxListTile(
+                                    controlAffinity:
+                                        ListTileControlAffinity.leading,
+                                    title: Text(serviceModel.name!),
+                                    subtitle:
+                                        Text("PKR/- " + serviceModel.fee!),
+                                    value: serviceModel.isSelected,
+                                    onChanged: (value) {
+                                      if (value!) {
+                                        selectedList.add(serviceModel);
+                                      } else {
+                                        selectedList.remove(serviceModel);
+                                      }
+                                      setState(
+                                        () {
+                                          servicesList[index].isSelected =
+                                              value;
+                                        },
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              itemCount: servicesList.length,
+                            ),
+                          )
+                        : Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            child: const Text(
+                              "No Service Found",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                  ],
+                )
               : const Center(
                   child: Text(
                     "Services Not available",
@@ -180,109 +258,19 @@ class _BookTreatmentState extends State<BookTreatment> {
     getTreatments();
   }
 
-  Widget view() {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(
-              left: 8.0, right: 8.0, top: 8.0, bottom: 4.0),
-          child: TextField(
-            controller: nameController,
-            maxLength: 60,
-            onChanged: (text) {
-              setState(() {
-                filterSearchResults(text);
-              });
-            },
-            decoration: InputDecoration(
-              filled: false,
-              hintText: "Search by Service Name",
-              counterText: "",
-              prefixIcon: const Icon(Icons.search),
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  FocusScope.of(context).requestFocus(FocusNode());
-                  nameController.clear();
-                  filterSearchResults('');
-                },
-                child: const Icon(Icons.close),
-              ),
-            ),
-          ),
-        ),
-        servicesList.isNotEmpty
-            ? Expanded(
-                child: ListView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  itemBuilder: (BuildContext context, int index) {
-                    ServiceModel serviceModel = servicesList[index];
-                    return Card(
-                      elevation: 4,
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      child: CheckboxListTile(
-                        controlAffinity: ListTileControlAffinity.leading,
-                        title: Text(serviceModel.name!),
-                        subtitle: Text("PKR/- " + serviceModel.fee!),
-                        value: serviceModel.isSelected,
-                        onChanged: (value) {
-                          if (value!) {
-                            selectedList.add(serviceModel);
-                          } else {
-                            selectedList.remove(serviceModel);
-                          }
-                          setState(
-                            () {
-                              servicesList[index].isSelected = value;
-                            },
-                          );
-                        },
-                      ),
-                    );
-                  },
-                  itemCount: servicesList.length,
-                ),
-              )
-            : Container(
-                margin: const EdgeInsets.only(top: 20),
-                child: const Text(
-                  "No Service Found",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-      ],
-    );
-  }
-
   void filterSearchResults(String query) {
     if (query.isNotEmpty) {
-      List<ServiceModel> dummyListData = <ServiceModel>[];
-      for (var item in servicesModel) {
-        if (item.name!.toLowerCase().contains(query.toLowerCase())) {
-          dummyListData.add(item);
-          return;
-        }
-      }
-      setState(
-        () {
-          servicesList.clear();
-          servicesList.addAll(dummyListData);
-        },
-      );
-
-      return;
+      var results = servicesModel
+          .where((element) =>
+              element.name!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+      servicesList.clear();
+      servicesList.addAll(results);
     } else {
-      setState(
-        () {
-          servicesList.clear();
-          servicesList.addAll(servicesModel);
-        },
-      );
+      servicesList.clear();
+      servicesList.addAll(servicesModel);
     }
+    setState(() {});
   }
 
   void disableButton() {

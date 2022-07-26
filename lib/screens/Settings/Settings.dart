@@ -18,7 +18,6 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   Profile? profile;
-  List<String>? cities;
   bool isLoading = true;
 
   @override
@@ -41,11 +40,10 @@ class _SettingsState extends State<Settings> {
       body: Container(
         color: Colors.white,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: profile != null
               ? ProfileSettings(
-                  profile: profile,
-                  cities: cities,
+                  profile: profile!,
                 )
               : isLoading
                   ? const ProfileShimmer()
@@ -60,7 +58,6 @@ class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
-    cities = [];
     getInfo();
   }
 
@@ -77,11 +74,11 @@ class _SettingsState extends State<Settings> {
 
     String response = await Utilities.httpGet(
         ServerConfig.getPatientInfo + "&username=$username");
+    isLoading = false;
 
     if (response != "404") {
       setState(() {
         profile = profileModelFromJson(response).response!.response;
-        isLoading = false;
       });
     } else {
       Utilities.showToast("Unable to get Profile Setting try again later");
