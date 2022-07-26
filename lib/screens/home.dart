@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:amc/Screens/AppDrawer.dart';
 import 'package:amc/Server/api_fetch.dart';
 import 'package:amc/Styles/Keys.dart';
@@ -17,9 +16,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../routes/routes.dart';
+import '../services/preferences.dart';
 import 'Doctors/find_doctor.dart';
 import 'LabReports/LabReports.dart';
 import 'MyBooking/MyBooking.dart';
@@ -38,7 +36,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   String? name, imagePath, oldId, mrNo;
-  late SharedPreferences preferences;
   DateTime? currentBackPressTime;
 
   var rng = Random();
@@ -48,7 +45,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-    String? username = preferences.getString(Keys.name);
+    String? username = Get.find<Preferences>().getString(Keys.name);
     Size size = MediaQuery.of(context).size;
     return WillPopScope(
       onWillPop: () => onWillPop(),
@@ -275,11 +272,11 @@ class _HomeState extends State<Home> {
   }
 
   void getUpdate() async {
-    preferences = await SharedPreferences.getInstance();
+    Get.find<Preferences>().setBool(Keys.status, true);
     setState(() {
-      name = preferences.getString(Keys.name);
-      mrNo = preferences.getString(Keys.mrNo);
-      imagePath = preferences.getString(Keys.image);
+      name = Get.find<Preferences>().getString(Keys.name);
+      mrNo = Get.find<Preferences>().getString(Keys.mrNo);
+      imagePath = Get.find<Preferences>().getString(Keys.image);
     });
   }
 
@@ -461,11 +458,12 @@ class _HomeState extends State<Home> {
   }
 
   bool checkMessageId(String messageId) {
-    String oldId = preferences.getString(Keys.googleMessageId) ?? "";
+
+    String? oldId =  Get.find<Preferences>().getString(Keys.googleMessageId);
     if (oldId == messageId) {
       return false;
     } else {
-      preferences.setString(Keys.googleMessageId, messageId);
+      Get.find<Preferences>().getString(Keys.googleMessageId,);
       return true;
     }
   }

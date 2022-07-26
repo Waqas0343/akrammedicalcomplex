@@ -62,7 +62,7 @@ class _LabReportsState extends State<LabReports> {
         setState(() {
           isLoading = false;
         });
-        Utilities.internetNotAvailable(context);
+        Utilities.internetNotAvailable();
       });
       return;
     }

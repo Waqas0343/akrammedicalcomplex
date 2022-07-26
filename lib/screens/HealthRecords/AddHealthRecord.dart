@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:amc/Server/ServerConfig.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/Styles/MyColors.dart';
@@ -307,7 +306,7 @@ class _AddHealthRecordState extends State<AddHealthRecord> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 

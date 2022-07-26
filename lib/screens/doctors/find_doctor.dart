@@ -378,7 +378,7 @@ class _FindDoctorState extends State<FindDoctor> {
 
   void checkInternet() async {
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       setState(() => isLoading = false);
       return;
     }
@@ -387,7 +387,7 @@ class _FindDoctorState extends State<FindDoctor> {
 
   void updateUi() async {
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
     getDoctors();

@@ -200,7 +200,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
     String? city = preferences.getString(Keys.city);
     String? address = preferences.getString(Keys.address);
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       setState(() {
         isLoading = false;
       });
@@ -289,7 +289,7 @@ class _LocationGettingScreenState extends State<LocationGettingScreen> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 

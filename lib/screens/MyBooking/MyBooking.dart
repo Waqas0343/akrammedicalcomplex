@@ -140,7 +140,7 @@ class _MyBookingState extends State<MyBooking> {
     String? username = preferences.getString(Keys.username);
 
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       ordersLoading = false;
       // treatmentLoading = false;
       appointmentLoading = false;

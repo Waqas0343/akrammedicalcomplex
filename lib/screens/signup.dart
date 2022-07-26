@@ -134,7 +134,7 @@ class SignUp extends StatelessWidget {
                                 counterText: "",
                                 filled: false,
                                 labelText: 'Email',
-                                hintText: "e.g 03XXXXXXXXX",
+                                hintText: "e.g amc@gmail.com",
                               ),
                             ),
                             const SizedBox(

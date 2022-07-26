@@ -51,7 +51,7 @@ class _MyLabTestOrdersState extends State<MyLabTestOrders> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? username = preferences.getString(Keys.USERNAME);
     if (!await Utilities.isOnline()){
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
     

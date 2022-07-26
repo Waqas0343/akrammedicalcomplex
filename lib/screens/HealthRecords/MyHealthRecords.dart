@@ -134,7 +134,7 @@ class _MyHealthRecordsState extends State<MyHealthRecords> {
         Utilities.showToast("Something went wrong");
       }
     } else {
-      await Utilities.internetNotAvailable(context);
+      await Utilities.internetNotAvailable();
     }
     setState(() => isLoading = false);
   }

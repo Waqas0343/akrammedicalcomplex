@@ -485,7 +485,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 
@@ -650,7 +650,7 @@ class _MedicineOrderPlaceState extends State<MedicineOrderPlace> {
   void isOnline() async {
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
   }

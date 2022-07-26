@@ -550,7 +550,7 @@ class _BookTestState extends State<BookTest> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 

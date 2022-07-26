@@ -25,8 +25,7 @@ class UserAccountsController extends GetxController {
     Get.dialog(const LoadingSpinner());
     String password =
         CryptoHelper.decryption(userList.password!); // loading spinner
-    String values =
-        '&Username=${userList.username}&Password=$password'; // query params
+    String values = '&Username=${userList.username}&Password=$password'; // query params
     User? user = await ApiFetch.login(values);
 
     Get.back();

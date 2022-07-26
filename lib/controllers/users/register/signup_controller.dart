@@ -37,8 +37,8 @@ class SignUpController extends GetxController {
       Get.find<Preferences>().setString(Keys.phone, user.phone);
       Get.find<Preferences>().setString(Keys.image, user.imagePath);
       Get.find<Preferences>().setString(Keys.email, user.email);
-      Get.find<Preferences>().setBool(Keys.status, user.status);
-      Get.find<Preferences>().setString( Keys.mrNo,  user.mrNo);
+      Get.find<Preferences>().setBool(Keys.status, false);
+      Get.find<Preferences>().setString(Keys.mrNo, user.mrNo);
       Get.find<Preferences>().setString(Keys.sessionToken, user.sessionToken);
       Get.find<Preferences>().setString(Keys.address, user.huAddress!.location);
       Get.find<Preferences>().setString(Keys.city, user.huAddress!.city);

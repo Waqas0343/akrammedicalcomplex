@@ -552,7 +552,7 @@ class _BookLabTestState extends State<BookLabTest> {
 
   Future<void> getLab() async {
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 
@@ -639,7 +639,7 @@ class _BookLabTestState extends State<BookLabTest> {
     if (!await Utilities.isOnline()) {
       enableButton();
       Navigator.pop(context);
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 

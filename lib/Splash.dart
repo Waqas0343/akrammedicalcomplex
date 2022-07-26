@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:amc/Styles/MyImages.dart';
 import 'package:amc/routes/routes.dart';
 import 'package:amc/services/preferences.dart';

@@ -119,9 +119,7 @@ class AccountActivationController extends GetxController {
       return;
     }
     if (isLogin) {
-      Get.to(
-        () => UserAccounts(list: _otpResponse),
-      );
+      Get.to(() => UserAccounts(list: _otpResponse));
     } else {
       Get.to(() => const LocationGettingScreen(false));
     }

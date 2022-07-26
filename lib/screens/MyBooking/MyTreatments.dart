@@ -183,7 +183,7 @@ class _MyTreatmentsState extends State<MyTreatments> {
     String? username = preferences.getString(Keys.username);
     if (!await Utilities.isOnline()) {
       Future.delayed(const Duration(seconds: 1), () {
-        Utilities.internetNotAvailable(context);
+        Utilities.internetNotAvailable();
       });
       setState(() => treatmentLoading = false);
       return;

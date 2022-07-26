@@ -1,25 +1,26 @@
+import 'package:amc/Utilities/Utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../../Server/api_fetch.dart';
-import '../../../Styles/Keys.dart';
-import '../../../Widgets/loading_dialog.dart';
 import '../../../Widgets/loading_spinner.dart';
 import '../../../models/otp_model.dart';
 import '../../../routes/routes.dart';
-import '../../../services/preferences.dart';
 
 class LoginController extends GetxController {
   String? phone;
   final formKey = GlobalKey<FormState>();
 
+
   Future login() async {
     if (!formKey.currentState!.validate()) return;
     formKey.currentState!.save();
+    if (!await Utilities.isOnline()) {
+      Utilities.internetNotAvailable();
+      return;
+    }
     Get.dialog(const LoadingSpinner());
-    Get.find<Preferences>().setBool(Keys.status, true);
     OTPResponse? user = await ApiFetch.loginWithPhone("&phone=$phone");
-    Loading.dismiss();
+    Get.back();
     if (user == null || user.otpCode == 0) {
       Get.defaultDialog(
         title: 'User does not exist on this number.',
@@ -33,12 +34,8 @@ class LoginController extends GetxController {
       );
       return;
     }
-    Get.offAllNamed(
-      AppRoutes.accountActivation,
-      arguments: {
-        'Response': user,
-        "isLogin": true,
-      },
-    );
+    Get.offAllNamed(AppRoutes.accountActivation,
+        arguments: {'Response': user, "isLogin": true});
   }
+
 }

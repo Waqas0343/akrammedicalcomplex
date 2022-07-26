@@ -490,7 +490,7 @@ class _ProfileSettingsState extends State<ProfileSettings> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 

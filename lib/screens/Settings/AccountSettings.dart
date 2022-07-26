@@ -138,7 +138,7 @@ class _AccountSettingsState extends State<AccountSettings> {
 
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:amc/Database/database.dart';
 import 'package:amc/Styles/Keys.dart';
 import 'package:amc/models/notification_model.dart';
@@ -84,7 +83,7 @@ class Utilities{
     );
   }
 
-  static Future<void> internetNotAvailable(BuildContext context) {
+  static Future<void> internetNotAvailable() {
     return getx.Get.dialog(
       AlertDialog(
         backgroundColor: Colors.white,

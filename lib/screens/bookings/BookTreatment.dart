@@ -72,7 +72,7 @@ class _BookTreatmentState extends State<BookTreatment> {
         setState(() {
           isLoading = false;
         });
-        Utilities.internetNotAvailable(context);
+        Utilities.internetNotAvailable();
       });
       return;
     }
@@ -81,7 +81,8 @@ class _BookTreatmentState extends State<BookTreatment> {
     if (response != "404") {
       if (!mounted) return;
       setState(() {
-        servicesList.addAll(servicesModelFromJson(response).response!.response!);
+        servicesList
+            .addAll(servicesModelFromJson(response).response!.response!);
         servicesModel.addAll(servicesList);
         isLoading = false;
       });
@@ -99,7 +100,7 @@ class _BookTreatmentState extends State<BookTreatment> {
     disableButton();
     if (!await Utilities.isOnline()) {
       enableButton();
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       return;
     }
 
@@ -113,14 +114,27 @@ class _BookTreatmentState extends State<BookTreatment> {
 
     String newDate = date + " " + time.trim();
 
-    String values = "&DoctorUsername=" "&Location=${Keys.locationId}" "&patname=" +
-        name! + "&PatientUsername=" + username! + "&Status=Pending" + "&ScheduledDate_Short=" + newDate +
-        "&ScheduledTime_Short=" + time + "&ScheduledEndTime_Short=" + time + "&AppointmentSource=Private" +
-        "&Source=${Keys.source}" + "&Details=$services" + "&Reason=" + "&Type=Treatment";
+    String values =
+        "&DoctorUsername=" "&Location=${Keys.locationId}" "&patname=" +
+            name! +
+            "&PatientUsername=" +
+            username! +
+            "&Status=Pending" +
+            "&ScheduledDate_Short=" +
+            newDate +
+            "&ScheduledTime_Short=" +
+            time +
+            "&ScheduledEndTime_Short=" +
+            time +
+            "&AppointmentSource=Private" +
+            "&Source=${Keys.source}" +
+            "&Details=$services" +
+            "&Reason=" +
+            "&Type=Treatment";
     Navigator.pop(context);
     Loading.build(context, false);
-    var response = await Utilities.httpPost(
-        ServerConfig.appointmentSave + values);
+    var response =
+        await Utilities.httpPost(ServerConfig.appointmentSave + values);
     Loading.dismiss();
 
     if (response != "404") {
@@ -176,20 +190,24 @@ class _BookTreatmentState extends State<BookTreatment> {
             controller: nameController,
             maxLength: 60,
             onChanged: (text) {
-              filterSearchResults(text);
+              setState(() {
+                filterSearchResults(text);
+              });
             },
             decoration: InputDecoration(
-                filled: false,
-                hintText: "Search by Service Name",
-                counterText: "",
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      nameController.clear();
-                      filterSearchResults("");
-                    },
-                    child: const Icon(Icons.close))),
+              filled: false,
+              hintText: "Search by Service Name",
+              counterText: "",
+              prefixIcon: const Icon(Icons.search),
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  nameController.clear();
+                  filterSearchResults('');
+                },
+                child: const Icon(Icons.close),
+              ),
+            ),
           ),
         ),
         servicesList.isNotEmpty
@@ -203,20 +221,23 @@ class _BookTreatmentState extends State<BookTreatment> {
                       elevation: 4,
                       margin: const EdgeInsets.symmetric(vertical: 4),
                       child: CheckboxListTile(
-                          controlAffinity: ListTileControlAffinity.leading,
-                          title: Text(serviceModel.name!),
-                          subtitle: Text("PKR/- " + serviceModel.fee!),
-                          value: serviceModel.isSelected,
-                          onChanged: (value) {
-                            if (value!) {
-                              selectedList.add(serviceModel);
-                            } else {
-                              selectedList.remove(serviceModel);
-                            }
-                            setState(() {
+                        controlAffinity: ListTileControlAffinity.leading,
+                        title: Text(serviceModel.name!),
+                        subtitle: Text("PKR/- " + serviceModel.fee!),
+                        value: serviceModel.isSelected,
+                        onChanged: (value) {
+                          if (value!) {
+                            selectedList.add(serviceModel);
+                          } else {
+                            selectedList.remove(serviceModel);
+                          }
+                          setState(
+                            () {
                               servicesList[index].isSelected = value;
-                            });
-                          }),
+                            },
+                          );
+                        },
+                      ),
                     );
                   },
                   itemCount: servicesList.length,
@@ -227,9 +248,10 @@ class _BookTreatmentState extends State<BookTreatment> {
                 child: const Text(
                   "No Service Found",
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.grey),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
       ],
@@ -245,17 +267,21 @@ class _BookTreatmentState extends State<BookTreatment> {
           return;
         }
       }
-      setState(() {
-        servicesList.clear();
-        servicesList.addAll(dummyListData);
-      });
+      setState(
+        () {
+          servicesList.clear();
+          servicesList.addAll(dummyListData);
+        },
+      );
 
       return;
     } else {
-      setState(() {
-        servicesList.clear();
-        servicesList.addAll(servicesModel);
-      });
+      setState(
+        () {
+          servicesList.clear();
+          servicesList.addAll(servicesModel);
+        },
+      );
     }
   }
 

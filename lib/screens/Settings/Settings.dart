@@ -68,7 +68,7 @@ class _SettingsState extends State<Settings> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String? username = preferences.getString(Keys.username);
     if (!await Utilities.isOnline()) {
-      Utilities.internetNotAvailable(context);
+      Utilities.internetNotAvailable();
       setState(() {
         isLoading = false;
       });
